@@ -15,9 +15,20 @@
     <img src="https://img.shields.io/badge/Swift-SwiftUI%20%2B%20AppKit-orange" alt="Swift">
   </p>
   <br>
-  <img src="docs/shot-active.png" width="480" alt="The pill: goal, day-progress ring, 3-day streak">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/shot-active-dark.png">
+    <img src="docs/shot-active.png" width="334" alt="The pill: goal, day-progress ring, 3-day streak">
+  </picture>
   <br>
-  <img src="docs/shot-done.png" width="480" alt="Completed: green check, strikethrough, streak at 4">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/shot-done-dark.png">
+    <img src="docs/shot-done.png" width="334" alt="Completed: green check, strikethrough, streak at 4">
+  </picture>
+  <br>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/shot-nudge-dark.png">
+    <img src="docs/shot-nudge.png" width="334" alt="A reminder nudge: the pill glows violet to catch your eye">
+  </picture>
 </div>
 
 ## Why
@@ -29,14 +40,8 @@ quiet peripheral pressure until it's done.
 ## Install
 
 **Download:** grab [`DailyGoal.dmg`](https://github.com/jpwahle/daily-goal/releases/latest/download/DailyGoal.dmg),
-drag the app to Applications. The app is signed locally but not notarized
-(no paid developer account for a 1 MB pill), so on first launch macOS will
-warn — allow it under **System Settings → Privacy & Security → Open Anyway**,
-or clear the flag yourself:
-
-```bash
-xattr -d com.apple.quarantine "/Applications/Daily Goal.app"
-```
+drag the app to Applications. Releases are signed with a Developer ID
+certificate and notarized by Apple, so macOS opens the app without warnings.
 
 **Or build from source** (macOS 13+, Xcode command line tools):
 
@@ -54,9 +59,10 @@ cd daily-goal
 | Mark it done | Click the ring — spring checkmark, strikethrough, confetti, soft pop |
 | Feel the day pass | The ring fills as the day elapses; turns **orange** under 3 h left, **red** under 1 h |
 | Stay unobtrusive | The pill fades after ~8 s idle, brightens instantly on hover |
+| Get reminded | **Remind Me** in the menu bar: every 30 min up to every 3 h (default: hourly), or Off. At the Mac, the pill hops and glows violet; away, one macOS notification waits in Notification Center |
 | Keep a streak | 🔥 chip appears from 2 consecutive completed days; undo-safe |
 | Move it | Drag the pill by its edge; position is remembered across launches |
-| Menu bar | Icon shows state at a glance (dashed = unset, target = pending, ✓ = done); menu has edit, mark done, last-7-days dots, hide/show, launch at login, quit |
+| Menu bar | Icon shows state at a glance (dashed = unset, target = pending, ✓ = done); menu has edit, mark done, last-7-days dots, reminder frequency, hide/show, launch at login, quit |
 
 While the pill has keyboard focus: **Return** edits, **Space** toggles done,
 **⌘Q** quits.
@@ -70,9 +76,13 @@ While the pill has keyboard focus: **Return** edits, **Space** toggles done,
   it doesn't deactivate the app you're working in.
 - **The streak only survives honest completion.** Miss a day and it's gone;
   un-checking restores the exact pre-completion state.
+- **Reminders nag politely.** They skip while you're editing, stop the moment
+  the goal is done, and restart their countdown whenever you touch the goal.
+  Away from the keyboard for a few minutes, the nudge becomes a notification —
+  which replaces the previous one instead of stacking, and respects Focus modes.
 - **No accounts, no network.** State lives in `UserDefaults`
   (`org.gipplab.dailygoal`), including a 90-day history. There is no network
-  code in the app.
+  code in the app; reminders are local notifications, generated on your Mac.
 
 ## Project layout
 
@@ -82,11 +92,29 @@ Sources/DailyGoal/
   AppDelegate.swift       panel placement, day-rollover timer, frame persistence
   FloatingPanel.swift     non-activating always-on-top NSPanel + view bridge
   GoalStore.swift         state machine: logical days, streaks, history
-  GoalView.swift          the pill: check ring, confetti, idle dimming
+  GoalView.swift          the pill: check ring, confetti, idle dimming, nudge bounce
   StatusBarController.swift  menu bar icon + menu
+  ReminderCenter.swift    reminder timer: pill bounce at the Mac, notification when away
 Scripts/MakeIcon.swift    renders the .icns at build time
+Scripts/create-dmg.sh     styled drag-to-Applications DMG
+Scripts/make-shots.sh     regenerates docs/ screenshots from the real app (Retina, light+dark)
 docs/                     landing page (GitHub Pages)
-build.sh                  compile → bundle → sign (ad-hoc)
+build.sh                  dev build: compile → bundle → sign (ad-hoc)
+Makefile                  release: universal build → sign → notarize → DMG
+```
+
+## Releasing
+
+Every push to `main` triggers the [release workflow](.github/workflows/release.yml):
+it bumps the version from conventional-commit prefixes, builds a universal
+binary, signs it with the Developer ID certificate, notarizes and staples both
+the app and the DMG, and publishes a GitHub release. Locally the same pipeline
+runs with:
+
+```bash
+make release-dmg VERSION=1.0.1 \
+  SIGNING_IDENTITY="Developer ID Application: Jan Philip Wahle (S5NQXKYPKT)" \
+  APPLE_ID=you@example.com TEAM_ID=S5NQXKYPKT KEYCHAIN_PROFILE=AC_PASSWORD
 ```
 
 ## License

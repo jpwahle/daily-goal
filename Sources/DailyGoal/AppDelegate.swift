@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import SwiftUI
 
 final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
@@ -6,7 +7,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private var panel: FloatingPanel!
     private var bridge: PanelBridge!
     private var statusBar: StatusBarController!
+    private var reminders: ReminderCenter!
     private var rolloverTimer: Timer?
+    private var reminderResets = Set<AnyCancellable>()
     private let defaults = UserDefaults.standard
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -35,6 +38,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         panel.orderFrontRegardless()
 
         statusBar = StatusBarController(store: store, app: self)
+        reminders = ReminderCenter(store: store, app: self)
+
+        // Touching the goal restarts the reminder countdown, so a nudge never
+        // fires right after the user just dealt with the pill.
+        store.$goal.dropFirst().removeDuplicates()
+            .merge(with: store.$isCompleted.dropFirst().removeDuplicates().map { _ in "" })
+            .merge(with: store.$reminderInterval.dropFirst().removeDuplicates().map { _ in "" })
+            .sink { [weak self] _ in self?.reminders.reschedule() }
+            .store(in: &reminderResets)
 
         rolloverTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
             self?.dayTick()
@@ -67,6 +79,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
     func showPanel() {
         panel.orderFrontRegardless()
+    }
+
+    /// Attention nudge: surface the pill and let the view bounce it.
+    func nudgePill() {
+        showPanel()
+        store.nudgeTick += 1
+        if let sound = NSSound(named: "Tink") {
+            sound.volume = 0.3
+            sound.play()
+        }
     }
 
     func hidePanel() {

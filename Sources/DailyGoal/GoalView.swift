@@ -13,6 +13,8 @@ struct GoalView: View {
     @StateObject private var idle = IdleDimmer()
     @State private var shownOpacity: Double = 1
     @State private var glow = false
+    @State private var nudgeOffset: CGFloat = 0
+    @State private var nudgeGlow = false
 
     var body: some View {
         pill
@@ -46,6 +48,7 @@ struct GoalView: View {
             .onChange(of: store.goal) { _ in idle.poke(); updateOpacity() }
             .onChange(of: store.isCompleted) { _ in idle.poke(); updateOpacity() }
             .onChange(of: store.celebrationTick) { _ in flashGlow() }
+            .onChange(of: store.nudgeTick) { _ in nudge() }
     }
 
     private var pill: some View {
@@ -71,7 +74,9 @@ struct GoalView: View {
         .shadow(color: .black.opacity(0.20), radius: 14, y: 6)
         .shadow(color: .black.opacity(0.10), radius: 2, y: 1)
         .shadow(color: .green.opacity(glow ? 0.55 : 0), radius: 18)
+        .shadow(color: Color(red: 0.45, green: 0.40, blue: 1.0).opacity(nudgeGlow ? 0.65 : 0), radius: 20)
         .opacity(shownOpacity)
+        .offset(y: nudgeOffset)
         .animation(.spring(response: 0.35, dampingFraction: 0.75), value: store.isCompleted)
         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: store.streak)
         .animation(.easeInOut(duration: 0.2), value: store.isEditing)
@@ -153,6 +158,30 @@ struct GoalView: View {
         withAnimation(.easeOut(duration: 0.25)) { glow = true }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
             withAnimation(.easeInOut(duration: 0.9)) { glow = false }
+        }
+    }
+
+    // MARK: - Reminder nudge: wake, glow violet, and hop twice
+
+    private func nudge() {
+        idle.poke()
+        updateOpacity()
+        withAnimation(.easeOut(duration: 0.2)) { nudgeGlow = true }
+
+        let hop = Animation.spring(response: 0.18, dampingFraction: 0.55)
+        let land = Animation.spring(response: 0.26, dampingFraction: 0.5)
+        withAnimation(hop) { nudgeOffset = -16 }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
+            withAnimation(land) { nudgeOffset = 0 }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.42) {
+            withAnimation(hop) { nudgeOffset = -9 }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.58) {
+            withAnimation(land) { nudgeOffset = 0 }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+            withAnimation(.easeInOut(duration: 0.9)) { nudgeGlow = false }
         }
     }
 }

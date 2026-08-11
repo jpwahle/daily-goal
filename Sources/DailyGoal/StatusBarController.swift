@@ -81,6 +81,7 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         }
 
         menu.addItem(.separator())
+        menu.addItem(remindItem())
 
         let visibility = NSMenuItem(
             title: app.panelVisible ? "Hide From Screen" : "Show On Screen",
@@ -131,10 +132,33 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         return menuItem
     }
 
+    /// "Remind Me" submenu: how often the pill should demand attention while
+    /// today's goal is still open (bounce when you're here, notification when
+    /// you're away).
+    private func remindItem() -> NSMenuItem {
+        let item = NSMenuItem(title: "Remind Me", action: nil, keyEquivalent: "")
+        let submenu = NSMenu()
+        for choice in ReminderCenter.choices {
+            let entry = NSMenuItem(title: choice.title, action: #selector(setReminder(_:)), keyEquivalent: "")
+            entry.target = self
+            entry.representedObject = choice.seconds
+            entry.state = store.reminderInterval == choice.seconds ? .on : .off
+            submenu.addItem(entry)
+            if choice.seconds == 0 { submenu.addItem(.separator()) }
+        }
+        item.submenu = submenu
+        return item
+    }
+
     // MARK: - Actions
 
     @objc private func editGoal() {
         app.beginEditing()
+    }
+
+    @objc private func setReminder(_ sender: NSMenuItem) {
+        guard let seconds = sender.representedObject as? TimeInterval else { return }
+        store.setReminderInterval(seconds)
     }
 
     @objc private func toggleDone() {

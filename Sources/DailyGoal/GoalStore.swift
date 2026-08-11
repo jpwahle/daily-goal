@@ -23,6 +23,11 @@ final class GoalStore: ObservableObject {
     @Published var isEditing = false
     @Published private(set) var celebrationTick = 0
 
+    /// Seconds between reminder nudges; 0 turns reminders off.
+    @Published private(set) var reminderInterval: TimeInterval = 3600
+    /// Bumped whenever the pill should bounce for attention.
+    @Published var nudgeTick = 0
+
     private(set) var history: [DayRecord] = []
     private var dayKey = ""
     private var lastCompletedDay: String?
@@ -100,6 +105,11 @@ final class GoalStore: ObservableObject {
         isCompleted ? uncomplete() : complete()
     }
 
+    func setReminderInterval(_ seconds: TimeInterval) {
+        reminderInterval = max(0, seconds)
+        save()
+    }
+
     func complete() {
         guard !goal.isEmpty, !isCompleted else { return }
         undoSnapshot = (streak, lastCompletedDay)
@@ -153,6 +163,7 @@ final class GoalStore: ObservableObject {
         streak = defaults.integer(forKey: "streak")
         dayKey = defaults.string(forKey: "dayKey") ?? ""
         lastCompletedDay = defaults.string(forKey: "lastCompletedDay")
+        reminderInterval = defaults.object(forKey: "reminderInterval") as? Double ?? 3600
         if let data = defaults.data(forKey: "history"),
            let records = try? JSONDecoder().decode([DayRecord].self, from: data) {
             history = records
@@ -165,6 +176,7 @@ final class GoalStore: ObservableObject {
         defaults.set(streak, forKey: "streak")
         defaults.set(dayKey, forKey: "dayKey")
         defaults.set(lastCompletedDay, forKey: "lastCompletedDay")
+        defaults.set(reminderInterval, forKey: "reminderInterval")
         if let data = try? JSONEncoder().encode(history) {
             defaults.set(data, forKey: "history")
         }
