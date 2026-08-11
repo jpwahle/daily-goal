@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Goal — one goal, always in sight. A floating focus pill for macOS</title>
+  <meta name="description" content="Daily Goal is a free, open-source macOS app: a tiny frosted pill that floats above every window with your one goal for today. A ring fills as the day passes, finishing earns confetti and a streak, and everything resets at 4 a.m. No accounts, no network, 1 MB.">
+  <meta name="keywords" content="Daily Goal, macOS goal app, floating goal pill, always on top todo, one thing a day, daily focus macOS, minimal todo mac, menu bar goal tracker, streak app mac, open source macOS productivity">
+  <meta name="author" content="Jan Philip Wahle">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#FBFAFD" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141317" media="(prefers-color-scheme: dark)">
+  <meta name="application-name" content="Daily Goal">
+
+  <link rel="canonical" href="https://jpwahle.github.io/daily-goal/">
+  <link rel="icon" href="icon-256.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon-256.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Daily Goal">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://jpwahle.github.io/daily-goal/">
+  <meta property="og:title" content="Daily Goal — one goal, always in sight">
+  <meta property="og:description" content="A tiny frosted pill that floats above every window on your Mac with your one goal for today. Free & open source.">
+  <meta property="og:image" content="https://jpwahle.github.io/daily-goal/icon-512.png">
+  <meta property="og:image:alt" content="Daily Goal app icon — a white target on a violet gradient">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Daily Goal — one goal, always in sight">
+  <meta name="twitter:description" content="A floating focus pill for macOS. The day is the deadline: a ring fills as time passes, finishing earns confetti. Open source, 1 MB.">
+  <meta name="twitter:image" content="https://jpwahle.github.io/daily-goal/icon-512.png">
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Daily Goal",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": "macOS 13 (Ventura) or later",
+    "description": "A native macOS app that keeps your one goal for today floating above every window. Day-progress ring, completion streaks, 4 a.m. day boundary. Free and open source.",
+    "url": "https://jpwahle.github.io/daily-goal/",
+    "downloadUrl": "https://github.com/jpwahle/daily-goal/releases/latest/download/DailyGoal.dmg",
+    "softwareVersion": "1.0.0",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "license": "https://github.com/jpwahle/daily-goal/blob/main/LICENSE",
+    "author": { "@type": "Person", "name": "Jan Philip Wahle", "url": "https://jpwahle.com" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: oklch(98.4% 0.004 300);
+      --paper-soft: oklch(96.8% 0.007 300);
+      --ink: oklch(23% 0.022 295);
+      --ink-soft: oklch(45% 0.02 295);
+      --ink-faint: oklch(62% 0.015 295);
+      --line: oklch(88% 0.012 295);
+      --indigo: oklch(58% 0.21 278);
+      --violet: oklch(60% 0.23 305);
+      --green: oklch(66% 0.17 155);
+      --amber: oklch(72% 0.16 70);
+      --pill-bg: rgba(252, 251, 254, 0.62);
+      --pill-border: rgba(30, 25, 45, 0.09);
+      --pill-shadow: 0 8px 28px rgba(28, 20, 55, 0.16), 0 1px 3px rgba(28, 20, 55, 0.10);
+      --font-display: ui-rounded, "SF Pro Rounded", "Nunito", system-ui, sans-serif;
+      --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: oklch(17.5% 0.013 295);
+        --paper-soft: oklch(21% 0.015 295);
+        --ink: oklch(93% 0.008 300);
+        --ink-soft: oklch(72% 0.012 300);
+        --ink-faint: oklch(56% 0.012 300);
+        --line: oklch(30% 0.015 295);
+        --indigo: oklch(70% 0.17 278);
+        --violet: oklch(71% 0.19 305);
+        --green: oklch(72% 0.15 155);
+        --pill-bg: rgba(36, 34, 44, 0.58);
+        --pill-border: rgba(255, 255, 255, 0.10);
+        --pill-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    ::selection { background: color-mix(in oklab, var(--violet) 25%, transparent); }
+
+    a { color: var(--indigo); text-decoration: none; }
+    a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    .wrap { max-width: 1060px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 48px); }
+
+    /* ------- soft color field behind the hero so the glass pill reads as glass ------- */
+    .field {
+      position: absolute; inset: 0 0 auto 0; height: 130vh;
+      pointer-events: none; z-index: -1; overflow: hidden;
+    }
+    .field::before, .field::after {
+      content: ""; position: absolute; border-radius: 50%; filter: blur(70px);
+      opacity: 0.55;
+    }
+    .field::before {
+      width: 560px; height: 560px; left: max(-160px, calc(50% - 780px)); top: -180px;
+      background: radial-gradient(closest-side, color-mix(in oklab, var(--indigo) 26%, transparent), transparent 70%);
+    }
+    .field::after {
+      width: 640px; height: 640px; right: max(-220px, calc(50% - 820px)); top: 60px;
+      background: radial-gradient(closest-side, color-mix(in oklab, var(--violet) 22%, transparent), transparent 70%);
+    }
+
+    /* ================= the live pill ================= */
+    #pill {
+      position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+      z-index: 60;
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px 10px 13px;
+      max-width: min(88vw, 460px);
+      border-radius: 999px;
+      background: var(--pill-bg);
+      -webkit-backdrop-filter: blur(18px) saturate(1.6);
+      backdrop-filter: blur(18px) saturate(1.6);
+      border: 1px solid var(--pill-border);
+      box-shadow: var(--pill-shadow);
+      font-family: var(--font-display);
+      transition: opacity 1.2s ease;
+      cursor: default;
+    }
+    #pill.dimmed { opacity: 0.45; }
+    #pill:hover, #pill:focus-within { opacity: 1; transition: opacity 0.18s ease; }
+
+    #ring {
+      flex: none; width: 22px; height: 22px; padding: 0;
+      background: none; border: none; cursor: pointer;
+      display: grid; place-items: center;
+      transition: transform 0.22s var(--ease-out);
+    }
+    #ring:active { transform: scale(0.82); }
+    #ring svg { display: block; overflow: visible; }
+    #ring .track { stroke: color-mix(in oklab, var(--ink) 16%, transparent); }
+    #ring .track.dashed { stroke-dasharray: 2.4 3; }
+    #ring .arc { transition: stroke-dashoffset 0.6s ease; }
+    #ring .disc { transform-origin: center; }
+
+    #goaltext {
+      font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      position: relative; cursor: text; color: var(--ink);
+    }
+    #goaltext.placeholder {
+      color: var(--ink-faint); font-weight: 600;
+      animation: breathe 3.4s ease-in-out infinite;
+    }
+    @keyframes breathe { 0%, 100% { opacity: 0.55; } 50% { opacity: 0.95; } }
+    #goaltext.done { color: var(--ink-faint); }
+    #goaltext .strike {
+      position: absolute; left: 0; top: 50%; height: 1.5px; width: 0%;
+      background: var(--ink-faint); border-radius: 2px;
+      transition: width 0.35s ease 0.1s;
+    }
+    #goaltext.done .strike { width: 100%; }
+
+    #goalinput {
+      font: 700 15px var(--font-display); letter-spacing: -0.01em;
+      width: min(56vw, 250px); border: none; outline: none; background: none;
+      color: var(--ink);
+    }
+    #goalinput::placeholder { color: var(--ink-faint); font-weight: 600; }
+
+    #streak {
+      flex: none; display: none; align-items: center; gap: 2px;
+      font-size: 12px; font-weight: 800;
+      color: oklch(66% 0.19 45);
+      background: color-mix(in oklab, oklch(70% 0.19 55) 16%, transparent);
+      padding: 3px 8px; border-radius: 999px;
+    }
+    #streak.on { display: flex; animation: chipIn 0.45s var(--ease-out); }
+    @keyframes chipIn { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .confetto {
+      position: fixed; z-index: 61; width: 6px; height: 6px; border-radius: 1.5px;
+      pointer-events: none; background: var(--c);
+      animation: burst 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+    }
+    .confetto.round { border-radius: 50%; }
+    @keyframes burst {
+      to {
+        transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.4);
+        opacity: 0;
+      }
+    }
+
+    /* ================= header ================= */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 88px;
+    }
+    .wordmark { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; font-size: 17px; color: var(--ink); }
+    .wordmark img { width: 26px; height: 26px; border-radius: 7px; }
+    .wordmark:hover { text-decoration: none; }
+    nav { display: flex; gap: clamp(16px, 3vw, 30px); font-size: 14.5px; font-weight: 500; }
+    nav a { color: var(--ink-soft); }
+    nav a:hover { color: var(--ink); text-decoration: none; }
+
+    /* ================= hero ================= */
+    .hero { padding: clamp(64px, 10vh, 120px) 0 clamp(56px, 9vh, 110px); position: relative; }
+    .hint {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-display); font-weight: 700; font-size: 13.5px;
+      color: var(--ink-faint); margin-bottom: 26px;
+    }
+    .hint svg { flex: none; }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.7rem, 7.2vw, 4.8rem);
+      font-weight: 800; line-height: 1.02; letter-spacing: -0.035em;
+      max-width: 11ch;
+    }
+    h1 .insight { color: var(--ink-faint); }
+    .sub {
+      margin-top: 26px; font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+      color: var(--ink-soft); max-width: 46ch;
+    }
+    .cta { margin-top: 40px; display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+    .btn {
+      font-family: var(--font-display); font-weight: 800; font-size: 16px;
+      color: oklch(98% 0.005 300);
+      background: linear-gradient(150deg, var(--indigo), var(--violet));
+      padding: 14px 26px; border-radius: 999px;
+      box-shadow: 0 6px 20px color-mix(in oklab, var(--indigo) 35%, transparent);
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+    }
+    .btn:hover { text-decoration: none; transform: translateY(-2px); box-shadow: 0 10px 26px color-mix(in oklab, var(--indigo) 45%, transparent); }
+    .btn:active { transform: translateY(0) scale(0.98); }
+    .cta small { display: block; color: var(--ink-faint); font-size: 13px; margin-top: 8px; }
+    .alt { font-size: 14.5px; color: var(--ink-soft); }
+    .alt code { font-size: 13px; background: var(--paper-soft); border: 1px solid var(--line); padding: 2px 7px; border-radius: 6px; }
+
+    /* staggered load */
+    .rise { opacity: 0; transform: translateY(22px); animation: rise 0.9s var(--ease-out) forwards; }
+    .rise.d1 { animation-delay: 0.08s; } .rise.d2 { animation-delay: 0.18s; }
+    .rise.d3 { animation-delay: 0.30s; } .rise.d4 { animation-delay: 0.44s; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+
+    /* ================= feature moments ================= */
+    .moments { padding: clamp(30px, 6vh, 70px) 0 20px; }
+    .moments > .wrap > h2 {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(1.7rem, 3.6vw, 2.5rem); letter-spacing: -0.025em;
+      max-width: 22ch; margin-bottom: clamp(48px, 7vh, 84px);
+    }
+    .row {
+      display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
+      gap: clamp(28px, 5vw, 72px); align-items: center;
+      margin-bottom: clamp(64px, 10vh, 120px);
+    }
+    .row:nth-child(even) .shot { order: -1; }
+    .row h3 {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(1.35rem, 2.4vw, 1.7rem); letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    .row p { color: var(--ink-soft); max-width: 44ch; }
+    .row p + p { margin-top: 12px; }
+    .row .k { color: var(--ink); font-weight: 600; }
+    .t-violet { color: var(--violet); font-weight: 700; }
+    .t-amber { color: var(--amber); font-weight: 700; }
+    .t-green { color: var(--green); font-weight: 700; }
+    .shot img {
+      width: 100%; height: auto; display: block;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 44px rgba(28, 20, 55, 0.13);
+    }
+    @media (prefers-color-scheme: dark) {
+      .shot img { box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45); filter: none; }
+    }
+
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ================= quiet details ================= */
+    .details { padding: 8px 0 clamp(60px, 9vh, 100px); }
+    .details h2 {
+      font-family: var(--font-display); font-weight: 800; font-size: 1.15rem;
+      color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.09em;
+      margin-bottom: 26px; font-size: 0.82rem;
+    }
+    .details ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px 34px; }
+    .details li {
+      color: var(--ink-soft); font-size: 15px; padding-left: 22px; position: relative;
+    }
+    .details li::before {
+      content: ""; position: absolute; left: 0; top: 0.52em; width: 9px; height: 9px;
+      border-radius: 50%; border: 2px solid var(--violet); opacity: 0.7;
+    }
+    .details li strong { color: var(--ink); font-weight: 600; }
+
+    /* ================= faq ================= */
+    .faq { padding: clamp(50px, 8vh, 90px) 0; border-top: 1px solid var(--line); }
+    .faq h2 {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(1.7rem, 3.4vw, 2.3rem); letter-spacing: -0.025em; margin-bottom: 38px;
+    }
+    .faq details {
+      border-bottom: 1px solid var(--line); padding: 20px 0;
+      max-width: 720px;
+    }
+    .faq summary {
+      font-family: var(--font-display); font-weight: 700; font-size: 16.5px;
+      cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; color: var(--ink-faint); font-weight: 600; transition: transform 0.3s var(--ease-out); }
+    .faq details[open] summary::after { transform: rotate(45deg); }
+    .faq details p { color: var(--ink-soft); margin-top: 12px; max-width: 62ch; }
+    .faq details p + p { margin-top: 8px; }
+    .faq code {
+      font-size: 13px; background: var(--paper-soft); border: 1px solid var(--line);
+      padding: 2px 7px; border-radius: 6px; user-select: all;
+    }
+
+    /* ================= oss footer ================= */
+    .oss { padding: clamp(70px, 11vh, 130px) 0; text-align: left; border-top: 1px solid var(--line); }
+    .oss h2 {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: -0.03em; line-height: 1.08;
+      max-width: 14ch;
+    }
+    .oss h2 .insight { color: var(--ink-faint); }
+    .oss p { margin-top: 18px; color: var(--ink-soft); max-width: 48ch; }
+    .oss .cta { margin-top: 32px; }
+    .btn-ghost {
+      font-family: var(--font-display); font-weight: 700; font-size: 15px;
+      color: var(--ink); border: 1.5px solid var(--line); padding: 12px 22px; border-radius: 999px;
+      transition: border-color 0.25s ease, transform 0.25s var(--ease-out);
+    }
+    .btn-ghost:hover { text-decoration: none; border-color: var(--ink-faint); transform: translateY(-2px); }
+    footer {
+      padding: 30px 0 46px; color: var(--ink-faint); font-size: 13.5px;
+      display: flex; gap: 8px 26px; flex-wrap: wrap;
+    }
+
+    @media (max-width: 720px) {
+      header { padding-top: 78px; }
+      .row { grid-template-columns: 1fr; gap: 24px; margin-bottom: 72px; }
+      .row:nth-child(even) .shot { order: 0; }
+      .row .shot { max-width: 480px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .rise, .reveal { animation: none; transition: none; opacity: 1; transform: none; }
+      #goaltext.placeholder { animation: none; }
+      .confetto { animation-duration: 0.01s; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="field" aria-hidden="true"></div>
+
+  <!-- ============ the app itself, floating over this page ============ -->
+  <div id="pill" role="group" aria-label="Daily Goal — live demo of the app">
+    <button id="ring" aria-label="Mark goal as done" title="Mark as done">
+      <svg width="22" height="22" viewBox="0 0 22 22">
+        <defs>
+          <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="oklch(62% 0.21 278)"/>
+            <stop offset="1" stop-color="oklch(63% 0.23 305)"/>
+          </linearGradient>
+        </defs>
+        <g id="ringOpen">
+          <circle class="track" cx="11" cy="11" r="9" fill="none" stroke-width="2.5"/>
+          <circle class="arc" cx="11" cy="11" r="9" fill="none" stroke="url(#grad)"
+                  stroke-width="2.5" stroke-linecap="round"
+                  stroke-dasharray="56.55" stroke-dashoffset="56.55"
+                  transform="rotate(-90 11 11)"/>
+        </g>
+        <g id="ringDone" style="display:none">
+          <circle class="disc" cx="11" cy="11" r="10" fill="oklch(63% 0.17 155)"/>
+          <path d="M6.8 11.4 l2.9 2.9 l5.5 -6" fill="none" stroke="white" stroke-width="2.4"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>
+    </button>
+    <span id="goaltext" class="placeholder" title="Click to set your goal">What&rsquo;s your one thing today?<span class="strike"></span></span>
+    <input id="goalinput" type="text" placeholder="One thing for today…" maxlength="100"
+           style="display:none" aria-label="Your goal for today">
+    <span id="streak" title="Consecutive completed days">🔥<b id="streakN">2</b></span>
+  </div>
+
+  <header class="wrap">
+    <a class="wordmark rise" href="#"><img src="icon-256.png" alt="" width="26" height="26">Daily&nbsp;Goal</a>
+    <nav class="rise d1">
+      <a href="#feels">How it feels</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/jpwahle/daily-goal">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero wrap">
+      <div class="hint rise d1" aria-hidden="true">
+        <svg width="15" height="26" viewBox="0 0 15 26" fill="none">
+          <path d="M7.5 25 C 4 18, 10 12, 7.5 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M3.5 6.5 L 7.5 1.5 L 11 6.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        that&rsquo;s the whole app, floating over this page — try the ring
+      </div>
+      <h1 class="rise d2">One goal.<br>Always <span class="insight">in&nbsp;sight.</span></h1>
+      <p class="sub rise d3">A 1&nbsp;MB native pill that floats above every window, every Space, even full-screen apps. Set one thing each morning. It stays until it&rsquo;s done.</p>
+      <div class="cta rise d4">
+        <div>
+          <a class="btn" href="https://github.com/jpwahle/daily-goal/releases/latest/download/DailyGoal.dmg">Download for&nbsp;macOS</a>
+          <small>Free &amp; open source&ensp;·&ensp;macOS 13+&ensp;·&ensp;Apple&nbsp;Silicon</small>
+        </div>
+        <span class="alt">or <a href="https://github.com/jpwahle/daily-goal#build--run">build from source</a> — <code>./build.sh --run</code></span>
+      </div>
+    </section>
+
+    <section class="moments" id="feels">
+      <div class="wrap">
+        <h2 class="reveal">Four functions. Each one earns its place.</h2>
+
+        <div class="row reveal">
+          <div>
+            <h3>The day is the deadline.</h3>
+            <p>The ring around the checkbox <span class="k">fills as your day passes</span> — <span class="t-violet">violet</span> most of the day, <span class="t-amber">amber</span> under three hours, red in the final one.</p>
+            <p>No notifications, no badges. Just quiet pressure at the edge of your vision.</p>
+          </div>
+          <div class="shot"><img src="shot-active.png" alt="The pill showing a goal with the day-progress ring and a 3-day streak" width="602" loading="lazy"></div>
+        </div>
+
+        <div class="row reveal">
+          <div>
+            <h3>Finishing feels like something.</h3>
+            <p>Click the ring: a <span class="t-green">spring-loaded check</span>, an animated strikethrough, a burst of confetti, a soft pop. From day two, a 🔥 streak counts how long you&rsquo;ve kept it up.</p>
+            <p>Un-check by mistake? Everything restores exactly — the streak only dies if you actually miss a day.</p>
+          </div>
+          <div class="shot"><img src="shot-done.png" alt="The completed pill: green check, strikethrough, streak at 4" width="602" loading="lazy"></div>
+        </div>
+
+        <div class="row reveal">
+          <div>
+            <h3>Every morning, a clean slate.</h3>
+            <p>The day flips at <span class="k">4&nbsp;a.m., not midnight</span> — a 1&nbsp;a.m. finish still counts for the evening it belongs to.</p>
+            <p>Yesterday archives itself, and the empty pill breathes gently until you give it the next one thing.</p>
+          </div>
+          <div class="shot"><img src="shot-empty.png" alt="The empty pill inviting: What's your one thing today?" width="620" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="details wrap reveal">
+      <h2>The quiet details</h2>
+      <ul>
+        <li><strong>Never steals focus</strong> — type into it without leaving the app you&rsquo;re in</li>
+        <li><strong>Fades when idle</strong> — dims to a whisper after 8&nbsp;s, wakes on hover</li>
+        <li><strong>Drag it anywhere</strong> — the position is remembered</li>
+        <li><strong>Menu-bar glance</strong> — dashed circle → target → checkmark</li>
+        <li><strong>Launch at login</strong> — one toggle, no daemon</li>
+        <li><strong>No accounts, no network</strong> — your data never leaves the Mac</li>
+      </ul>
+    </section>
+
+    <section class="faq wrap" id="faq">
+      <h2 class="reveal">Common questions.</h2>
+      <details class="reveal">
+        <summary>macOS says it &ldquo;can&rsquo;t verify the developer.&rdquo;</summary>
+        <p>Daily Goal is signed locally, not notarized by Apple — that would require a paid developer account for a 1&nbsp;MB pill. After the warning, go to <span style="font-weight:600">System Settings → Privacy &amp; Security → Open Anyway</span> (once), or clear the quarantine flag yourself:</p>
+        <p><code>xattr -d com.apple.quarantine "/Applications/Daily Goal.app"</code></p>
+        <p>Or skip the download entirely and build from source in about ten seconds.</p>
+      </details>
+      <details class="reveal">
+        <summary>Where does my data live?</summary>
+        <p>In <code>UserDefaults</code> on your Mac — the goal, the streak, and a 90-day history. There is no network code in the app at all, nothing to sign into, and no telemetry.</p>
+      </details>
+      <details class="reveal">
+        <summary>Why does the day end at 4&nbsp;a.m.?</summary>
+        <p>Because your day ends when you sleep, not when the calendar says so. Finish something at half past midnight and it still counts — the slate wipes while you&rsquo;re in bed.</p>
+      </details>
+      <details class="reveal">
+        <summary>What does it cost?</summary>
+        <p>Nothing, ever. It&rsquo;s MIT-licensed open source — use it, fork it, ship your own.</p>
+      </details>
+    </section>
+
+    <section class="oss">
+      <div class="wrap reveal">
+        <h2>Free forever.<br><span class="insight">Read the source.</span></h2>
+        <p>About 900 lines of Swift and SwiftUI — a non-activating panel, a state machine for logical days, and a lot of care about how 22 pixels of ring should feel.</p>
+        <div class="cta">
+          <a class="btn" href="https://github.com/jpwahle/daily-goal/releases/latest/download/DailyGoal.dmg">Download for&nbsp;macOS</a>
+          <a class="btn-ghost" href="https://github.com/jpwahle/daily-goal">View on GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <span>MIT License</span>
+    <span>© 2026 <a href="https://jpwahle.com">Jan Philip Wahle</a></span>
+    <span><a href="https://github.com/jpwahle/daily-goal/issues">Report an issue</a></span>
+  </footer>
+
+  <script>
+  (function () {
+    "use strict";
+    var $ = function (id) { return document.getElementById(id); };
+    var pill = $("pill"), ring = $("ring"), goalText = $("goaltext"),
+        input = $("goalinput"), streakEl = $("streak"), streakN = $("streakN"),
+        ringOpen = $("ringOpen"), ringDone = $("ringDone"),
+        arc = ringOpen.querySelector(".arc"), track = ringOpen.querySelector(".track");
+    var C = 56.55; // 2π·9
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var PLACEHOLDER = "What’s your one thing today?";
+
+    // ----- state (persisted, so returning visitors keep their pill) -----
+    var S = {
+      get goal() { return localStorage.getItem("dgGoal") || ""; },
+      set goal(v) { localStorage.setItem("dgGoal", v); },
+      get done() { return localStorage.getItem("dgDone") === "1"; },
+      set done(v) { localStorage.setItem("dgDone", v ? "1" : "0"); },
+      get day() { return localStorage.getItem("dgDay") || ""; },
+      set day(v) { localStorage.setItem("dgDay", v); },
+      get streak() { return +(localStorage.getItem("dgStreak") || 0); },
+      set streak(v) { localStorage.setItem("dgStreak", v); },
+      get lastDone() { return localStorage.getItem("dgLastDone") || ""; },
+      set lastDone(v) { localStorage.setItem("dgLastDone", v); }
+    };
+
+    // logical day flips at 4 a.m., same as the real app
+    function dayKey(offsetDays) {
+      var d = new Date(Date.now() - 4 * 3600e3 - (offsetDays || 0) * 86400e3);
+      return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" +
+             String(d.getDate()).padStart(2, "0");
+    }
+    function rollover() {
+      var today = dayKey(0);
+      if (S.day === today) return;
+      if (S.lastDone !== dayKey(1) && S.lastDone !== today) S.streak = 0;
+      S.day = today; S.goal = ""; S.done = false;
+    }
+
+    // ----- rendering -----
+    function dayFraction() {
+      var d = new Date(Date.now() - 4 * 3600e3);
+      var start = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      return Math.min(1, Math.max(0, (d - start) / 86400e3));
+    }
+    function renderRing() {
+      var empty = !S.goal;
+      ringOpen.style.display = S.done ? "none" : "";
+      ringDone.style.display = S.done ? "" : "none";
+      if (S.done) return;
+      track.classList.toggle("dashed", empty);
+      var f = dayFraction();
+      arc.setAttribute("stroke-dashoffset", (C * (1 - f)).toFixed(2));
+      var hoursLeft = (1 - f) * 24;
+      arc.setAttribute("stroke", hoursLeft < 1 ? "oklch(60% 0.21 25)"
+                              : hoursLeft < 3 ? "oklch(70% 0.16 65)" : "url(#grad)");
+    }
+    function render() {
+      var empty = !S.goal;
+      goalText.classList.toggle("placeholder", empty);
+      goalText.classList.toggle("done", S.done);
+      goalText.childNodes[0].nodeValue = empty ? PLACEHOLDER : S.goal;
+      goalText.title = empty ? "Click to set your goal" : "Click to edit";
+      ring.title = empty ? "Set a goal first" : (S.done ? "Done — click to undo" : "Mark as done");
+      ring.setAttribute("aria-label", ring.title);
+      if (S.streak >= 2) { streakEl.classList.add("on"); streakN.textContent = S.streak; }
+      else streakEl.classList.remove("on");
+      renderRing();
+    }
+
+    // ----- confetti -----
+    var palette = ["oklch(70% 0.19 150)", "oklch(80% 0.14 170)", "oklch(85% 0.16 95)",
+                   "oklch(75% 0.18 55)", "oklch(72% 0.19 0)", "oklch(65% 0.22 305)",
+                   "oklch(65% 0.19 260)"];
+    function confetti() {
+      if (reduceMotion) return;
+      var r = ring.getBoundingClientRect(),
+          cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      for (var i = 0; i < 16; i++) {
+        var el = document.createElement("i");
+        el.className = "confetto" + (Math.random() < 0.5 ? " round" : "");
+        var ang = Math.random() * Math.PI * 2, dist = 30 + Math.random() * 45;
+        el.style.left = cx + "px"; el.style.top = cy + "px";
+        el.style.setProperty("--tx", Math.cos(ang) * dist + "px");
+        el.style.setProperty("--ty", Math.sin(ang) * dist + 16 + "px");
+        el.style.setProperty("--r", (Math.random() * 520 - 260) + "deg");
+        el.style.setProperty("--c", palette[(Math.random() * palette.length) | 0]);
+        document.body.appendChild(el);
+        setTimeout(function (n) { n.remove(); }.bind(null, el), 950);
+      }
+    }
+
+    // ----- interactions -----
+    ring.addEventListener("click", function () {
+      if (!S.goal) { startEdit(); return; }
+      if (S.done) {
+        S.done = false;
+        S.streak = Math.max(0, S.streak - 1);
+        S.lastDone = S.streak > 0 ? dayKey(1) : "";
+      } else {
+        S.streak = (S.lastDone === dayKey(1)) ? S.streak + 1 : 1;
+        S.lastDone = dayKey(0);
+        S.done = true;
+        confetti();
+      }
+      render();
+    });
+
+    function startEdit() {
+      input.value = S.goal;
+      goalText.style.display = "none";
+      input.style.display = "";
+      input.focus();
+    }
+    function endEdit(commit) {
+      if (commit) {
+        S.goal = input.value.trim().slice(0, 100);
+        if (!S.goal) S.done = false;
+      }
+      input.style.display = "none";
+      goalText.style.display = "";
+      render();
+    }
+    goalText.addEventListener("click", startEdit);
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") endEdit(true);
+      else if (e.key === "Escape") endEdit(false);
+    });
+    input.addEventListener("blur", function () { if (input.style.display !== "none") endEdit(true); });
+
+    // ----- idle dim, like the real thing -----
+    var idleTimer;
+    function wake() {
+      pill.classList.remove("dimmed");
+      clearTimeout(idleTimer);
+      if (S.goal && input.style.display === "none") {
+        idleTimer = setTimeout(function () { pill.classList.add("dimmed"); }, 8000);
+      }
+    }
+    ["pointermove", "scroll", "keydown", "touchstart"].forEach(function (ev) {
+      window.addEventListener(ev, wake, { passive: true });
+    });
+
+    // ----- boot -----
+    rollover();
+    render();
+    wake();
+    setInterval(function () { rollover(); renderRing(); }, 30000);
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) { rollover(); render(); }
+    });
+
+    // scroll reveals
+    if ("IntersectionObserver" in window && !reduceMotion) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+    } else {
+      document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
+    }
+  })();
+  </script>
+</body>
+</html>
