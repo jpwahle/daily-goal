@@ -2,9 +2,11 @@
 set -euo pipefail
 
 # Create a styled DMG with app + Applications folder drag-to-install layout
-APP_NAME="${1:?Usage: create-dmg.sh APP_NAME APP_BUNDLE OUTPUT_DMG}"
+APP_NAME="${1:?Usage: create-dmg.sh APP_NAME APP_BUNDLE OUTPUT_DMG [BACKGROUND_DIR]}"
 APP_BUNDLE="${2:?}"
 OUTPUT_DMG="${3:?}"
+# Optional: directory containing bg.png + bg@2x.png for the window background
+BACKGROUND_DIR="${4:-}"
 
 VOLUME_NAME="$APP_NAME"
 DMG_TEMP="$(mktemp -u).dmg"
@@ -29,6 +31,15 @@ trap cleanup EXIT
 echo "Staging DMG contents..."
 cp -R "$APP_BUNDLE" "$STAGING_DIR/"
 ln -s /Applications "$STAGING_DIR/Applications"
+
+BG_LINE=""
+if [ -n "$BACKGROUND_DIR" ]; then
+    mkdir "$STAGING_DIR/.background"
+    # Combine 1x + 2x into one TIFF so the background is crisp on retina
+    tiffutil -cathidpicheck "$BACKGROUND_DIR/bg.png" "$BACKGROUND_DIR/bg@2x.png" \
+        -out "$STAGING_DIR/.background/bg.tiff"
+    BG_LINE='set background picture of theViewOptions to file ".background:bg.tiff"'
+fi
 
 # Calculate size needed (app size + 10MB padding)
 SIZE_KB=$(du -sk "$STAGING_DIR" | awk '{print $1}')
@@ -62,16 +73,19 @@ tell application "Finder"
         set toolbar visible of container window to false
         set statusbar visible of container window to false
 
-        -- Window size and position
-        set the bounds of container window to {100, 100, 640, 440}
+        -- Window size and position (600x400 content + title bar,
+        -- matching the background image canvas)
+        set the bounds of container window to {200, 120, 800, 548}
 
         set theViewOptions to icon view options of container window
         set arrangement of theViewOptions to not arranged
         set icon size of theViewOptions to 128
+        set text size of theViewOptions to 12
+        $BG_LINE
 
         -- Position the app icon on the left, Applications on the right
-        set position of item "$APP_NAME.app" of container window to {130, 150}
-        set position of item "Applications" of container window to {410, 150}
+        set position of item "$APP_NAME.app" of container window to {150, 200}
+        set position of item "Applications" of container window to {450, 200}
 
         close
         open

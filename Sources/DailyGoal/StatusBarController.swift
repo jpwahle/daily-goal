@@ -100,6 +100,26 @@ final class StatusBarController: NSObject, NSMenuDelegate {
 
         menu.addItem(.separator())
 
+        if let newer = UpdateChecker.shared.availableVersion {
+            let download = NSMenuItem(
+                title: "Download Daily Goal \(newer)…",
+                action: #selector(downloadUpdate), keyEquivalent: "")
+            download.target = self
+            menu.addItem(download)
+        }
+        let check = NSMenuItem(
+            title: "Check for Updates…",
+            action: #selector(checkForUpdates), keyEquivalent: "")
+        check.target = self
+        menu.addItem(check)
+        let daily = NSMenuItem(
+            title: "Check Daily", action: #selector(toggleDailyChecks), keyEquivalent: "")
+        daily.target = self
+        daily.state = UpdateChecker.shared.dailyChecksEnabled ? .on : .off
+        menu.addItem(daily)
+
+        menu.addItem(.separator())
+
         let quit = NSMenuItem(title: "Quit Daily Goal", action: #selector(quit), keyEquivalent: "q")
         quit.target = self
         menu.addItem(quit)
@@ -188,6 +208,18 @@ final class StatusBarController: NSObject, NSMenuDelegate {
             alert.informativeText = "Move Daily Goal.app to /Applications and try again.\n(\(error.localizedDescription))"
             alert.runModal()
         }
+    }
+
+    @objc private func checkForUpdates() {
+        UpdateChecker.shared.checkInteractively()
+    }
+
+    @objc private func downloadUpdate() {
+        UpdateChecker.shared.openDownloadPage()
+    }
+
+    @objc private func toggleDailyChecks() {
+        UpdateChecker.shared.dailyChecksEnabled.toggle()
     }
 
     @objc private func quit() {

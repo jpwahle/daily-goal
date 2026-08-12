@@ -5,6 +5,7 @@ DIST_DIR = dist
 APP_BUNDLE = $(DIST_DIR)/$(APP_NAME).app
 EXECUTABLE = $(APP_BUNDLE)/Contents/MacOS/$(EXEC_NAME)
 DMG = $(DIST_DIR)/$(EXEC_NAME).dmg
+DMG_BG_DIR = .build/dmg-bg
 # Set to your Developer ID for distribution, or leave empty for ad-hoc
 SIGNING_IDENTITY ?=
 # Set to your Apple ID for notarization
@@ -15,7 +16,12 @@ TEAM_ID ?=
 # which on some machines holds stray SDK header copies that break module builds.
 export SDKROOT := $(shell xcrun --show-sdk-path)
 
-.PHONY: release sign notarize dmg release-dmg run clean
+.PHONY: release sign notarize dmg release-dmg dmg-background run clean
+
+# Render the DMG window background (arrow + drag hint)
+dmg-background:
+	@rm -rf $(DMG_BG_DIR)
+	@swift Scripts/MakeDMGBackground.swift $(DMG_BG_DIR)
 
 # Release build (optimized, universal: arm64 + x86_64)
 release:
@@ -79,15 +85,15 @@ notarize: sign
 	@echo "✅ Notarized and stapled: $(APP_BUNDLE)"
 
 # Create DMG for distribution (styled with drag-to-Applications layout)
-dmg: sign
+dmg: sign dmg-background
 	@rm -f "$(DMG)"
-	./Scripts/create-dmg.sh "$(APP_NAME)" "$(APP_BUNDLE)" "$(DMG)"
+	./Scripts/create-dmg.sh "$(APP_NAME)" "$(APP_BUNDLE)" "$(DMG)" "$(DMG_BG_DIR)"
 	@echo "✅ DMG created: $(DMG)"
 
 # Full distribution build: sign → notarize → staple → DMG → sign DMG → notarize DMG
-release-dmg: notarize
+release-dmg: notarize dmg-background
 	@rm -f "$(DMG)"
-	./Scripts/create-dmg.sh "$(APP_NAME)" "$(APP_BUNDLE)" "$(DMG)"
+	./Scripts/create-dmg.sh "$(APP_NAME)" "$(APP_BUNDLE)" "$(DMG)" "$(DMG_BG_DIR)"
 	codesign --force --sign "$(SIGNING_IDENTITY)" "$(DMG)"
 	@if [ -n "$(KEYCHAIN_PROFILE)" ]; then \
 		xcrun notarytool submit "$(DMG)" \

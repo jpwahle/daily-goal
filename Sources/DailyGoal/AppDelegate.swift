@@ -39,6 +39,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
         statusBar = StatusBarController(store: store, app: self)
         reminders = ReminderCenter(store: store, app: self)
+        UpdateChecker.shared.start()
 
         // Touching the goal restarts the reminder countdown, so a nudge never
         // fires right after the user just dealt with the pill.
