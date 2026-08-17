@@ -64,16 +64,13 @@ final class PanelBridge {
         panel?.makeKeyAndOrderFront(nil)
     }
 
-    /// Resize the window to fit the pill, keeping it visually anchored
-    /// (same center-x, same top edge).
+    /// Resize the window to fit the pill. Only the size is set here — the
+    /// delegate's windowDidResize puts the frame back on the pill's anchor.
     func contentSizeChanged(_ size: CGSize) {
         guard let panel, size.width > 1, size.height > 1 else { return }
         var frame = panel.frame
         guard abs(frame.width - size.width) > 0.5 || abs(frame.height - size.height) > 0.5 else { return }
-        let midX = frame.midX
-        let topY = frame.maxY
         frame.size = size
-        frame.origin = NSPoint(x: midX - size.width / 2, y: topY - size.height)
         panel.setFrame(frame, display: true)
     }
 }

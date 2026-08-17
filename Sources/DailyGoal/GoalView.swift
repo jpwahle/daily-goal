@@ -20,9 +20,12 @@ struct GoalView: View {
         pill
             .padding(Layout.margin)
             .background(GeometryReader { geo in
-                Color.clear.preference(key: PillSizeKey.self, value: geo.size)
+                // Preferences don't reliably propagate out of NSHostingView,
+                // so report size changes through plain onChange instead.
+                Color.clear
+                    .onAppear { bridge.contentSizeChanged(geo.size) }
+                    .onChange(of: geo.size) { bridge.contentSizeChanged($0) }
             })
-            .onPreferenceChange(PillSizeKey.self) { bridge.contentSizeChanged($0) }
             .onHover { over in
                 hovering = over
                 idle.poke()
@@ -93,6 +96,7 @@ struct GoalView: View {
         if store.isEditing {
             TextField("One thing for today…", text: $draft)
                 .textFieldStyle(.plain)
+                .multilineTextAlignment(.center)
                 .font(.system(size: 14.5, weight: .semibold, design: .rounded))
                 .foregroundStyle(.primary)
                 .frame(width: 250)
@@ -183,13 +187,6 @@ struct GoalView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
             withAnimation(.easeInOut(duration: 0.9)) { nudgeGlow = false }
         }
-    }
-}
-
-struct PillSizeKey: PreferenceKey {
-    static let defaultValue: CGSize = .zero
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
-        value = nextValue()
     }
 }
 
