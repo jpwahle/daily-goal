@@ -101,11 +101,11 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         menu.addItem(.separator())
 
         if let newer = UpdateChecker.shared.availableVersion {
-            let download = NSMenuItem(
-                title: "Download Daily Goal \(newer)…",
-                action: #selector(downloadUpdate), keyEquivalent: "")
-            download.target = self
-            menu.addItem(download)
+            let install = NSMenuItem(
+                title: "Install Daily Goal \(newer)…",
+                action: #selector(installUpdate), keyEquivalent: "")
+            install.target = self
+            menu.addItem(install)
         }
         let check = NSMenuItem(
             title: "Check for Updates…",
@@ -214,8 +214,8 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         UpdateChecker.shared.checkInteractively()
     }
 
-    @objc private func downloadUpdate() {
-        UpdateChecker.shared.openDownloadPage()
+    @objc private func installUpdate() {
+        UpdateChecker.shared.installAvailableUpdate()
     }
 
     @objc private func toggleDailyChecks() {

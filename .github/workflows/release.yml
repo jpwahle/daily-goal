@@ -129,6 +129,13 @@ jobs:
           lipo "dist/Daily Goal.app/Contents/MacOS/DailyGoal" -verify_arch arm64 x86_64
           echo "Architectures: $(lipo -archs "dist/Daily Goal.app/Contents/MacOS/DailyGoal")"
 
+      - name: Generate SHA-256 checksum
+        if: steps.version.outputs.skip != 'true'
+        run: |
+          cd dist
+          shasum -a 256 DailyGoal.dmg > DailyGoal.dmg.sha256
+          cat DailyGoal.dmg.sha256
+
       - name: Clean up keychain
         if: always() && steps.version.outputs.skip != 'true'
         run: |
@@ -140,6 +147,8 @@ jobs:
         with:
           tag_name: ${{ steps.version.outputs.tag }}
           name: Daily Goal ${{ steps.version.outputs.tag }}
-          files: dist/DailyGoal.dmg
+          files: |
+            dist/DailyGoal.dmg
+            dist/DailyGoal.dmg.sha256
           make_latest: true
           generate_release_notes: true
