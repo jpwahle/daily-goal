@@ -4,6 +4,7 @@ import SwiftUI
 
 final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     let store = GoalStore()
+    private(set) var interaction: PillInteractionController!
     private var panel: FloatingPanel!
     private var bridge: PanelBridge!
     private var statusBar: StatusBarController!
@@ -21,6 +22,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         panel = FloatingPanel()
         bridge = PanelBridge(panel: panel)
+        interaction = PillInteractionController(panel: panel, store: store)
 
         panel.onReturnKey = { [weak self] in
             guard let self, !self.store.isEditing else { return }
@@ -31,7 +33,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             self.store.toggleCompleted()
         }
 
-        let host = NSHostingView(rootView: GoalView(store: store, bridge: bridge))
+        let host = NSHostingView(rootView: GoalView(store: store, bridge: bridge, interaction: interaction))
         panel.contentView = host
         panel.delegate = self
 
@@ -84,6 +86,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     func beginEditing() {
         showPanel()
         store.isEditing = true
+        interaction.refresh() // accept mouse events now, not a poll-tick later
     }
 
     func showPanel() {

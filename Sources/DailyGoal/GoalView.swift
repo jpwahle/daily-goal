@@ -6,6 +6,7 @@ import Foundation
 struct GoalView: View {
     @ObservedObject var store: GoalStore
     let bridge: PanelBridge
+    @ObservedObject var interaction: PillInteractionController
 
     @State private var draft = ""
     @FocusState private var fieldFocused: Bool
@@ -19,6 +20,14 @@ struct GoalView: View {
     var body: some View {
         pill
             .padding(Layout.margin)
+            .overlay(alignment: .bottom) {
+                if interaction.showHint {
+                    HintChip()
+                        .padding(.bottom, 6)
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                }
+            }
+            .animation(.easeOut(duration: 0.25), value: interaction.showHint)
             .background(GeometryReader { geo in
                 // Preferences don't reliably propagate out of NSHostingView,
                 // so report size changes through plain onChange instead.
@@ -50,6 +59,10 @@ struct GoalView: View {
             }
             .onChange(of: store.goal) { _ in idle.poke(); updateOpacity() }
             .onChange(of: store.isCompleted) { _ in idle.poke(); updateOpacity() }
+            .onChange(of: interaction.mode) { mode in
+                if mode == .live { idle.poke() }
+                updateOpacity()
+            }
             .onChange(of: store.celebrationTick) { _ in flashGlow() }
             .onChange(of: store.nudgeTick) { _ in nudge() }
     }
@@ -124,7 +137,7 @@ struct GoalView: View {
     }
 
     private var strokeTint: AnyShapeStyle {
-        store.isEditing
+        store.isEditing || interaction.mode == .live
             ? AnyShapeStyle(Color.accentColor.opacity(0.5))
             : AnyShapeStyle(Color.primary.opacity(0.10))
     }
@@ -132,7 +145,13 @@ struct GoalView: View {
     // MARK: - Idle dimming (quick to brighten, slow to fade)
 
     private var targetOpacity: Double {
-        if store.isEditing || hovering || store.goal.isEmpty { return 1 }
+        if store.isEditing || store.goal.isEmpty { return 1 }
+        switch interaction.mode {
+        case .ghost: return 0.14 // step aside: reveal whatever is behind
+        case .live: return 1
+        case .passive: break
+        }
+        if hovering { return 1 }
         guard idle.dimmed else { return 1 }
         return store.isCompleted ? 0.30 : 0.55
     }
@@ -140,11 +159,16 @@ struct GoalView: View {
     private func updateOpacity() {
         let target = targetOpacity
         guard abs(target - shownOpacity) > 0.001 else { return }
-        withAnimation(target > shownOpacity
-                      ? .easeOut(duration: 0.18)
-                      : .easeInOut(duration: 1.2)) {
-            shownOpacity = target
+        // Ghosting has to clear the way immediately; idle dimming stays lazy.
+        let animation: Animation
+        if interaction.mode == .ghost && target < shownOpacity {
+            animation = .easeOut(duration: 0.15)
+        } else {
+            animation = target > shownOpacity
+                ? .easeOut(duration: 0.18)
+                : .easeInOut(duration: 1.2)
         }
+        withAnimation(animation) { shownOpacity = target }
     }
 
     // MARK: - Editing
@@ -187,6 +211,32 @@ struct GoalView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
             withAnimation(.easeInOut(duration: 0.9)) { nudgeGlow = false }
         }
+    }
+}
+
+// MARK: - "hold ⌥" teaching hint
+
+/// Shown under a ghosted pill when the pointer lingers on it — the moment a
+/// user is most likely wondering why the pill won't take their click.
+private struct HintChip: View {
+    var body: some View {
+        HStack(spacing: 4) {
+            Text("hold")
+            Text("⌥")
+                .font(.system(size: 10.5, weight: .bold, design: .rounded))
+                .padding(.horizontal, 4)
+                .padding(.vertical, 1)
+                .background(RoundedRectangle(cornerRadius: 4).fill(Color.primary.opacity(0.12)))
+            Text("to interact")
+        }
+        .font(.system(size: 10.5, weight: .medium, design: .rounded))
+        .foregroundStyle(.secondary)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 3.5)
+        .background(Capsule().fill(.ultraThinMaterial))
+        .overlay(Capsule().strokeBorder(Color.primary.opacity(0.08), lineWidth: 1))
+        .shadow(color: .black.opacity(0.12), radius: 6, y: 2)
+        .allowsHitTesting(false)
     }
 }
 

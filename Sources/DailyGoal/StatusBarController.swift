@@ -93,6 +93,13 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         reset.target = self
         menu.addItem(reset)
 
+        let passThrough = NSMenuItem(
+            title: "Click Through (Hold ⌥ to Interact)",
+            action: #selector(toggleClickThrough), keyEquivalent: "")
+        passThrough.target = self
+        passThrough.state = app.interaction.clickThroughEnabled ? .on : .off
+        menu.addItem(passThrough)
+
         let login = NSMenuItem(title: "Launch at Login", action: #selector(toggleLogin), keyEquivalent: "")
         login.target = self
         login.state = SMAppService.mainApp.status == .enabled ? .on : .off
@@ -192,6 +199,10 @@ final class StatusBarController: NSObject, NSMenuDelegate {
     @objc private func resetPosition() {
         app.showPanel()
         app.resetPosition()
+    }
+
+    @objc private func toggleClickThrough() {
+        app.interaction.clickThroughEnabled.toggle()
     }
 
     @objc private func toggleLogin() {

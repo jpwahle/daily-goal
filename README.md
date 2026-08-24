@@ -35,7 +35,8 @@
 
 Todo apps hold twenty things; your attention holds one. Daily Goal keeps that
 one thing floating above every window, every Space, even full-screen apps —
-quiet peripheral pressure until it's done.
+quiet peripheral pressure until it's done. And it never gets in the way: the
+pill is click-through, so your mouse acts on whatever is behind it.
 
 ## Install
 
@@ -55,13 +56,14 @@ cd daily-goal
 
 | Function | Interaction |
 |---|---|
-| Set your goal | Click the pill, type, press **Return** (Esc cancels, clicking away commits) |
-| Mark it done | Click the ring — spring checkmark, strikethrough, confetti, soft pop |
+| Set your goal | An empty pill is plain-clickable: click, type, press **Return** (Esc cancels, clicking away commits). Once a goal is set, hold **⌥** and click the text — or use the menu bar |
+| Mark it done | Hold **⌥**, click the ring — spring checkmark, strikethrough, confetti, soft pop |
 | Feel the day pass | The ring fills as the day elapses; turns **orange** under 3 h left, **red** under 1 h |
-| Stay unobtrusive | The pill fades after ~8 s idle, brightens instantly on hover |
+| Click through it | The pill never takes your mouse: clicks land on the window behind it, and hovering fades it to a ghost so you can see what's under it. Hold **⌥** while over it to grab it (a hint under the pill teaches this, then retires). **Click Through** in the menu bar turns it off |
+| Stay unobtrusive | The pill fades after ~8 s idle and steps aside on hover |
 | Get reminded | **Remind Me** in the menu bar: every 30 min up to every 3 h (default: hourly), or Off. At the Mac, the pill hops and glows violet; away, one macOS notification waits in Notification Center |
 | Keep a streak | 🔥 chip appears from 2 consecutive completed days; undo-safe |
-| Move it | Drag the pill by its edge; position is remembered across launches |
+| Move it | Hold **⌥** and drag; magnetic snap points at screen thirds, position remembered across launches |
 | Menu bar | Icon shows state at a glance (dashed = unset, target = pending, ✓ = done); menu has edit, mark done, last-7-days dots, reminder frequency, hide/show, launch at login, check for updates, quit |
 | Stay current | **Check for Updates…** asks GitHub for the latest release; a quiet daily check (on by default, one API call, toggle off with **Check Daily**) surfaces an **Install…** item in the menu when a newer version exists. One click downloads the release from GitHub, verifies its SHA-256 checksum and Developer ID signature, swaps the app in place, and relaunches |
 
@@ -73,8 +75,10 @@ While the pill has keyboard focus: **Return** edits, **Space** toggles done,
 - **Days flip at 4 a.m.**, not midnight — finishing at 1 a.m. still counts for
   the evening it belongs to. On rollover the goal archives and the pill
   invites you to set the next one (it reappears even if hidden).
-- **Never steals focus.** The panel is non-activating: clicking or typing in
-  it doesn't deactivate the app you're working in.
+- **Never steals focus — or clicks.** The panel is non-activating, and by
+  default it ignores the mouse entirely: every click goes to the window
+  behind it. The pill only catches the mouse while you hold **⌥** over it,
+  while it's empty and waiting for a goal, or while you're editing.
 - **The streak only survives honest completion.** Miss a day and it's gone;
   un-checking restores the exact pre-completion state.
 - **Reminders nag politely.** They skip while you're editing, stop the moment
@@ -100,6 +104,7 @@ Sources/DailyGoal/
   main.swift              app bootstrap (accessory activation policy)
   AppDelegate.swift       panel placement, day-rollover timer, frame persistence
   FloatingPanel.swift     non-activating always-on-top NSPanel + view bridge
+  PillInteraction.swift   click-through mode machine: passive / ghost / ⌥-live
   GoalStore.swift         state machine: logical days, streaks, history
   GoalView.swift          the pill: check ring, confetti, idle dimming, nudge bounce
   StatusBarController.swift  menu bar icon + menu

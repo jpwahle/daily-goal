@@ -49,6 +49,7 @@
     "softwareVersion": "1.1.0",
     "featureList": [
       "Floating pill above every window, Space, and full-screen app",
+      "Click-through: the mouse acts on the window behind the pill; hold Option to interact with it",
       "Day-progress ring with a 4 a.m. day boundary",
       "Completion streaks and confetti",
       "Reminders on your schedule: the pill bounces while you're at the Mac, a notification waits when you're away"
@@ -475,7 +476,7 @@
         that&rsquo;s the whole app, floating over this page — try the ring
       </div>
       <h1 class="rise d2">One goal.<br>Always <span class="insight">in&nbsp;sight.</span></h1>
-      <p class="sub rise d3">A 1&nbsp;MB native pill that floats above every window, every Space, even full-screen apps. Set one thing each morning. It stays — and nudges, if you ask — until it&rsquo;s done.</p>
+      <p class="sub rise d3">A 1&nbsp;MB native pill that floats above every window, every Space, even full-screen apps — without ever being in the way: clicks pass straight through it. Set one thing each morning. It stays — and nudges, if you ask — until it&rsquo;s done.</p>
       <div class="cta rise d4">
         <div>
           <a class="btn" href="https://github.com/jpwahle/daily-goal/releases/latest/download/DailyGoal.dmg">Download for&nbsp;macOS</a>
@@ -550,9 +551,10 @@
     <section class="details wrap reveal">
       <h2>The quiet details</h2>
       <ul>
-        <li><strong>Never steals focus</strong> — type into it without leaving the app you&rsquo;re in</li>
-        <li><strong>Fades when idle</strong> — dims to a whisper after 8&nbsp;s, wakes on hover</li>
-        <li><strong>Drag it anywhere</strong> — the position is remembered</li>
+        <li><strong>Never steals focus — or clicks</strong> — your mouse works on whatever is behind the pill; hovering ghosts it out of the way</li>
+        <li><strong>Hold ⌥ to grab it</strong> — check off, edit, or drag; a small hint teaches this, then retires</li>
+        <li><strong>Fades when idle</strong> — dims to a whisper after 8&nbsp;s</li>
+        <li><strong>Drag it anywhere</strong> — ⌥-drag, with magnetic snap points; the position is remembered</li>
         <li><strong>Menu-bar glance</strong> — dashed circle → target → checkmark</li>
         <li><strong>Reminders stay polite</strong> — they replace, never stack, and respect Focus modes</li>
         <li><strong>Launch at login</strong> — one toggle, no daemon</li>
@@ -565,6 +567,10 @@
       <details class="reveal">
         <summary>Is the download safe to open?</summary>
         <p>Yes — releases are signed with an Apple Developer&nbsp;ID certificate and notarized by Apple, so macOS opens Daily Goal without any warnings. Prefer to see for yourself? It&rsquo;s open source — build it in about ten seconds.</p>
+      </details>
+      <details class="reveal">
+        <summary>Doesn&rsquo;t a floating pill get in the way?</summary>
+        <p>No — the pill is click-through. Your clicks land on whatever is behind it, and pointing at it fades it out of the way so you can see what&rsquo;s underneath. When you actually want the pill — to check off, edit, or move it — hold <span style="font-weight:600">⌥</span> while over it. An empty pill, like each new morning, is simply clickable: no modifier needed to set your goal. Prefer the classic always-clickable pill? Toggle <span style="font-weight:600">Click Through</span> off in the menu bar.</p>
       </details>
       <details class="reveal">
         <summary>How do the reminders behave?</summary>
