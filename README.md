@@ -65,7 +65,7 @@ cd daily-goal
 | Keep a streak | 🔥 chip appears from 2 consecutive completed days; undo-safe |
 | Move it | Hold **⌥** and drag; magnetic snap points at screen thirds, position remembered across launches |
 | Menu bar | Icon shows state at a glance (dashed = unset, target = pending, ✓ = done); menu has edit, mark done, last-7-days dots, reminder frequency, hide/show, launch at login, check for updates, quit |
-| Stay current | **Check for Updates…** asks GitHub for the latest release; a quiet daily check (on by default, one API call, toggle off with **Check Daily**) surfaces an **Install…** item in the menu when a newer version exists. One click downloads the release from GitHub, verifies its SHA-256 checksum and Developer ID signature, swaps the app in place, and relaunches |
+| Stay current | **Check for Updates…** asks GitHub for the latest release; a quiet automatic check (on by default; every 8 h and right after wake, one API call each, toggle off with **Check Automatically**) surfaces an **Install…** item in the menu when a newer version exists. One click downloads the release from GitHub, verifies its SHA-256 checksum and Developer ID signature, swaps the app in place, and relaunches |
 
 While the pill has keyboard focus: **Return** edits, **Space** toggles done,
 **⌘Q** quits.
@@ -90,8 +90,8 @@ While the pill has keyboard focus: **Return** edits, **Space** toggles done,
   notifications, generated on your Mac. The app only ever talks to GitHub:
   one API call asks for the latest version number
   ([UpdateChecker.swift](Sources/DailyGoal/UpdateChecker.swift)) — at most
-  once a day, nothing sent beyond the request, and **Check Daily** in the menu
-  turns it off. Updates never install behind your back: only when you click
+  three times a day, nothing sent beyond the request, and **Check
+  Automatically** in the menu turns it off. Updates never install behind your back: only when you click
   **Install**, the release downloads from GitHub and must pass two independent
   checks before it replaces the app — the SHA-256 checksum published with the
   release, and a valid Developer ID signature for this app's team and bundle ID

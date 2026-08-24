@@ -119,11 +119,11 @@ final class StatusBarController: NSObject, NSMenuDelegate {
             action: #selector(checkForUpdates), keyEquivalent: "")
         check.target = self
         menu.addItem(check)
-        let daily = NSMenuItem(
-            title: "Check Daily", action: #selector(toggleDailyChecks), keyEquivalent: "")
-        daily.target = self
-        daily.state = UpdateChecker.shared.dailyChecksEnabled ? .on : .off
-        menu.addItem(daily)
+        let auto = NSMenuItem(
+            title: "Check Automatically", action: #selector(toggleAutoChecks), keyEquivalent: "")
+        auto.target = self
+        auto.state = UpdateChecker.shared.autoChecksEnabled ? .on : .off
+        menu.addItem(auto)
 
         menu.addItem(.separator())
 
@@ -229,8 +229,8 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         UpdateChecker.shared.installAvailableUpdate()
     }
 
-    @objc private func toggleDailyChecks() {
-        UpdateChecker.shared.dailyChecksEnabled.toggle()
+    @objc private func toggleAutoChecks() {
+        UpdateChecker.shared.autoChecksEnabled.toggle()
     }
 
     @objc private func quit() {

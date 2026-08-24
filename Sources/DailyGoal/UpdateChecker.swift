@@ -1,11 +1,13 @@
 import AppKit
 
 /// Checks GitHub for a newer release. Runs when asked from the menu, or
-/// (unless turned off there) quietly at most once a day. The only network
-/// traffic is to GitHub: one GET to the releases API, and — only when the
-/// user chooses to install — the release download itself. Nothing about the
-/// user is ever sent, and nothing installs without an explicit click; the
-/// actual download/verify/swap lives in UpdateInstaller.
+/// (unless turned off there) quietly on its own: at most every 8 hours —
+/// three times a day — and right after the Mac wakes, so sleeping through a
+/// due time doesn't delay the catch. The only network traffic is to GitHub:
+/// one GET to the releases API, and — only when the user chooses to install —
+/// the release download itself. Nothing about the user is ever sent, and
+/// nothing installs without an explicit click; the actual
+/// download/verify/swap lives in UpdateInstaller.
 final class UpdateChecker {
     static let shared = UpdateChecker()
 
@@ -20,8 +22,12 @@ final class UpdateChecker {
 
     private static let api = URL(string: "https://api.github.com/repos/jpwahle/daily-goal/releases/latest")!
     private static let downloadPage = URL(string: "https://github.com/jpwahle/daily-goal/releases/latest")!
-    private static let dailyKey = "updateCheckDaily"
+    // Defaults key name predates the 8-hour cadence; kept so the setting
+    // survives updates.
+    private static let autoKey = "updateCheckDaily"
     private static let lastCheckKey = "updateCheckLast"
+    /// Quiet checks fire at most this often — three per day.
+    private static let checkEvery: TimeInterval = 8 * 3600
 
     /// Set by the last check when a newer release exists, nil when current.
     private(set) var available: AvailableUpdate?
@@ -35,20 +41,31 @@ final class UpdateChecker {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
     }
 
-    var dailyChecksEnabled: Bool {
-        get { UserDefaults.standard.object(forKey: Self.dailyKey) as? Bool ?? true }
+    var autoChecksEnabled: Bool {
+        get { UserDefaults.standard.object(forKey: Self.autoKey) as? Bool ?? true }
         set {
-            UserDefaults.standard.set(newValue, forKey: Self.dailyKey)
+            UserDefaults.standard.set(newValue, forKey: Self.autoKey)
             if newValue { checkIfDue() }
         }
     }
 
-    /// Call once at launch. Re-arms hourly so a Mac that never sleeps past
-    /// midnight still checks roughly daily.
+    /// Call once at launch. The hourly timer only compares timestamps; the
+    /// network request happens when a check is actually due.
     func start() {
         checkIfDue()
         timer = Timer.scheduledTimer(withTimeInterval: 3600, repeats: true) { [weak self] _ in
             self?.checkIfDue()
+        }
+        timer?.tolerance = 300
+        // Timers don't fire while the Mac sleeps, so a due check could
+        // otherwise wait up to an hour after wake. Check on wake instead —
+        // after a grace period, since Wi-Fi is often still reassociating.
+        NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.didWakeNotification, object: nil, queue: .main
+        ) { _ in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
+                UpdateChecker.shared.checkIfDue()
+            }
         }
     }
 
@@ -95,9 +112,9 @@ final class UpdateChecker {
     }
 
     private func checkIfDue() {
-        guard dailyChecksEnabled else { return }
+        guard autoChecksEnabled else { return }
         let last = UserDefaults.standard.double(forKey: Self.lastCheckKey)
-        guard Date().timeIntervalSince1970 - last >= 86_400 else { return }
+        guard Date().timeIntervalSince1970 - last >= Self.checkEvery else { return }
         check { _ in }
     }
 
