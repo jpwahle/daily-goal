@@ -4,12 +4,12 @@ import UserNotifications
 /// Periodic "your goal is still open" nudges, on the interval the user picked.
 ///
 /// Two delivery paths, chosen at fire time:
-///  - user is at the Mac (recent keyboard/mouse input) → the pill bounces,
-///    glows, and un-dims; no notification clutter.
+///  - user is at the Mac (recent keyboard/mouse input) → the notch island
+///    opens and glows; no notification clutter.
 ///  - user has been away for a few minutes → a local notification, so the
 ///    reminder is waiting in Notification Center when they come back.
 ///
-/// Nothing fires once today's goal is completed, or while the pill is being
+/// Nothing fires once today's goal is completed, or while the goal is being
 /// edited. Reminders about an *empty* day invite setting a goal instead.
 final class ReminderCenter: NSObject, UNUserNotificationCenterDelegate {
     static let choices: [(title: String, seconds: TimeInterval)] = [
@@ -68,9 +68,9 @@ final class ReminderCenter: NSObject, UNUserNotificationCenterDelegate {
         guard store.reminderInterval > 0, !store.isCompleted, !store.isEditing else { return }
         let idle = secondsSinceLastInput()
         if idle < awayAfter {
-            NSLog("reminder: nudging pill (idle %.0fs)", idle)
+            NSLog("reminder: nudging island (idle %.0fs)", idle)
             clearDelivered() // user is back — retire the away-notification
-            app.nudgePill()
+            app.nudgeGoal()
         } else {
             NSLog("reminder: user away (idle %.0fs) — delivering notification", idle)
             deliverNotification()
@@ -102,7 +102,7 @@ final class ReminderCenter: NSObject, UNUserNotificationCenterDelegate {
         let content = UNMutableNotificationContent()
         if store.goal.isEmpty {
             content.title = "What's your one thing today?"
-            content.body = "Ten seconds to pick it — the pill is waiting."
+            content.body = "Ten seconds to pick it — the notch is waiting."
         } else {
             content.title = store.goal
             let hoursLeft = Int(store.secondsLeft() / 3600)
@@ -132,14 +132,14 @@ final class ReminderCenter: NSObject, UNUserNotificationCenterDelegate {
 
     // MARK: - UNUserNotificationCenterDelegate
 
-    /// Clicking the notification surfaces the pill (and starts editing when
+    /// Clicking the notification opens the island (and starts editing when
     /// there is no goal yet).
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.store.goal.isEmpty ? self.app.beginEditing() : self.app.showPanel()
+            self.store.goal.isEmpty ? self.app.beginEditing() : self.app.nudgeGoal()
         }
         completionHandler()
     }

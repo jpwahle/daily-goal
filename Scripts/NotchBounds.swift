@@ -1,4 +1,4 @@
-// Prints "x y w h" of the on-screen Daily Goal pill window (top-left origin,
+// Prints "x y w h" of the on-screen Daily Goal notch window (top-left origin,
 // points — the same space `screencapture -R` uses). Exits 1 when not found.
 import CoreGraphics
 import Foundation
@@ -10,7 +10,7 @@ for info in list {
           let bounds = info[kCGWindowBounds as String] as? [String: CGFloat],
           let x = bounds["X"], let y = bounds["Y"],
           let w = bounds["Width"], let h = bounds["Height"],
-          w > 200 // the status-bar item is a small window; the pill is wide
+          w > 500 // the status-bar item is a small window; the island window is 640 wide
     else { continue }
     print("\(Int(x)) \(Int(y)) \(Int(w)) \(Int(h))")
     exit(0)

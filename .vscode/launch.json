@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:dailygoal}",
+            "name": "Debug DailyGoal",
+            "target": "DailyGoal",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug DailyGoal"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:dailygoal}",
+            "name": "Release DailyGoal",
+            "target": "DailyGoal",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release DailyGoal"
+        }
+    ]
+}

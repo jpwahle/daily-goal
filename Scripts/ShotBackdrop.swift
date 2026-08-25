@@ -1,5 +1,6 @@
 // Fullscreen gradient backdrop for marketing screenshots, matching the
-// landing-page palette. The pill panel (window level 25) floats above it.
+// landing-page palette. It covers everything including the menu bar and its
+// status items; only the notch island (window level 27) floats above it.
 //
 //   swift Scripts/ShotBackdrop.swift light|dark
 //
@@ -49,7 +50,7 @@ app.setActivationPolicy(.accessory)
 guard let screen = NSScreen.main else { exit(1) }
 let window = NSWindow(contentRect: screen.frame, styleMask: [.borderless],
                       backing: .buffered, defer: false)
-window.level = NSWindow.Level(rawValue: 23) // above app windows, below the pill panel
+window.level = NSWindow.Level(rawValue: 26) // over the menu bar, below the island (27)
 window.ignoresMouseEvents = true
 window.collectionBehavior = [.canJoinAllSpaces, .stationary]
 window.contentView = BackdropView(frame: screen.frame, dark: mode == "dark")

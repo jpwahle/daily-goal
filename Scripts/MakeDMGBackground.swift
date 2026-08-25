@@ -11,7 +11,7 @@ import AppKit
 let W: CGFloat = 600
 let H: CGFloat = 400
 
-// App accent gradient (same as CheckRing in GoalView.swift)
+// App accent gradient (same as CheckRing in NotchIslandView.swift)
 let indigo = NSColor(red: 0.33, green: 0.45, blue: 1.00, alpha: 1)
 let violet = NSColor(red: 0.66, green: 0.35, blue: 0.99, alpha: 1)
 

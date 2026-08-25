@@ -1,0 +1,28 @@
+# XcodeGen spec — regenerate the Xcode project with: xcodegen generate
+# The .xcodeproj is gitignored; this file is the source of truth.
+# Release/distribution builds still go through the Makefile (make release-dmg).
+name: DailyGoal
+options:
+  createIntermediateGroups: true
+  deploymentTarget:
+    macOS: "13.0"
+targets:
+  DailyGoal:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/DailyGoal
+      - path: Resources/AppIcon.icns
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_NAME: DailyGoal
+        PRODUCT_BUNDLE_IDENTIFIER: org.gipplab.dailygoal
+        INFOPLIST_FILE: Resources/Info.plist
+        GENERATE_INFOPLIST_FILE: false
+        SWIFT_VERSION: "5.0"
+        # Ad-hoc signing, same as build.sh — enough to run locally
+        # (incl. UserNotifications, which needs a signed .app bundle).
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "-"
+        ENABLE_HARDENED_RUNTIME: false

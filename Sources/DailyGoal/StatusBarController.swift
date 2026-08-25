@@ -84,21 +84,10 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         menu.addItem(remindItem())
 
         let visibility = NSMenuItem(
-            title: app.panelVisible ? "Hide From Screen" : "Show On Screen",
+            title: app.islandVisible ? "Hide From Notch" : "Show In Notch",
             action: #selector(toggleVisible), keyEquivalent: "")
         visibility.target = self
         menu.addItem(visibility)
-
-        let reset = NSMenuItem(title: "Reset Position", action: #selector(resetPosition), keyEquivalent: "")
-        reset.target = self
-        menu.addItem(reset)
-
-        let passThrough = NSMenuItem(
-            title: "Click Through (Hold ⌥ to Interact)",
-            action: #selector(toggleClickThrough), keyEquivalent: "")
-        passThrough.target = self
-        passThrough.state = app.interaction.clickThroughEnabled ? .on : .off
-        menu.addItem(passThrough)
 
         let login = NSMenuItem(title: "Launch at Login", action: #selector(toggleLogin), keyEquivalent: "")
         login.target = self
@@ -193,16 +182,7 @@ final class StatusBarController: NSObject, NSMenuDelegate {
     }
 
     @objc private func toggleVisible() {
-        app.panelVisible ? app.hidePanel() : app.showPanel()
-    }
-
-    @objc private func resetPosition() {
-        app.showPanel()
-        app.resetPosition()
-    }
-
-    @objc private func toggleClickThrough() {
-        app.interaction.clickThroughEnabled.toggle()
+        app.islandVisible ? app.hideIsland() : app.showIsland()
     }
 
     @objc private func toggleLogin() {
