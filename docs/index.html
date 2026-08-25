@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily Goal — one goal, always in sight. A floating focus pill for macOS</title>
-  <meta name="description" content="Daily Goal is a free, open-source macOS app: a tiny frosted pill that floats above every window with your one goal for today. A ring fills as the day passes, finishing earns confetti and a streak, and gentle reminders nudge you on your own schedule. No accounts, 1 MB.">
-  <meta name="keywords" content="Daily Goal, macOS goal app, floating goal pill, always on top todo, one thing a day, daily focus macOS, minimal todo mac, menu bar goal tracker, streak app mac, goal reminder mac, open source macOS productivity">
+  <title>Daily Goal — one goal, always in sight. Your daily focus, living in the Mac notch</title>
+  <meta name="description" content="Daily Goal is a free, open-source macOS app that puts your one goal for today in the notch — the only part of the screen no window ever covers. Hover the notch and it opens: progress ring, streak, week dots. Finishing earns confetti; gentle reminders nudge on your schedule. No accounts, 1 MB.">
+  <meta name="keywords" content="Daily Goal, macOS notch app, dynamic island mac, notch goal app, one thing a day, daily focus macOS, minimal todo mac, menu bar goal tracker, streak app mac, goal reminder mac, open source macOS productivity">
   <meta name="author" content="Jan Philip Wahle">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#FBFAFD" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141317" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0d0c11">
   <meta name="application-name" content="Daily Goal">
 
   <link rel="canonical" href="https://jpwahle.github.io/daily-goal/">
@@ -23,16 +22,16 @@
   <meta property="og:locale" content="en_US">
   <meta property="og:url" content="https://jpwahle.github.io/daily-goal/">
   <meta property="og:title" content="Daily Goal — one goal, always in sight">
-  <meta property="og:description" content="A tiny frosted pill that floats above every window on your Mac with your one goal for today. Gentle reminders, streaks, confetti. Free & open source.">
+  <meta property="og:description" content="Your one goal for today, living in the Mac notch. Hover it and it opens: progress ring, streak, week dots. Gentle reminders, confetti. Free & open source.">
   <meta property="og:image" content="https://jpwahle.github.io/daily-goal/og.png">
-  <meta property="og:image:alt" content="The Daily Goal pill floating on a dark desktop, showing a goal, its day-progress ring, and a 7-day streak">
+  <meta property="og:image:alt" content="The Daily Goal island open under the Mac notch, showing a goal, its day-progress ring, and a 7-day streak">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Daily Goal — one goal, always in sight">
-  <meta name="twitter:description" content="A floating focus pill for macOS. The day is the deadline: a ring fills as time passes, finishing earns confetti, and it nudges as often as you ask. Open source, 1 MB.">
+  <meta name="twitter:description" content="Your daily focus, living in the Mac notch. The day is the deadline: a ring fills as time passes, finishing earns confetti, and it nudges as often as you ask. Open source, 1 MB.">
   <meta name="twitter:image" content="https://jpwahle.github.io/daily-goal/og.png">
 
   <!-- JSON-LD -->
@@ -43,188 +42,242 @@
     "name": "Daily Goal",
     "applicationCategory": "ProductivityApplication",
     "operatingSystem": "macOS 13 (Ventura) or later",
-    "description": "A native macOS app that keeps your one goal for today floating above every window. Day-progress ring, completion streaks, configurable reminders, 4 a.m. day boundary. Free and open source.",
+    "description": "A native macOS app that puts your one goal for today in the notch, pixel-matched to the camera housing. Hover to open: day-progress ring, completion streaks, week dots. Configurable reminders, 4 a.m. day boundary. Free and open source.",
     "url": "https://jpwahle.github.io/daily-goal/",
     "downloadUrl": "https://github.com/jpwahle/daily-goal/releases/latest/download/DailyGoal.dmg",
     "softwareVersion": "1.1.0",
     "featureList": [
-      "Floating pill above every window, Space, and full-screen app",
-      "Click-through: the mouse acts on the window behind the pill; hold Option to interact with it",
+      "Lives in the notch — visible on every Space and in full-screen apps, works as a virtual island on Macs without one",
+      "Closed, it ignores the mouse entirely; hover the notch and it springs open",
       "Day-progress ring with a 4 a.m. day boundary",
-      "Completion streaks and confetti",
-      "Reminders on your schedule: the pill bounces while you're at the Mac, a notification waits when you're away"
+      "Completion streaks, week dots, and confetti",
+      "Reminders on your schedule: the notch opens and glows while you're at the Mac, a notification waits when you're away"
     ],
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "license": "https://github.com/jpwahle/daily-goal/blob/main/LICENSE",
     "author": { "@type": "Person", "name": "Jan Philip Wahle", "url": "https://jpwahle.com" }
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Is the download safe to open?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes — releases are signed with an Apple Developer ID certificate and notarized by Apple, so macOS opens Daily Goal without any warnings. Prefer to see for yourself? It's open source — build it in about ten seconds." } },
+      { "@type": "Question", "name": "Doesn't it get in the way?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No — it lives in the notch, the one part of the screen nothing else uses, and while closed it ignores your mouse completely: clicks land on the menu bar and windows behind it. It only becomes real when you rest your pointer on the notch — and closes again the moment you leave." } },
+      { "@type": "Question", "name": "My Mac has no notch. Does this still work?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes — on Macs without a notch (and on external displays) the island hangs from the top edge of the screen as its own little Dynamic Island, same behavior, same look. On notched MacBooks it measures the real housing from the system, so the fit is pixel-exact on every model." } },
+      { "@type": "Question", "name": "How do the reminders behave?",
+        "acceptedAnswer": { "@type": "Answer", "text": "On the schedule you pick (default: every hour), while today's goal is still open. At the Mac, the notch opens and glows for a moment. Away for a few minutes, and it posts one macOS notification that waits in Notification Center; a fresh reminder replaces the old one instead of stacking. They honor Focus modes and go quiet the moment you finish." } },
+      { "@type": "Question", "name": "Where does my data live?",
+        "acceptedAnswer": { "@type": "Answer", "text": "In UserDefaults on your Mac — the goal, the streak, and a 90-day history. Nothing to sign into, no telemetry. The app's only network call asks GitHub for the latest version number, and updates install only when you click Install, after checksum and signature verification." } },
+      { "@type": "Question", "name": "Why does the day end at 4 a.m.?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Because your day ends when you sleep, not when the calendar says so. Finish something at half past midnight and it still counts — the slate wipes while you're in bed." } },
+      { "@type": "Question", "name": "What does it cost?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Nothing, ever. It's MIT-licensed open source — use it, fork it, ship your own." } }
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --paper: oklch(98.4% 0.004 300);
-      --paper-soft: oklch(96.8% 0.007 300);
-      --ink: oklch(23% 0.022 295);
-      --ink-soft: oklch(45% 0.02 295);
-      --ink-faint: oklch(62% 0.015 295);
-      --line: oklch(90% 0.01 295);
-      --indigo: oklch(58% 0.21 278);
-      --violet: oklch(60% 0.23 305);
-      --green: oklch(66% 0.17 155);
-      --amber: oklch(72% 0.16 70);
-      --pill-bg: rgba(252, 251, 254, 0.62);
-      --pill-border: rgba(30, 25, 45, 0.09);
-      --pill-shadow: 0 8px 28px rgba(28, 20, 55, 0.16), 0 1px 3px rgba(28, 20, 55, 0.10);
-      --card-border: oklch(88% 0.012 295);
-      --card-shadow: 0 24px 48px -12px rgba(28, 20, 55, 0.18), 0 4px 12px rgba(28, 20, 55, 0.07);
+      /* the keynote: near-black, tinted toward the brand violet */
+      --bg: oklch(14% 0.012 292);
+      --bg-deep: oklch(11.5% 0.012 292);
+      --panel: oklch(18.5% 0.014 292);
+      --ink: oklch(95.5% 0.007 300);
+      --ink-soft: oklch(74% 0.014 300);
+      --ink-faint: oklch(56% 0.014 298);
+      --line: oklch(100% 0 0 / 0.09);
+      --indigo: oklch(64% 0.185 275);
+      --violet: oklch(66% 0.205 305);
+      --green: oklch(71% 0.165 155);
+      --amber: oklch(76% 0.15 70);
+      --flame: oklch(72% 0.19 45);
 
       --font-display: ui-rounded, "SF Pro Rounded", "Nunito", system-ui, sans-serif;
       --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
       --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
 
-      /* spacing scale — one rhythm for the whole page */
-      --sp-section: clamp(96px, 13vw, 168px);
-      --sp-block: clamp(56px, 8vw, 96px);
-      --sp-row: clamp(88px, 12vw, 144px);
+      --sp-section: clamp(110px, 15vw, 200px);
       --sp-el: clamp(24px, 3.5vw, 36px);
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --paper: oklch(17.5% 0.013 295);
-        --paper-soft: oklch(21% 0.015 295);
-        --ink: oklch(93% 0.008 300);
-        --ink-soft: oklch(72% 0.012 300);
-        --ink-faint: oklch(56% 0.012 300);
-        --line: oklch(29% 0.015 295);
-        --indigo: oklch(70% 0.17 278);
-        --violet: oklch(71% 0.19 305);
-        --green: oklch(72% 0.15 155);
-        --pill-bg: rgba(36, 34, 44, 0.58);
-        --pill-border: rgba(255, 255, 255, 0.10);
-        --pill-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
-        --card-border: oklch(32% 0.016 295);
-        --card-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.55), 0 4px 12px rgba(0, 0, 0, 0.35);
-      }
+      --nav-h: 52px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+    html.no-js { scroll-behavior: auto; }
     body {
       font-family: var(--font-body);
-      background: var(--paper);
+      background: var(--bg);
       color: var(--ink);
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      overflow-x: clip;
     }
-    ::selection { background: color-mix(in oklab, var(--violet) 25%, transparent); }
+    ::selection { background: color-mix(in oklab, var(--violet) 32%, transparent); }
 
-    a { color: var(--indigo); text-decoration: none; }
+    a { color: var(--ink); text-decoration: none; }
+    p a, .faq a, footer a { color: color-mix(in oklab, var(--violet) 70%, white 20%); }
     a:hover { text-decoration: underline; text-underline-offset: 3px; }
-    :focus-visible {
-      outline: 2px solid var(--indigo);
-      outline-offset: 3px;
-      border-radius: 6px;
+    :focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; border-radius: 6px; }
+
+    .wrap { max-width: 1040px; margin: 0 auto; padding-inline: clamp(20px, 5vw, 48px); }
+
+    /* ================= nav: the page's own menu bar, with the island on it ================= */
+    .nav {
+      position: fixed; inset: 0 0 auto 0; z-index: 50;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding-inline: clamp(16px, 3vw, 32px);
+      background: color-mix(in oklab, var(--bg-deep) 72%, transparent);
+      -webkit-backdrop-filter: blur(18px) saturate(1.5);
+      backdrop-filter: blur(18px) saturate(1.5);
+      border-bottom: 1px solid var(--line);
+      font-size: 13.5px;
     }
+    .wordmark {
+      display: flex; align-items: center; gap: 9px;
+      font-family: var(--font-display); font-weight: 800; font-size: 15px;
+    }
+    .wordmark img { width: 22px; height: 22px; border-radius: 6px; }
+    .wordmark:hover { text-decoration: none; }
+    .nav nav { display: flex; align-items: center; gap: clamp(14px, 2.6vw, 30px); }
+    .nav nav a { color: var(--ink-soft); font-weight: 500; }
+    .nav nav a:hover { color: var(--ink); text-decoration: none; }
+    .nav .get {
+      color: var(--ink);
+      font-family: var(--font-display); font-weight: 700; font-size: 12.5px;
+      background: linear-gradient(150deg, var(--indigo), var(--violet));
+      padding: 6px 14px; border-radius: 999px;
+    }
+    .nav .get:hover { text-decoration: none; filter: brightness(1.1); }
+    @media (max-width: 860px) { .nav nav a:not(.get) { display: none; } }
 
-    .wrap { max-width: 1080px; margin: 0 auto; padding-left: clamp(20px, 5vw, 48px); padding-right: clamp(20px, 5vw, 48px); }
-
-    /* ------- soft color field behind the hero so the glass pill reads as glass ------- */
+    /* soft light falling from the top edge, so the black island reads on the
+       black page the way it reads on a wallpaper — plain gradients, no blur */
     .field {
-      position: absolute; inset: 0 0 auto 0; height: 120vh;
-      pointer-events: none; z-index: -1; overflow: hidden;
-    }
-    .field::before, .field::after {
-      content: ""; position: absolute; border-radius: 50%; filter: blur(72px);
-      opacity: 0.5;
-    }
-    .field::before {
-      width: 580px; height: 580px; left: max(-180px, calc(50% - 800px)); top: -200px;
-      background: radial-gradient(closest-side, color-mix(in oklab, var(--indigo) 26%, transparent), transparent 70%);
-    }
-    .field::after {
-      width: 660px; height: 660px; right: max(-240px, calc(50% - 840px)); top: 40px;
-      background: radial-gradient(closest-side, color-mix(in oklab, var(--violet) 22%, transparent), transparent 70%);
+      position: absolute; inset: 0 0 auto 0; height: min(115vh, 1080px);
+      pointer-events: none; z-index: -1;
+      background:
+        radial-gradient(46% 40% at 50% -5%, color-mix(in oklab, var(--violet) 24%, transparent), transparent 70%),
+        radial-gradient(36% 34% at 30% 2%, color-mix(in oklab, var(--indigo) 15%, transparent), transparent 72%),
+        radial-gradient(36% 34% at 70% 2%, color-mix(in oklab, var(--violet) 12%, transparent), transparent 72%);
     }
 
-    /* ================= the live pill ================= */
-    #pill {
-      position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+    /* ================= the live notch island (the real app, at the page's top edge) ================= */
+    #island {
+      position: fixed; top: 0; left: 50%; transform: translateX(-50%);
       z-index: 60;
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 16px 10px 13px;
-      max-width: min(88vw, 460px);
-      border-radius: 999px;
-      background: var(--pill-bg);
-      -webkit-backdrop-filter: blur(18px) saturate(1.6);
-      backdrop-filter: blur(18px) saturate(1.6);
-      border: 1px solid var(--pill-border);
-      box-shadow: var(--pill-shadow);
+      height: 36px;
+      background: #000;
+      border-radius: 0 0 11px 11px;
+      /* crisp rim + a faint bloom: black-on-black needs its own light */
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 2px 18px rgba(148, 130, 255, 0.26),
+        0 10px 44px -6px rgba(148, 130, 255, 0.20);
       font-family: var(--font-display);
-      transition: opacity 1.2s ease, box-shadow 0.4s ease;
+      transition: width 0.42s cubic-bezier(0.3, 1.28, 0.36, 1),
+                  height 0.42s cubic-bezier(0.3, 1.28, 0.36, 1),
+                  border-radius 0.42s cubic-bezier(0.3, 1.28, 0.36, 1),
+                  transform 0.5s var(--ease-io),
+                  box-shadow 0.45s ease;
       cursor: default;
     }
-    #pill.dimmed { opacity: 0.45; }
-    #pill:hover, #pill:focus-within { opacity: 1; transition: opacity 0.18s ease, box-shadow 0.4s ease; }
-    /* the reminder nudge, same move the app makes */
-    #pill.nudge {
-      opacity: 1;
-      animation: hop 1.1s var(--ease-out);
-      box-shadow: var(--pill-shadow), 0 0 26px 2px color-mix(in oklab, var(--violet) 55%, transparent);
+    /* while the film plays its own island, the real one bows out */
+    #island.offstage { transform: translate(-50%, -130%); pointer-events: none; }
+    #island.open {
+      border-radius: 0 0 22px 22px;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 4px 24px rgba(148, 130, 255, 0.30),
+        0 18px 70px -10px rgba(148, 130, 255, 0.22);
     }
-    @keyframes hop {
-      0%, 29%, 57%, 100% { transform: translate(-50%, 0); }
-      13%  { transform: translate(-50%, -15px); }
-      44%  { transform: translate(-50%, -8px); }
+    #island::before, #island::after { content: ""; position: absolute; top: 0; width: 9px; height: 9px; }
+    #island::before { left: -9px; background: radial-gradient(circle at 0 100%, transparent 8.6px, #000 9px); }
+    #island::after { right: -9px; background: radial-gradient(circle at 100% 100%, transparent 8.6px, #000 9px); }
+    #island.nudge {
+      box-shadow: 0 0 0 1px color-mix(in oklab, var(--violet) 55%, transparent),
+                  0 2px 14px color-mix(in oklab, var(--violet) 80%, transparent),
+                  0 10px 40px color-mix(in oklab, var(--violet) 55%, transparent);
     }
+    #isl-mini {
+      position: absolute; inset: 0 auto auto 0; height: 36px;
+      display: flex; align-items: center; gap: 8px;
+      padding: 0 16px 0 13px; white-space: nowrap;
+      opacity: 1; transition: opacity 0.24s ease 0.12s;
+    }
+    #island.open #isl-mini { opacity: 0; transition: opacity 0.14s ease; pointer-events: none; }
+    #isl-mini svg { flex: none; display: block; }
+    #miniText {
+      font-size: 12.5px; font-weight: 700;
+      color: rgba(255, 255, 255, 0.92);
+      overflow: hidden; text-overflow: ellipsis; max-width: 200px;
+    }
+    #miniText.placeholder { color: rgba(255, 255, 255, 0.5); font-weight: 600; animation: breathe 3.4s ease-in-out infinite; }
+    #miniText.done { color: rgba(255, 255, 255, 0.45); text-decoration: line-through; }
+    #miniStreak { display: none; align-items: center; gap: 1px; font-size: 10.5px; font-weight: 800; color: var(--flame); }
+    #miniStreak.on { display: flex; }
+    @keyframes breathe { 0%, 100% { opacity: 0.55; } 50% { opacity: 0.95; } }
+
+    #isl-card {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; justify-content: flex-end; gap: 12px;
+      padding: 0 24px 15px;
+      overflow: hidden;
+      opacity: 0; transition: opacity 0.16s ease; pointer-events: none;
+    }
+    #island.open #isl-card { opacity: 1; transition: opacity 0.26s ease 0.14s; pointer-events: auto; }
+    .cardrow { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .cardfoot { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 10.5px; font-weight: 700; color: rgba(255, 255, 255, 0.42); }
+    #dots { display: flex; align-items: center; gap: 5px; }
+    #dots i { width: 5px; height: 5px; border-radius: 50%; background: rgba(255, 255, 255, 0.12); }
+    #dots i.done { background: oklch(70% 0.17 155); }
+    #dots i.missed { background: rgba(255, 255, 255, 0.24); }
+    #dots i.pending { width: 6px; height: 6px; background: none; border: 1.2px solid oklch(70% 0.15 262); }
 
     #ring {
-      flex: none; width: 22px; height: 22px; padding: 0;
+      flex: none; width: 24px; height: 24px; padding: 0;
       background: none; border: none; cursor: pointer;
       display: grid; place-items: center;
       transition: transform 0.22s var(--ease-out);
     }
     #ring:active { transform: scale(0.82); }
     #ring svg { display: block; overflow: visible; }
-    #ring .track { stroke: color-mix(in oklab, var(--ink) 16%, transparent); }
-    #ring .track.dashed { stroke-dasharray: 2.4 3; }
+    #ring .track { stroke: rgba(255, 255, 255, 0.16); }
+    #ring .track.dashed { stroke-dasharray: 2.4 3; stroke: rgba(255, 255, 255, 0.30); }
     #ring .arc { transition: stroke-dashoffset 0.6s ease; }
-    #ring .disc { transform-origin: center; }
 
     #goaltext {
-      font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+      flex: 1; font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      position: relative; cursor: text; color: var(--ink);
+      position: relative; cursor: text; color: rgba(255, 255, 255, 0.95);
     }
-    #goaltext.placeholder {
-      color: var(--ink-faint); font-weight: 600;
-      animation: breathe 3.4s ease-in-out infinite;
-    }
-    @keyframes breathe { 0%, 100% { opacity: 0.55; } 50% { opacity: 0.95; } }
-    #goaltext.done { color: var(--ink-faint); }
+    #goaltext.placeholder { color: rgba(255, 255, 255, 0.55); font-weight: 600; }
+    #goaltext.done { color: rgba(255, 255, 255, 0.5); }
     #goaltext .strike {
       position: absolute; left: 0; top: 50%; height: 1.5px; width: 0%;
-      background: var(--ink-faint); border-radius: 2px;
+      background: rgba(255, 255, 255, 0.5); border-radius: 2px;
       transition: width 0.35s ease 0.1s;
     }
     #goaltext.done .strike { width: 100%; }
-
     #goalinput {
-      font: 700 15px var(--font-display); letter-spacing: -0.01em;
-      width: min(56vw, 250px); border: none; outline: none; background: none;
-      color: var(--ink);
+      flex: 1; font: 700 15px var(--font-display); letter-spacing: -0.01em;
+      min-width: 0; border: none; outline: none; background: none; color: #fff;
     }
-    #goalinput::placeholder { color: var(--ink-faint); font-weight: 600; }
-
+    #goalinput::placeholder { color: rgba(255, 255, 255, 0.4); font-weight: 600; }
     #streak {
       flex: none; display: none; align-items: center; gap: 2px;
-      font-size: 12px; font-weight: 800;
-      color: oklch(66% 0.19 45);
-      background: color-mix(in oklab, oklch(70% 0.19 55) 16%, transparent);
+      font-size: 12px; font-weight: 800; color: var(--flame);
+      background: color-mix(in oklab, oklch(70% 0.19 55) 22%, transparent);
       padding: 3px 8px; border-radius: 999px;
     }
     #streak.on { display: flex; animation: chipIn 0.45s var(--ease-out); }
@@ -236,137 +289,516 @@
       animation: burst 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
     }
     .confetto.round { border-radius: 50%; }
-    @keyframes burst {
-      to {
-        transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.4);
-        opacity: 0;
-      }
-    }
-
-    /* ================= header ================= */
-    header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 96px;
-    }
-    .wordmark {
-      display: flex; align-items: center; gap: 10px;
-      font-family: var(--font-display); font-weight: 800; font-size: 17px; color: var(--ink);
-    }
-    .wordmark img { width: 27px; height: 27px; border-radius: 7px; }
-    .wordmark:hover { text-decoration: none; }
-    nav { display: flex; align-items: center; gap: clamp(18px, 3.2vw, 34px); font-size: 14.5px; font-weight: 500; }
-    nav a { color: var(--ink-soft); }
-    nav a:hover { color: var(--ink); text-decoration: none; }
+    @keyframes burst { to { transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.4); opacity: 0; } }
 
     /* ================= hero ================= */
-    .hero { padding-top: clamp(72px, 11vh, 128px); padding-bottom: var(--sp-section); position: relative; }
-    .hint {
+    .hero {
+      padding-top: calc(var(--nav-h) + clamp(84px, 13vh, 150px));
+      padding-bottom: clamp(48px, 7vh, 84px);
+      text-align: center;
+      position: relative;
+    }
+    .hero .up-hint {
       display: inline-flex; align-items: center; gap: 9px;
       font-family: var(--font-display); font-weight: 700; font-size: 13.5px;
-      color: var(--ink-faint); margin-bottom: clamp(28px, 4vh, 40px);
+      color: var(--ink-faint); margin-bottom: clamp(30px, 4.5vh, 46px);
     }
-    .hint svg { flex: none; }
+    .hero .up-hint svg { flex: none; }
     h1 {
       font-family: var(--font-display);
-      font-size: clamp(2.9rem, 7.6vw, 5.1rem);
-      font-weight: 800; line-height: 1.0; letter-spacing: -0.035em;
-      max-width: 11ch;
+      font-size: clamp(3rem, 8.6vw, 6.4rem);
+      font-weight: 800; line-height: 0.99; letter-spacing: -0.035em;
+      margin-inline: auto; max-width: 12ch;
     }
-    h1 .insight { color: var(--ink-faint); }
-    .sub {
-      margin-top: var(--sp-el); font-size: clamp(1.08rem, 1.8vw, 1.3rem);
-      color: var(--ink-soft); max-width: 44ch; text-wrap: pretty;
+    h1 .insight {
+      background: linear-gradient(120deg, var(--indigo), var(--violet) 70%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
     }
-    .cta { margin-top: clamp(36px, 5.5vh, 52px); display: flex; align-items: center; gap: 14px 28px; flex-wrap: wrap; }
+    .hero .sub {
+      margin: var(--sp-el) auto 0;
+      font-size: clamp(1.1rem, 1.9vw, 1.35rem); line-height: 1.55;
+      color: var(--ink-soft); max-width: 46ch; text-wrap: pretty;
+    }
+    .cta { margin-top: clamp(34px, 5vh, 48px); display: flex; align-items: center; justify-content: center; gap: 16px 26px; flex-wrap: wrap; }
     .btn {
       display: inline-block;
       font-family: var(--font-display); font-weight: 800; font-size: 16.5px;
       color: oklch(98% 0.005 300);
       background: linear-gradient(150deg, var(--indigo), var(--violet));
-      padding: 15px 28px; border-radius: 999px;
-      box-shadow: 0 6px 20px color-mix(in oklab, var(--indigo) 35%, transparent);
+      padding: 15px 30px; border-radius: 999px;
+      box-shadow: 0 6px 24px color-mix(in oklab, var(--indigo) 40%, transparent);
       transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
     }
-    .btn:hover { text-decoration: none; transform: translateY(-2px); box-shadow: 0 10px 26px color-mix(in oklab, var(--indigo) 45%, transparent); }
+    .btn:hover { text-decoration: none; transform: translateY(-2px); box-shadow: 0 10px 30px color-mix(in oklab, var(--indigo) 55%, transparent); }
     .btn:active { transform: translateY(0) scale(0.98); }
-    .cta small { display: block; color: var(--ink-faint); font-size: 13px; margin-top: 10px; letter-spacing: 0.01em; }
-    .alt { font-size: 14.5px; color: var(--ink-soft); }
-    .alt code { font-size: 13px; background: var(--paper-soft); border: 1px solid var(--line); padding: 2px 7px; border-radius: 6px; }
+    .btn-ghost {
+      display: inline-block;
+      font-family: var(--font-display); font-weight: 700; font-size: 15px;
+      color: var(--ink); border: 1.5px solid var(--line); padding: 13px 26px; border-radius: 999px;
+      transition: border-color 0.25s ease, transform 0.25s var(--ease-out);
+    }
+    .btn-ghost:hover { text-decoration: none; border-color: var(--ink-faint); transform: translateY(-2px); }
+    .hero .fine { margin-top: 18px; color: var(--ink-faint); font-size: 13px; letter-spacing: 0.01em; }
 
-    /* staggered load */
     .rise { opacity: 0; transform: translateY(22px); animation: rise 0.9s var(--ease-out) forwards; }
     .rise.d1 { animation-delay: 0.08s; } .rise.d2 { animation-delay: 0.18s; }
     .rise.d3 { animation-delay: 0.30s; } .rise.d4 { animation-delay: 0.44s; }
     @keyframes rise { to { opacity: 1; transform: none; } }
 
-    /* ================= feature moments ================= */
-    .moments { padding-bottom: calc(var(--sp-section) - var(--sp-row) / 2); }
-    .moments .lead {
-      font-family: var(--font-display); font-weight: 800;
-      font-size: clamp(1.85rem, 3.9vw, 2.7rem); letter-spacing: -0.025em; line-height: 1.12;
-      max-width: 20ch; margin-bottom: var(--sp-block);
+    /* =====================================================================
+       THE FILM — a MacBook on a stage; scrolling scrubs the story.
+       Everything inside the laptop is built at 2× app points, so close-ups
+       render text at native size instead of blurry upscales.
+       ===================================================================== */
+    .film { position: relative; }
+    .js .film { height: 780vh; }
+    .stage { position: relative; }
+    .js .stage {
+      position: sticky; top: 0;
+      height: 100vh; height: 100dvh;
+      overflow: clip;
     }
-    .row {
-      display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
-      gap: clamp(32px, 6vw, 88px); align-items: center;
-      margin-bottom: var(--sp-row);
+    /* a faint pool of light behind the Mac, like a keynote stage */
+    .stage::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(58% 46% at 50% 44%,
+        color-mix(in oklab, var(--violet) 9%, transparent), transparent 72%);
+      pointer-events: none;
     }
-    .row:last-child { margin-bottom: 0; }
-    .row.flip .shot { order: -1; }
-    .row h3 {
-      font-family: var(--font-display); font-weight: 800;
-      font-size: clamp(1.4rem, 2.5vw, 1.8rem); letter-spacing: -0.02em; line-height: 1.2;
-      margin-bottom: 16px; text-wrap: balance;
-    }
-    .row p { color: var(--ink-soft); max-width: 46ch; font-size: 1.02rem; }
-    .row p + p { margin-top: 14px; }
-    .row .k { color: var(--ink); font-weight: 600; }
-    .t-violet { color: var(--violet); font-weight: 700; }
-    .t-amber { color: var(--amber); font-weight: 700; }
-    .t-green { color: var(--green); font-weight: 700; }
-    .shot img {
-      width: 100%; height: auto; display: block;
-      border-radius: 22px;
-      border: 1px solid var(--card-border);
-      box-shadow: var(--card-shadow);
+    /* bottom vignette so captions stay legible over whatever the Mac shows;
+       it fades to the page color so the film's edge is seamless */
+    .js .stage::after {
+      content: ""; position: absolute; inset: auto 0 0 0; height: 30vh;
+      background: linear-gradient(transparent, var(--bg) 92%);
+      pointer-events: none; z-index: 7;
     }
 
-    .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
-    .reveal.in { opacity: 1; transform: none; }
+    .cam { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+    .no-js .cam { position: relative; display: flex; justify-content: center; margin: 40px auto; zoom: 0.35; }
 
-    /* ================= quiet details ================= */
-    .details { padding-bottom: var(--sp-section); }
-    .details h2 {
-      font-family: var(--font-display); font-weight: 800;
-      color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.1em;
-      font-size: 0.82rem; margin-bottom: var(--sp-el);
+    /* ---- the MacBook ---- */
+    .mac { width: 2480px; position: relative; }
+    /* grounding shadow as a gradient — big blurred box-shadows on a layer this
+       size are a rasterizer killer, gradients are nearly free */
+    .mac::after {
+      content: ""; position: absolute; left: 4%; right: 4%; bottom: -90px; height: 170px;
+      background: radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.6), transparent 72%);
+      z-index: -1;
     }
+    .lid {
+      position: relative;
+      background: linear-gradient(180deg, #2a2a2f, #1a1a1e 60%, #131317);
+      border-radius: 60px 60px 48px 48px;
+      padding: 40px;
+      box-shadow:
+        inset 0 2px 2px rgba(255,255,255,0.12),
+        inset 0 -2px 3px rgba(0,0,0,0.6);
+    }
+    .screen {
+      position: relative;
+      width: 2400px; height: 1552px;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #000;
+    }
+    .wall {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(120% 90% at 78% 108%, oklch(50% 0.20 310 / 0.85), transparent 55%),
+        radial-gradient(110% 80% at 18% 96%, oklch(45% 0.17 270 / 0.9), transparent 58%),
+        radial-gradient(150% 110% at 50% -30%, oklch(30% 0.10 290), transparent 70%),
+        linear-gradient(180deg, oklch(22% 0.05 285), oklch(16% 0.06 300) 55%, oklch(24% 0.10 315));
+    }
+    /* a whisper of a horizon glow, so the desktop isn't a void */
+    .wall::after {
+      content: ""; position: absolute; inset: auto 0 0 0; height: 55%;
+      background: radial-gradient(70% 60% at 50% 100%, oklch(60% 0.19 300 / 0.28), transparent 70%);
+    }
+    /* depth for the floating window: dim the desktop instead of a huge shadow */
+    .shade {
+      position: absolute; inset: 0; z-index: 1;
+      background: rgba(6, 4, 12, 0.5);
+      opacity: 0; transition: opacity 0.6s ease;
+    }
+    .screen.win .shade { opacity: 1; }
+
+    /* the physical camera housing */
+    .notch {
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 380px; height: 68px;
+      background: #000;
+      border-radius: 0 0 20px 20px;
+      z-index: 3;
+    }
+    .notch::before, .notch::after { content: ""; position: absolute; top: 0; width: 10px; height: 10px; }
+    .notch::before { left: -10px; background: radial-gradient(circle at 0 100%, transparent 9.5px, #000 10px); }
+    .notch::after { right: -10px; background: radial-gradient(circle at 100% 100%, transparent 9.5px, #000 10px); }
+    .cameraDot {
+      position: absolute; top: 26px; left: 50%; transform: translateX(-50%);
+      width: 16px; height: 16px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #1e2430, #05070c 70%);
+      box-shadow: 0 0 0 5px #0a0a0c;
+    }
+
+    /* ---- menu bar ---- */
+    .mbar {
+      position: absolute; inset: 0 0 auto 0; height: 68px; z-index: 2;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px;
+      font: 500 26px/1 var(--font-body); color: rgba(255,255,255,0.88);
+      /* faked menu-bar material: backdrop blur inside this scaled layer is too
+         expensive to re-raster on scroll, a soft translucent wash reads the same */
+      background: linear-gradient(180deg, rgba(48, 40, 70, 0.55), rgba(34, 28, 52, 0.48));
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .screen.fullscreen .mbar { opacity: 0; transform: translateY(-100%); }
+    .mbar .ml, .mbar .mr { display: flex; align-items: center; gap: 40px; white-space: nowrap; }
+    .mbar .ml b { font-weight: 700; }
+    .mbar svg { display: block; }
+    .mbar .mr { gap: 36px; }
+    .mbar .mr .sticon { position: relative; width: 36px; height: 36px; }
+    .sticon svg { position: absolute; inset: 0; margin: auto; opacity: 0; transition: opacity 0.4s ease; }
+    .sticon svg.on { opacity: 1; }
+
+    /* ---- the full-screen app that slides under the island ---- */
+    .editor {
+      position: absolute; left: 0; top: 0; width: 2400px; height: 1552px;
+      z-index: 2;
+      background: #17161c;
+      border-radius: 26px;
+      transform-origin: 50% 58%;
+      transform: translateY(140px) scale(0.62);
+      opacity: 0;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+      transition: transform 0.7s var(--ease-io), opacity 0.5s ease, border-radius 0.7s var(--ease-io);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .screen.win .editor { opacity: 1; }
+    .screen.fullscreen .editor { transform: none; border-radius: 0; }
+    .ed-bar {
+      flex: none; height: 76px; display: flex; align-items: center; gap: 16px;
+      padding: 0 34px; background: #1e1d24; border-bottom: 1px solid rgba(255,255,255,0.06);
+      font: 600 24px var(--font-body); color: rgba(255,255,255,0.4);
+    }
+    .ed-bar .lights { display: flex; gap: 16px; margin-right: 22px; }
+    .ed-bar .lights i { width: 24px; height: 24px; border-radius: 50%; }
+    .ed-bar .lights i:nth-child(1) { background: #ff5f57; }
+    .ed-bar .lights i:nth-child(2) { background: #febc2e; }
+    .ed-bar .lights i:nth-child(3) { background: #28c840; }
+    .ed-bar .title { margin-inline: auto; transform: translateX(-60px); }
+    .ed-body { flex: 1; display: flex; min-height: 0; }
+    .ed-side { flex: none; width: 380px; background: #1a1920; border-right: 1px solid rgba(255,255,255,0.05); padding: 40px 30px; }
+    .ed-side i, .ed-main i { display: block; height: 22px; border-radius: 11px; background: rgba(255,255,255,0.07); margin-bottom: 26px; }
+    .ed-side i:nth-child(2n) { width: 74%; }
+    .ed-side i:nth-child(3n) { width: 58%; }
+    .ed-main { flex: 1; padding: 48px 60px; }
+    .ed-main i { margin-bottom: 30px; }
+    .ed-main i.w1 { width: 42%; background: color-mix(in oklab, var(--violet) 26%, transparent); }
+    .ed-main i.w2 { width: 68%; }
+    .ed-main i.w3 { width: 55%; background: color-mix(in oklab, var(--indigo) 24%, transparent); }
+    .ed-main i.w4 { width: 30%; }
+    .ed-main i.w5 { width: 61%; }
+    .ed-main i.w6 { width: 47%; background: color-mix(in oklab, var(--green) 18%, transparent); }
+    .ed-main i.in { margin-left: 64px; }
+
+    /* ---- the island in the film (2× app metrics) ---- */
+    .isl {
+      position: absolute; top: 0; left: 50%; z-index: 4;
+      background: #000;
+      font-family: var(--font-display);
+      box-shadow: 0 8px 20px -8px rgba(0,0,0,0.55);
+      /* geometry per state */
+      width: var(--w); height: var(--h);
+      border-radius: 0 0 var(--r) var(--r);
+      transform: translateX(var(--tx));
+      transition:
+        width 0.5s cubic-bezier(0.3, 1.25, 0.4, 1),
+        height 0.5s cubic-bezier(0.3, 1.25, 0.4, 1),
+        transform 0.5s cubic-bezier(0.3, 1.25, 0.4, 1),
+        border-radius 0.5s cubic-bezier(0.3, 1.25, 0.4, 1),
+        box-shadow 0.6s ease;
+    }
+    .isl::before, .isl::after { content: ""; position: absolute; top: 0; width: var(--ear); height: var(--ear); transition: all 0.5s cubic-bezier(0.3,1.25,0.4,1); }
+    .isl::before { left: calc(var(--ear) * -1); background: radial-gradient(circle at 0 100%, transparent calc(var(--ear) - 0.6px), #000 var(--ear)); }
+    .isl::after { right: calc(var(--ear) * -1); background: radial-gradient(circle at 100% 100%, transparent calc(var(--ear) - 0.6px), #000 var(--ear)); }
+
+    /* state geometry — widths tuned to the film's fixed script */
+    .isl[data-state="empty-closed"], .isl[data-state="set-closed"], .isl[data-state="done-closed"] {
+      --h: 68px; --r: 20px; --ear: 10px;
+    }
+    .isl[data-state="empty-closed"] { --w: 700px; --tx: calc(-68px - 190px); }
+    .isl[data-state="set-closed"], .isl[data-state="done-closed"] { --w: 830px; --tx: calc(-68px - 190px); }
+    .isl[data-state="empty-open"], .isl[data-state="editing"], .isl[data-state="card"], .isl[data-state="done-open"] {
+      --r: 44px; --ear: 32px;
+      --h: 216px;
+      --tx: calc(var(--w) / -2);
+    }
+    .isl[data-state="empty-open"] { --w: 620px; }
+    .isl[data-state="editing"] { --w: 720px; }
+    .isl[data-state="card"], .isl[data-state="done-open"] { --w: 640px; }
+
+    .isl.celebrate {
+      box-shadow:
+        0 0 0 2px color-mix(in oklab, var(--green) 70%, transparent),
+        0 4px 26px color-mix(in oklab, var(--green) 70%, transparent);
+    }
+
+    /* collapsed wings: ring | camera gap | goal */
+    .i-mini {
+      position: absolute; inset: 0 auto auto 0; height: 68px;
+      display: flex; align-items: center;
+      white-space: nowrap;
+      opacity: 1; transition: opacity 0.22s ease 0.16s;
+    }
+    .isl[data-state="empty-open"] .i-mini, .isl[data-state="editing"] .i-mini,
+    .isl[data-state="card"] .i-mini, .isl[data-state="done-open"] .i-mini {
+      opacity: 0; transition: opacity 0.12s ease;
+    }
+    .i-mini .i-ringS { flex: none; margin: 0 14px 0 24px; width: 30px; height: 30px; position: relative; }
+    .i-mini .i-gap { flex: none; width: 380px; }
+    .i-mini .i-goal {
+      font-size: 24px; font-weight: 700; letter-spacing: -0.005em;
+      color: rgba(255,255,255,0.92);
+      margin-left: 18px; position: relative;
+    }
+    .i-mini .i-goal .mini-strike {
+      position: absolute; left: -2px; top: 50%; height: 3px; width: 0;
+      background: rgba(255,255,255,0.5); border-radius: 3px;
+      transition: width 0.4s ease 0.15s;
+    }
+    .isl.done .i-mini .i-goal { color: rgba(255,255,255,0.45); }
+    .isl.done .i-mini .i-goal .mini-strike { width: calc(100% + 4px); }
+    .i-mini .i-goal.placeholder { color: rgba(255,255,255,0.5); font-weight: 600; animation: breathe 3.4s ease-in-out infinite; }
+    .i-mini .i-streak {
+      display: flex; align-items: center; gap: 3px; margin: 0 28px 0 14px;
+      font-size: 21px; font-weight: 800; color: var(--flame);
+    }
+    .isl[data-state="empty-closed"] .i-streak { display: none; }
+
+    /* open card */
+    .i-card {
+      position: absolute; inset: 0; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: flex-end; gap: 26px;
+      padding: 0 52px 32px;
+      opacity: 0; transition: opacity 0.18s ease;
+    }
+    .isl[data-state="empty-open"] .i-card, .isl[data-state="editing"] .i-card,
+    .isl[data-state="card"] .i-card, .isl[data-state="done-open"] .i-card {
+      opacity: 1; transition: opacity 0.28s ease 0.16s;
+    }
+    .i-row { display: flex; align-items: center; gap: 24px; }
+    .i-ringL { flex: none; width: 48px; height: 48px; position: relative; transition: transform 0.2s var(--ease-out); }
+    .isl.press .i-ringL { transform: scale(0.82); }
+    .i-text {
+      flex: 1; min-width: 0;
+      font-size: 30px; font-weight: 700; letter-spacing: -0.01em;
+      white-space: nowrap; overflow: hidden;
+      color: rgba(255,255,255,0.95);
+    }
+    .i-text.placeholder { color: rgba(255,255,255,0.55); font-weight: 600; }
+    .isl.done .i-text { color: rgba(255,255,255,0.5); }
+    .i-text .tin { position: relative; display: inline-block; max-width: 100%; vertical-align: bottom; }
+    .i-text .strikeL {
+      position: absolute; left: 0; top: 50%; height: 3px; width: 0;
+      background: rgba(255,255,255,0.5); border-radius: 3px;
+      transition: width 0.4s ease 0.12s;
+    }
+    .isl.done .i-text .strikeL { width: 100%; }
+    .i-text .caret {
+      display: inline-block; width: 3px; height: 34px; margin-left: 3px;
+      background: var(--violet); vertical-align: -6px; border-radius: 2px;
+      opacity: 0;
+    }
+    .isl[data-state="editing"] .i-text .caret { opacity: 1; animation: caret 1.05s steps(1) infinite; }
+    @keyframes caret { 50% { opacity: 0; } }
+    .i-chip {
+      flex: none; display: flex; align-items: center; gap: 4px;
+      font-size: 23px; font-weight: 800; color: var(--flame);
+      background: rgba(255, 149, 20, 0.18);
+      padding: 7px 15px; border-radius: 999px;
+      transition: transform 0.4s var(--ease-out), opacity 0.3s ease;
+    }
+    .isl[data-state="empty-open"] .i-chip, .isl[data-state="editing"] .i-chip { transform: scale(0.4); opacity: 0; }
+    .i-foot { display: flex; align-items: center; justify-content: space-between; font-size: 21px; font-weight: 700; color: rgba(255,255,255,0.42); }
+    .i-hint { display: none; margin-inline: auto; font-weight: 600; color: rgba(255,255,255,0.35); }
+    .isl[data-state="editing"] .i-dots, .isl[data-state="editing"] .i-hours { display: none; }
+    .isl[data-state="editing"] .i-hint { display: block; }
+    .i-dots { display: flex; gap: 10px; align-items: center; }
+    .i-dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.12); }
+    .i-dots i.done { background: rgb(64, 199, 120); transition: background 0.3s ease; }
+    .i-dots i.missed { background: rgba(255,255,255,0.24); }
+    .i-dots i.pending { width: 12px; height: 12px; background: none; border: 2.4px solid rgb(102, 153, 255); }
+    .i-hint { font-size: 21px; font-weight: 600; color: rgba(255,255,255,0.35); }
+
+    /* film ring SVGs */
+    .i-ringS svg, .i-ringL svg { position: absolute; inset: 0; overflow: visible; }
+    .ring-done { opacity: 0; transform: scale(0.4); transform-origin: center; transition: transform 0.45s cubic-bezier(0.3, 1.4, 0.5, 1), opacity 0.25s ease; }
+    .isl.done .ring-done { opacity: 1; transform: none; }
+    .ring-open { transition: opacity 0.2s ease; }
+    .isl.done .ring-open { opacity: 0; }
+
+    /* film confetti */
+    .i-burst { position: absolute; left: 76px; top: 108px; width: 0; height: 0; z-index: 5; pointer-events: none; }
+    .cin-confetto {
+      position: absolute; left: 0; top: 0; width: 13px; height: 13px; border-radius: 3px;
+      background: var(--c); opacity: 0;
+    }
+    .cin-confetto.round { border-radius: 50%; }
+    .isl.burst .cin-confetto { animation: cinBurst 0.95s cubic-bezier(0.2, 0.8, 0.3, 1) forwards; }
+    @keyframes cinBurst {
+      from { opacity: 1; transform: none; }
+      to { transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.4); opacity: 0; }
+    }
+
+    /* ---- the cursor ---- */
+    .pt {
+      position: absolute; z-index: 9; width: 42px;
+      left: 0; top: 0; transform: translate(1700px, 900px);
+      opacity: 0;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    }
+    .pt svg { display: block; width: 100%; transform-origin: 20% 12%; transition: transform 0.15s ease; }
+    .pt.press svg { transform: scale(0.84); }
+
+    /* ---- the dropdown menu (menu bar chapter) ---- */
+    .dgmenu {
+      position: absolute; z-index: 7;
+      right: 328px; top: 76px; width: 520px;
+      background: rgba(42, 38, 54, 0.97);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 24px 50px -18px rgba(0,0,0,0.65);
+      padding: 12px 10px 0;
+      font: 500 26px/1.3 var(--font-body); color: rgba(255,255,255,0.92);
+      transform-origin: 85% 0;
+      opacity: 0; transform: scale(0.86) translateY(-14px);
+      transition: opacity 0.3s ease, transform 0.4s var(--ease-out);
+      padding-bottom: 10px;
+    }
+    .dgmenu.on { opacity: 1; transform: none; }
+    .dgmenu .mi { padding: 13px 18px; border-radius: 12px; display: flex; align-items: center; gap: 14px; }
+    .dgmenu .mi.head { font-weight: 600; }
+    .dgmenu .mi.head .chk { color: rgb(74, 222, 128); font-weight: 800; }
+    .dgmenu .mi.dim { color: rgba(255,255,255,0.5); font-size: 24px; }
+    .dgmenu .mi .kbd { margin-left: auto; color: rgba(255,255,255,0.4); font-size: 24px; }
+    .dgmenu .sep { height: 1px; background: rgba(255,255,255,0.12); margin: 8px 14px; }
+    .dgmenu .wk { display: flex; gap: 11px; align-items: center; margin-left: auto; }
+    .dgmenu .wk i { width: 11px; height: 11px; border-radius: 50%; }
+    .dgmenu .wk i.d { background: rgb(64, 199, 120); }
+    .dgmenu .wk i.m { background: rgba(255,255,255,0.25); }
+
+    .base {
+      position: relative; margin: 0 auto; width: 2560px; left: -40px;
+      height: 60px;
+      background: linear-gradient(180deg, #3a3a40, #232327 45%, #101013);
+      border-radius: 8px 8px 44px 44px;
+      box-shadow: inset 0 2px 2px rgba(255,255,255,0.16);
+    }
+    .base::before {
+      content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 340px; height: 22px;
+      background: radial-gradient(50% 100% at 50% 0%, #0c0c0f 60%, #2c2c31 100%);
+      border-radius: 0 0 24px 24px;
+    }
+
+    /* ---- captions ---- */
+    .caps {
+      position: absolute; inset: auto 0 max(4.5vh, 34px) 0;
+      display: grid; place-items: end center;
+      pointer-events: none; z-index: 8;
+      padding-inline: 20px;
+    }
+    .cap {
+      grid-area: 1 / 1;
+      text-align: center; max-width: 700px;
+      opacity: 0; transform: translateY(18px);
+    }
+    .no-js .cap { position: static; opacity: 1; transform: none; margin-bottom: 40px; }
+    .cap h3 {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(1.55rem, 3.6vw, 2.5rem); letter-spacing: -0.025em; line-height: 1.12;
+      text-wrap: balance;
+    }
+    .cap p {
+      margin-top: 10px; color: var(--ink-soft);
+      font-size: clamp(0.98rem, 1.5vw, 1.13rem); line-height: 1.5; text-wrap: pretty;
+    }
+    .cap .k { color: var(--ink); font-weight: 600; }
+    .cap .t-violet { color: color-mix(in oklab, var(--violet) 80%, white 15%); font-weight: 700; }
+    .cap .t-green { color: var(--green); font-weight: 700; }
+    .cap .t-amber { color: var(--amber); font-weight: 700; }
+
+    /* ================= sections after the film ================= */
+    section.copy { padding-block: var(--sp-section) 0; }
+    .lead {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(2rem, 4.6vw, 3.2rem); letter-spacing: -0.03em; line-height: 1.06;
+      max-width: 17ch;
+    }
+    .lead .insight { color: var(--ink-faint); }
+
+    /* nudge section */
+    .nudgegrid {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(32px, 6vw, 80px); align-items: center;
+      margin-top: clamp(36px, 6vh, 64px);
+    }
+    .nudgegrid p { color: var(--ink-soft); max-width: 46ch; }
+    .nudgegrid p + p { margin-top: 14px; }
+    .nudgegrid .k { color: var(--ink); font-weight: 600; }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    .chips span {
+      font-family: var(--font-display); font-weight: 700; font-size: 13.5px;
+      color: var(--ink-soft);
+      border: 1px solid var(--line); border-radius: 999px; padding: 7px 15px;
+    }
+    .chips span.hot { color: var(--ink); border-color: color-mix(in oklab, var(--violet) 55%, transparent); background: color-mix(in oklab, var(--violet) 14%, transparent); }
+    .try-nudge {
+      margin-top: 28px;
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-display); font-weight: 800; font-size: 15.5px;
+      color: var(--ink); background: none; border: 1.5px solid var(--line);
+      border-radius: 999px; padding: 13px 24px; cursor: pointer;
+      transition: border-color 0.25s ease, transform 0.25s var(--ease-out);
+    }
+    .try-nudge:hover { border-color: color-mix(in oklab, var(--violet) 70%, transparent); transform: translateY(-2px); }
+    .try-nudge svg { transition: transform 0.3s var(--ease-out); }
+    .try-nudge:hover svg { transform: translateY(-3px); }
+    .nudge-note { margin-top: 12px; font-size: 13px; color: var(--ink-faint); }
+
+    /* details */
     .details ul {
-      list-style: none;
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 18px 40px;
+      list-style: none; margin-top: clamp(36px, 6vh, 60px);
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px 48px;
     }
-    .details li {
-      color: var(--ink-soft); font-size: 15px; line-height: 1.55;
-      padding-left: 24px; position: relative;
-    }
+    .details li { color: var(--ink-soft); font-size: 15px; line-height: 1.55; padding-left: 24px; position: relative; }
     .details li::before {
       content: ""; position: absolute; left: 0; top: 0.42em; width: 9px; height: 9px;
       border-radius: 50%; border: 2px solid var(--violet); opacity: 0.7;
     }
     .details li strong { color: var(--ink); font-weight: 600; }
 
-    /* ================= faq ================= */
-    .faq { padding-top: var(--sp-block); padding-bottom: var(--sp-section); border-top: 1px solid var(--line); }
+    /* oss */
+    .oss { text-align: center; }
+    .oss h2 {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(2.4rem, 6.4vw, 4.6rem); letter-spacing: -0.035em; line-height: 1.02;
+      margin-inline: auto; max-width: 15ch;
+    }
+    .oss h2 .insight { color: var(--ink-faint); }
+    .oss p { margin: var(--sp-el) auto 0; color: var(--ink-soft); max-width: 52ch; }
+    .oss .cta { margin-top: clamp(30px, 4.5vh, 44px); }
+
+    /* faq */
+    .faq { max-width: 760px; }
     .faq h2 {
       font-family: var(--font-display); font-weight: 800;
-      font-size: clamp(1.75rem, 3.5vw, 2.4rem); letter-spacing: -0.025em;
+      font-size: clamp(1.8rem, 3.6vw, 2.5rem); letter-spacing: -0.025em;
       margin-bottom: var(--sp-el);
     }
-    .faq details {
-      border-bottom: 1px solid var(--line); padding: 22px 0;
-      max-width: 720px;
-    }
+    .faq details { border-bottom: 1px solid var(--line); padding: 22px 0; }
     .faq details:first-of-type { border-top: 1px solid var(--line); }
     .faq summary {
       font-family: var(--font-display); font-weight: 700; font-size: 16.5px;
@@ -378,48 +810,32 @@
     .faq details[open] summary::after { transform: rotate(45deg); }
     .faq details p { color: var(--ink-soft); margin-top: 14px; max-width: 62ch; }
     .faq details p + p { margin-top: 10px; }
-    .faq code {
-      font-size: 13px; background: var(--paper-soft); border: 1px solid var(--line);
+    .faq code, .fine code {
+      font-size: 13px; background: var(--panel); border: 1px solid var(--line);
       padding: 2px 7px; border-radius: 6px; user-select: all;
     }
 
-    /* ================= oss footer ================= */
-    .oss { padding-top: var(--sp-block); padding-bottom: var(--sp-section); border-top: 1px solid var(--line); }
-    .oss h2 {
-      font-family: var(--font-display); font-weight: 800;
-      font-size: clamp(2.1rem, 5vw, 3.4rem); letter-spacing: -0.03em; line-height: 1.06;
-      max-width: 14ch;
-    }
-    .oss h2 .insight { color: var(--ink-faint); }
-    .oss p { margin-top: var(--sp-el); color: var(--ink-soft); max-width: 48ch; }
-    .oss .cta { margin-top: clamp(28px, 4vh, 40px); }
-    .btn-ghost {
-      display: inline-block;
-      font-family: var(--font-display); font-weight: 700; font-size: 15px;
-      color: var(--ink); border: 1.5px solid var(--line); padding: 13px 24px; border-radius: 999px;
-      transition: border-color 0.25s ease, transform 0.25s var(--ease-out);
-    }
-    .btn-ghost:hover { text-decoration: none; border-color: var(--ink-faint); transform: translateY(-2px); }
     footer {
+      margin-top: var(--sp-section);
       padding: 34px 0 52px; color: var(--ink-faint); font-size: 13.5px;
       display: flex; gap: 8px 28px; flex-wrap: wrap;
       border-top: 1px solid var(--line);
     }
 
-    @media (max-width: 720px) {
-      header { padding-top: 84px; }
-      .hero { padding-top: 56px; }
-      .row { grid-template-columns: 1fr; gap: 28px; margin-bottom: clamp(72px, 14vw, 96px); }
-      .row.flip .shot { order: 0; }
-      .row .shot { max-width: 480px; }
-      .cta { gap: 18px; }
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 780px) {
+      .nudgegrid { grid-template-columns: 1fr; }
     }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .rise, .reveal { animation: none; transition: none; opacity: 1; transform: none; }
-      #goaltext.placeholder { animation: none; }
-      #pill.nudge { animation: none; }
-      .confetto { animation-duration: 0.01s; }
+      #miniText.placeholder, .i-mini .i-goal.placeholder { animation: none; }
+      #island, .isl, .isl::before, .isl::after, .editor, .mbar, .dgmenu { transition-duration: 0.01s; }
+      .confetto, .isl.burst .cin-confetto { animation: none; opacity: 0; }
+      .cap { transition: none; }
     }
   </style>
 </head>
@@ -427,154 +843,335 @@
 
   <div class="field" aria-hidden="true"></div>
 
-  <!-- ============ the app itself, floating over this page ============ -->
-  <div id="pill" role="group" aria-label="Daily Goal — live demo of the app">
-    <button id="ring" aria-label="Mark goal as done" title="Mark as done">
-      <svg width="22" height="22" viewBox="0 0 22 22">
-        <defs>
-          <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="oklch(62% 0.21 278)"/>
-            <stop offset="1" stop-color="oklch(63% 0.23 305)"/>
-          </linearGradient>
-        </defs>
-        <g id="ringOpen">
-          <circle class="track" cx="11" cy="11" r="9" fill="none" stroke-width="2.5"/>
-          <circle class="arc" cx="11" cy="11" r="9" fill="none" stroke="url(#grad)"
-                  stroke-width="2.5" stroke-linecap="round"
-                  stroke-dasharray="56.55" stroke-dashoffset="56.55"
-                  transform="rotate(-90 11 11)"/>
-        </g>
-        <g id="ringDone" style="display:none">
-          <circle class="disc" cx="11" cy="11" r="10" fill="oklch(63% 0.17 155)"/>
-          <path d="M6.8 11.4 l2.9 2.9 l5.5 -6" fill="none" stroke="white" stroke-width="2.4"
-                stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-      </svg>
-    </button>
-    <span id="goaltext" class="placeholder" title="Click to set your goal">What&rsquo;s your one thing today?<span class="strike"></span></span>
-    <input id="goalinput" type="text" placeholder="One thing for today…" maxlength="100"
-           style="display:none" aria-label="Your goal for today">
-    <span id="streak" title="Consecutive completed days">🔥<b id="streakN">2</b></span>
-  </div>
-
-  <header class="wrap">
-    <a class="wordmark rise" href="#"><img src="icon-256.png" alt="" width="27" height="27">Daily&nbsp;Goal</a>
-    <nav class="rise d1">
-      <a href="#feels">How it feels</a>
+  <!-- ============ site nav (the page's own menu bar) ============ -->
+  <div class="nav">
+    <a class="wordmark" href="#"><img src="icon-256.png" alt="" width="22" height="22">Daily&nbsp;Goal</a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="#details">Details</a>
       <a href="#faq">FAQ</a>
       <a href="https://github.com/jpwahle/daily-goal">GitHub</a>
+      <a class="get" href="https://github.com/jpwahle/daily-goal/releases/latest/download/DailyGoal.dmg">Download</a>
     </nav>
-  </header>
+  </div>
+
+  <!-- ============ the app itself, living at the top of this page ============ -->
+  <div id="island" role="group" aria-label="Daily Goal — live demo of the app">
+    <div id="isl-mini" aria-hidden="true">
+      <svg width="15" height="15" viewBox="0 0 22 22">
+        <g id="miniOpen">
+          <circle class="mini-track" cx="11" cy="11" r="9" fill="none" stroke-width="2.6" stroke="rgba(255,255,255,0.16)"/>
+          <circle id="miniArc" cx="11" cy="11" r="9" fill="none" stroke="url(#grad)"
+                  stroke-width="2.6" stroke-linecap="round"
+                  stroke-dasharray="56.55" stroke-dashoffset="56.55" transform="rotate(-90 11 11)"/>
+        </g>
+        <g id="miniDone" style="display:none">
+          <circle cx="11" cy="11" r="10" fill="oklch(63% 0.17 155)"/>
+          <path d="M6.8 11.4 l2.9 2.9 l5.5 -6" fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>
+      <span id="miniText" class="placeholder">Set today&rsquo;s goal</span>
+      <span id="miniStreak">🔥<b id="miniStreakN">2</b></span>
+    </div>
+
+    <div id="isl-card">
+      <div class="cardrow">
+        <button id="ring" aria-label="Mark goal as done" title="Mark as done">
+          <svg width="24" height="24" viewBox="0 0 22 22">
+            <defs>
+              <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="oklch(62% 0.21 278)"/>
+                <stop offset="1" stop-color="oklch(63% 0.23 305)"/>
+              </linearGradient>
+            </defs>
+            <g id="ringOpen">
+              <circle class="track" cx="11" cy="11" r="9" fill="none" stroke-width="2.5"/>
+              <circle class="arc" cx="11" cy="11" r="9" fill="none" stroke="url(#grad)"
+                      stroke-width="2.5" stroke-linecap="round"
+                      stroke-dasharray="56.55" stroke-dashoffset="56.55" transform="rotate(-90 11 11)"/>
+            </g>
+            <g id="ringDone" style="display:none">
+              <circle class="disc" cx="11" cy="11" r="10" fill="oklch(63% 0.17 155)"/>
+              <path d="M6.8 11.4 l2.9 2.9 l5.5 -6" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        </button>
+        <span id="goaltext" class="placeholder" title="Click to set your goal">What&rsquo;s your one thing today?<span class="strike"></span></span>
+        <input id="goalinput" type="text" placeholder="One thing for today…" maxlength="100" style="display:none" aria-label="Your goal for today">
+        <span id="streak" title="Consecutive completed days">🔥<b id="streakN">2</b></span>
+      </div>
+      <div class="cardfoot">
+        <span id="dots" title="Last 7 days — today is the last dot"></span>
+        <span id="hoursleft"></span>
+      </div>
+    </div>
+  </div>
 
   <main>
+    <!-- ============ hero ============ -->
     <section class="hero wrap">
-      <div class="hint rise d1" aria-hidden="true">
+      <div class="up-hint rise d1" aria-hidden="true">
         <svg width="15" height="26" viewBox="0 0 15 26" fill="none">
           <path d="M7.5 25 C 4 18, 10 12, 7.5 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           <path d="M3.5 6.5 L 7.5 1.5 L 11 6.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         </svg>
-        that&rsquo;s the whole app, floating over this page — try the ring
+        that one&rsquo;s real — rest your pointer on it
       </div>
       <h1 class="rise d2">One goal.<br>Always <span class="insight">in&nbsp;sight.</span></h1>
-      <p class="sub rise d3">A 1&nbsp;MB native pill that floats above every window, every Space, even full-screen apps — without ever being in the way: clicks pass straight through it. Set one thing each morning. It stays — and nudges, if you ask — until it&rsquo;s done.</p>
+      <p class="sub rise d3">Daily Goal puts your one thing for today in the Mac notch — the only pixel of your screen no window ever covers. It stays, quietly, until it&rsquo;s done.</p>
       <div class="cta rise d4">
-        <div>
-          <a class="btn" href="https://github.com/jpwahle/daily-goal/releases/latest/download/DailyGoal.dmg">Download for&nbsp;macOS</a>
-          <small>Free &amp; open source&ensp;·&ensp;macOS 13+&ensp;·&ensp;Apple&nbsp;Silicon &amp; Intel</small>
+        <a class="btn" href="https://github.com/jpwahle/daily-goal/releases/latest/download/DailyGoal.dmg">Download for&nbsp;macOS</a>
+        <a class="btn-ghost" href="#how">Watch how it works</a>
+      </div>
+      <p class="fine rise d4">Free &amp; open source&ensp;·&ensp;macOS 13+&ensp;·&ensp;Apple&nbsp;Silicon &amp; Intel&ensp;·&ensp;1&nbsp;MB</p>
+    </section>
+
+    <!-- ============ the film ============ -->
+    <section class="film" id="how" aria-label="How Daily Goal works, scene by scene">
+      <div class="stage">
+        <div class="cam" id="cam">
+          <div class="mac" aria-hidden="true">
+            <div class="lid">
+              <div class="screen" id="screen">
+                <div class="wall"></div>
+                <div class="shade" aria-hidden="true"></div>
+
+                <div class="editor" aria-hidden="true">
+                  <div class="ed-bar">
+                    <span class="lights"><i></i><i></i><i></i></span>
+                    <span class="title">demo.swift — the thing that matters today</span>
+                  </div>
+                  <div class="ed-body">
+                    <div class="ed-side"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                    <div class="ed-main">
+                      <i class="w1"></i><i class="w2 in"></i><i class="w5 in"></i><i class="w4 in"></i>
+                      <i class="w3"></i><i class="w6 in"></i><i class="w2 in"></i><i class="w4"></i>
+                      <i class="w5"></i><i class="w1 in"></i><i class="w4 in"></i><i class="w2"></i>
+                      <i class="w6 in"></i><i class="w5 in"></i><i class="w4 in"></i><i class="w3"></i>
+                      <i class="w2 in"></i><i class="w4 in"></i><i class="w1"></i><i class="w5 in"></i>
+                      <i class="w4 in"></i><i class="w6"></i><i class="w2 in"></i><i class="w4 in"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mbar" id="mbar">
+                  <div class="ml">
+                    <svg width="26" height="30" viewBox="0 0 17 20" fill="rgba(255,255,255,0.92)"><path d="M14.1 10.6c0-2.2 1.8-3.3 1.9-3.4-1-1.5-2.6-1.7-3.2-1.7-1.4-.1-2.7.8-3.4.8-.7 0-1.8-.8-2.9-.8C5 5.5 3.6 6.3 2.8 7.6c-1.6 2.7-.4 6.8 1.1 9 .7 1.1 1.6 2.3 2.8 2.3 1.1 0 1.5-.7 2.9-.7 1.3 0 1.7.7 2.9.7 1.2 0 2-1.1 2.7-2.2.9-1.3 1.2-2.5 1.2-2.6-.1 0-2.3-.9-2.3-3.5zM11.9 3.9c.6-.8 1-1.8.9-2.9-.9 0-2 .6-2.6 1.4-.6.7-1.1 1.8-.9 2.8 1 .1 2-.5 2.6-1.3z"/></svg>
+                    <b>Finder</b><span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Window</span><span>Help</span>
+                  </div>
+                  <div class="mr">
+                    <span class="sticon" aria-hidden="true">
+                      <!-- circle.dashed → target → checkmark.circle.fill -->
+                      <svg id="st-empty" class="on" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                        <circle cx="18" cy="18" r="13" stroke="rgba(255,255,255,0.9)" stroke-width="3.4" stroke-dasharray="4.5 5.7" stroke-linecap="round"/>
+                      </svg>
+                      <svg id="st-active" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                        <circle cx="18" cy="18" r="13.4" stroke="rgba(255,255,255,0.92)" stroke-width="3.2"/>
+                        <circle cx="18" cy="18" r="7" stroke="rgba(255,255,255,0.92)" stroke-width="3.2"/>
+                        <circle cx="18" cy="18" r="2" fill="rgba(255,255,255,0.92)"/>
+                      </svg>
+                      <svg id="st-done" width="36" height="36" viewBox="0 0 36 36">
+                        <circle cx="18" cy="18" r="15" fill="rgba(255,255,255,0.94)"/>
+                        <path d="M11 18.6 l4.6 4.6 l9-10" fill="none" stroke="#141317" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                    <svg width="34" height="26" viewBox="0 0 34 26" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="3" stroke-linecap="round">
+                      <path d="M4 10 a 18 18 0 0 1 26 0"/><path d="M9.5 15.5 a 11 11 0 0 1 15 0"/><path d="M15 21 a 4.5 4.5 0 0 1 4 0"/>
+                    </svg>
+                    <svg width="46" height="24" viewBox="0 0 46 24" fill="none">
+                      <rect x="1.5" y="2.5" width="36" height="19" rx="5.5" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+                      <rect x="4.5" y="5.5" width="24" height="13" rx="3" fill="rgba(255,255,255,0.92)"/>
+                      <path d="M41 8 v8 a 4.2 4.2 0 0 0 0 -8z" fill="rgba(255,255,255,0.5)"/>
+                    </svg>
+                    <span id="mclock" style="font-variant-numeric: tabular-nums">Mon 09:41</span>
+                  </div>
+                </div>
+
+                <div class="dgmenu" id="dgmenu" aria-hidden="true">
+                  <div class="mi head"><span class="chk">✓</span> Ship the demo build</div>
+                  <div class="mi dim">🔥&ensp;4-day streak</div>
+                  <div class="mi dim">Last 7 days
+                    <span class="wk"><i class="d"></i><i class="d"></i><i class="m"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></span>
+                  </div>
+                  <div class="sep"></div>
+                  <div class="mi">Edit Goal… <span class="kbd">⌘E</span></div>
+                  <div class="mi">Mark as Not Done <span class="kbd">⌘D</span></div>
+                  <div class="sep"></div>
+                  <div class="mi">Remind Me <span class="kbd">Every hour ▸</span></div>
+                  <div class="mi">Show In Notch</div>
+                </div>
+
+                <div class="notch"><span class="cameraDot"></span></div>
+
+                <!-- the island, at 2× app metrics -->
+                <div class="isl" id="cin" data-state="empty-closed" aria-hidden="true">
+                  <div class="i-mini">
+                    <span class="i-ringS">
+                      <svg width="30" height="30" viewBox="0 0 30 30">
+                        <defs>
+                          <linearGradient id="cgrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="rgb(84,115,255)"/>
+                            <stop offset="1" stop-color="rgb(168,89,252)"/>
+                          </linearGradient>
+                          <linearGradient id="cgreen" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="rgb(56,204,115)"/>
+                            <stop offset="1" stop-color="rgb(26,166,133)"/>
+                          </linearGradient>
+                        </defs>
+                        <g class="ring-open">
+                          <circle class="trackS" cx="15" cy="15" r="12.2" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="2.7" stroke-dasharray="3.6 4.2" stroke-linecap="round"/>
+                          <circle class="arcS" cx="15" cy="15" r="12.2" fill="none" stroke="url(#cgrad)" stroke-width="3.3" stroke-linecap="round"
+                                  stroke-dasharray="76.65" stroke-dashoffset="76.65" transform="rotate(-90 15 15)"/>
+                        </g>
+                        <g class="ring-done">
+                          <circle cx="15" cy="15" r="14" fill="url(#cgreen)"/>
+                          <path d="M9 15.6 l4 4 l7.6 -8.4" fill="none" stroke="white" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                      </svg>
+                    </span>
+                    <span class="i-gap"></span>
+                    <span class="i-goal placeholder" id="cinMini">Set today&rsquo;s goal<span class="mini-strike"></span></span>
+                    <span class="i-streak" id="cinMiniStreak">
+                      <svg width="19" height="22" viewBox="0 0 12 14" fill="url(#cflame)"><defs><linearGradient id="cflame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgb(255,159,10)"/><stop offset="1" stop-color="rgb(255,107,51)"/></linearGradient></defs><path d="M6.6.3C7 2.4 9 3.6 10.2 5.3c1.3 1.8 1.6 4.3.3 6.2A5.6 5.6 0 0 1 6 14a5.6 5.6 0 0 1-4.6-2.4C.1 9.7.3 7 1.8 5.2c.3 .8 .8 1.5 1.6 1.9C3 5 3.5 2.9 5 1.4 5.5.9 6 .5 6.6.3z"/></svg>
+                      <b id="cinMiniStreakN">3</b>
+                    </span>
+                  </div>
+
+                  <div class="i-card">
+                    <div class="i-row">
+                      <span class="i-ringL">
+                        <svg width="48" height="48" viewBox="0 0 48 48">
+                          <g class="ring-open">
+                            <circle class="trackL" cx="24" cy="24" r="19.8" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="5.3"/>
+                            <circle class="trackLdash" cx="24" cy="24" r="19.8" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="4.2" stroke-dasharray="5.8 6.7" stroke-linecap="round" opacity="0"/>
+                            <circle class="arcL" cx="24" cy="24" r="19.8" fill="none" stroke="url(#cgrad)" stroke-width="5.3" stroke-linecap="round"
+                                    stroke-dasharray="124.4" stroke-dashoffset="124.4" transform="rotate(-90 24 24)"/>
+                          </g>
+                          <g class="ring-done">
+                            <circle cx="24" cy="24" r="22" fill="url(#cgreen)"/>
+                            <path d="M14.5 25 l6.4 6.4 l12.4 -13.6" fill="none" stroke="white" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </g>
+                        </svg>
+                      </span>
+                      <span class="i-text placeholder" id="cinText"><span class="tin"><span id="cinGoal">What&rsquo;s your one thing today?</span><span class="strikeL"></span></span><span class="caret"></span></span>
+                      <span class="i-chip" id="cinChip">
+                        <svg width="21" height="24" viewBox="0 0 12 14" fill="url(#cflame)"><path d="M6.6.3C7 2.4 9 3.6 10.2 5.3c1.3 1.8 1.6 4.3.3 6.2A5.6 5.6 0 0 1 6 14a5.6 5.6 0 0 1-4.6-2.4C.1 9.7.3 7 1.8 5.2c.3 .8 .8 1.5 1.6 1.9C3 5 3.5 2.9 5 1.4 5.5.9 6 .5 6.6.3z"/></svg>
+                        <b id="cinChipN">3</b>
+                      </span>
+                    </div>
+                    <div class="i-foot">
+                      <span class="i-dots" id="cinDots">
+                        <i class="done"></i><i class="done"></i><i class="missed"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="pending" id="cinToday"></i>
+                      </span>
+                      <span class="i-hint">return to save&ensp;&middot;&ensp;esc to cancel</span>
+                      <span class="i-hours" id="cinHours">13h left</span>
+                    </div>
+                  </div>
+
+                  <div class="i-burst" id="cinBurst"></div>
+                </div>
+
+                <!-- the cursor -->
+                <div class="pt" id="pt">
+                  <svg viewBox="0 0 28 28">
+                    <path d="M8 4 L8 21.5 L12.4 17.6 L15 23.4 L17.8 22.1 L15.2 16.4 L21 16.2 Z"
+                          fill="#0b0b0d" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+
+              </div>
+            </div>
+            <div class="base"></div>
+          </div>
         </div>
-        <span class="alt">or <a href="https://github.com/jpwahle/daily-goal#install">build from source</a> — <code>./build.sh --run</code></span>
+
+        <!-- captions -->
+        <div class="caps">
+          <div class="cap" data-i="0">
+            <h3>Your Mac has one pixel no window ever covers.</h3>
+            <p>The notch. Daily Goal moves in — <span class="k">pixel-matched to the camera housing</span>, invisible until you need it.</p>
+          </div>
+          <div class="cap" data-i="1">
+            <h3>Point at the notch. Type your one thing.</h3>
+            <p>It springs open into a text field. <span class="k">Return</span> — and that&rsquo;s the whole setup.</p>
+          </div>
+          <div class="cap" data-i="2">
+            <h3>Then it just lives there.</h3>
+            <p>The ring is your day, filling as time passes — <span class="t-violet">violet</span>, then <span class="t-amber">amber</span>, then red. On every Space. <span class="k">Even in full screen.</span></p>
+          </div>
+          <div class="cap" data-i="3">
+            <h3>Come closer for the full picture.</h3>
+            <p>Streak, the last seven days, hours left. <span class="k">Click the text to edit.</span> Leave, and it gets out of your way.</p>
+          </div>
+          <div class="cap" data-i="4">
+            <h3>Click the ring. Savor it.</h3>
+            <p>A spring-loaded check, a strikethrough, <span class="t-green">confetti out of the notch</span>. From day two, a 🔥 streak keeps count.</p>
+          </div>
+          <div class="cap" data-i="5">
+            <h3>The menu bar keeps score.</h3>
+            <p>Dashed circle → target → <span class="t-green">checkmark</span>. Your week, one glance away — even with the island hidden.</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="moments" id="feels">
-      <div class="wrap">
-        <h2 class="lead reveal">Four functions. Each one earns its place.</h2>
-
-        <div class="row reveal">
-          <div>
-            <h3>The day is the deadline.</h3>
-            <p>The ring around the checkbox <span class="k">fills as your day passes</span> — <span class="t-violet">violet</span> most of the day, <span class="t-amber">amber</span> under three hours, red in the final one.</p>
-            <p>No feeds, no badges. Just quiet pressure at the edge of your vision.</p>
-          </div>
-          <div class="shot">
-            <picture>
-              <source media="(prefers-color-scheme: dark)" srcset="shot-active-dark.png">
-              <img src="shot-active.png" alt="The pill showing a goal with the day-progress ring and a 3-day streak" width="334" height="118" loading="lazy">
-            </picture>
+    <!-- ============ nudges ============ -->
+    <section class="copy wrap" id="nudges">
+      <h2 class="lead reveal">It nudges.<br><span class="insight">You decide how often.</span></h2>
+      <div class="nudgegrid">
+        <div class="reveal">
+          <p>Pick a rhythm in the menu bar. While today&rsquo;s goal is open, the notch <span class="k">opens itself and glows violet</span> for a moment — no banner, no badge, no sound.</p>
+          <p>Away from the Mac? The reminder becomes a single <span class="k">notification</span> that waits for you — a fresh one replaces the old instead of stacking. Done for the day means silence.</p>
+          <div class="chips" aria-label="Reminder rhythm options">
+            <span>Off</span><span>30 min</span><span class="hot">Every hour</span><span>2 h</span><span>3 h</span>
           </div>
         </div>
-
-        <div class="row flip reveal">
-          <div>
-            <h3>Finishing feels like something.</h3>
-            <p>Click the ring: a <span class="t-green">spring-loaded check</span>, an animated strikethrough, a burst of confetti, a soft pop. From day two, a 🔥 streak counts how long you&rsquo;ve kept it up.</p>
-            <p>Un-check by mistake? Everything restores exactly — the streak only dies if you actually miss a day.</p>
-          </div>
-          <div class="shot">
-            <picture>
-              <source media="(prefers-color-scheme: dark)" srcset="shot-done-dark.png">
-              <img src="shot-done.png" alt="The completed pill: green check, strikethrough, streak at 4" width="334" height="118" loading="lazy">
-            </picture>
-          </div>
-        </div>
-
-        <div class="row reveal">
-          <div>
-            <h3>It nudges. You decide how often.</h3>
-            <p>Pick a rhythm in the menu bar — every 30 minutes up to every 3 hours, or off. While the goal is open, the pill <span class="k">hops and glows violet</span> to catch your eye, like it does at the top of this page.</p>
-            <p>Away from the Mac? The reminder becomes a <span class="k">notification</span> instead, waiting when you come back. Done for the day means silence.</p>
-          </div>
-          <div class="shot">
-            <picture>
-              <source media="(prefers-color-scheme: dark)" srcset="shot-nudge-dark.png">
-              <img src="shot-nudge.png" alt="The pill mid-reminder, glowing violet to catch your eye" width="334" height="118" loading="lazy">
-            </picture>
-          </div>
-        </div>
-
-        <div class="row flip reveal">
-          <div>
-            <h3>Every morning, a clean slate.</h3>
-            <p>The day flips at <span class="k">4&nbsp;a.m., not midnight</span> — a 1&nbsp;a.m. finish still counts for the evening it belongs to.</p>
-            <p>Yesterday archives itself, and the empty pill breathes gently until you give it the next one thing.</p>
-          </div>
-          <div class="shot">
-            <picture>
-              <source media="(prefers-color-scheme: dark)" srcset="shot-empty-dark.png">
-              <img src="shot-empty.png" alt="The empty pill inviting: What's your one thing today?" width="347" height="118" loading="lazy">
-            </picture>
-          </div>
+        <div class="reveal">
+          <button class="try-nudge" type="button" id="tryNudge">
+            <svg width="14" height="16" viewBox="0 0 15 26" fill="none" aria-hidden="true">
+              <path d="M7.5 25 C 4 18, 10 12, 7.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M3.5 6.5 L 7.5 1.5 L 11 6.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            Try a nudge on the island up top
+          </button>
+          <p class="nudge-note">It&rsquo;ll open and glow for a moment — exactly what a reminder feels like.</p>
         </div>
       </div>
     </section>
 
-    <section class="details wrap reveal">
-      <h2>The quiet details</h2>
-      <ul>
-        <li><strong>Never steals focus — or clicks</strong> — your mouse works on whatever is behind the pill; hovering ghosts it out of the way</li>
-        <li><strong>Hold ⌥ to grab it</strong> — check off, edit, or drag; a small hint teaches this, then retires</li>
-        <li><strong>Fades when idle</strong> — dims to a whisper after 8&nbsp;s</li>
-        <li><strong>Drag it anywhere</strong> — ⌥-drag, with magnetic snap points; the position is remembered</li>
-        <li><strong>Menu-bar glance</strong> — dashed circle → target → checkmark</li>
+    <!-- ============ quiet details ============ -->
+    <section class="copy wrap details" id="details">
+      <h2 class="lead reveal">The quiet <span class="insight">details.</span></h2>
+      <ul class="reveal">
+        <li><strong>Pixel-matched to your notch</strong> — height, width, and corner curves measured from the system, exact on every notched Mac</li>
+        <li><strong>No notch, no problem</strong> — on other Macs and external displays it hangs from the top edge as its own little island</li>
+        <li><strong>Closed means closed</strong> — the island ignores your mouse entirely; clicks land on whatever is behind it</li>
+        <li><strong>Never steals focus</strong> — the panel is non-activating; it only takes the keyboard while you type in it</li>
+        <li><strong>Every morning, a clean slate</strong> — the day flips at 4&nbsp;a.m., not midnight, so a 1&nbsp;a.m. finish still counts</li>
         <li><strong>Reminders stay polite</strong> — they replace, never stack, and respect Focus modes</li>
         <li><strong>Launch at login</strong> — one toggle, no daemon</li>
         <li><strong>No accounts, no telemetry</strong> — your data never leaves the Mac</li>
       </ul>
     </section>
 
-    <section class="faq wrap" id="faq">
+    <!-- ============ faq ============ -->
+    <section class="copy wrap faq" id="faq">
       <h2 class="reveal">Common questions.</h2>
       <details class="reveal">
         <summary>Is the download safe to open?</summary>
         <p>Yes — releases are signed with an Apple Developer&nbsp;ID certificate and notarized by Apple, so macOS opens Daily Goal without any warnings. Prefer to see for yourself? It&rsquo;s open source — build it in about ten seconds.</p>
       </details>
       <details class="reveal">
-        <summary>Doesn&rsquo;t a floating pill get in the way?</summary>
-        <p>No — the pill is click-through. Your clicks land on whatever is behind it, and pointing at it fades it out of the way so you can see what&rsquo;s underneath. When you actually want the pill — to check off, edit, or move it — hold <span style="font-weight:600">⌥</span> while over it. An empty pill, like each new morning, is simply clickable: no modifier needed to set your goal. Prefer the classic always-clickable pill? Toggle <span style="font-weight:600">Click Through</span> off in the menu bar.</p>
+        <summary>Doesn&rsquo;t it get in the way?</summary>
+        <p>No — it lives in the notch, the one part of the screen nothing else uses, and while closed it ignores your mouse completely: clicks land on the menu bar and windows behind it. It only becomes real when you rest your pointer on the notch — and closes again the moment you leave. A cursor merely passing the top of the screen doesn&rsquo;t open it.</p>
+      </details>
+      <details class="reveal">
+        <summary>My Mac has no notch. Does this still work?</summary>
+        <p>Yes — on Macs without a notch (and on external displays) the island hangs from the top edge of the screen as its own little Dynamic Island, same behavior, same look. On notched MacBooks it measures the real housing from the system, so the fit is pixel-exact on every model.</p>
       </details>
       <details class="reveal">
         <summary>How do the reminders behave?</summary>
-        <p>On the schedule you pick (default: every hour), while today&rsquo;s goal is still open. At the Mac, the pill bounces and glows — no notification clutter. Away for a few minutes, and it posts one macOS notification that waits in Notification Center; a fresh reminder replaces the old one instead of stacking.</p>
+        <p>On the schedule you pick (default: every hour), while today&rsquo;s goal is still open. At the Mac, the notch opens and glows for a moment — no notification clutter. Away for a few minutes, and it posts one macOS notification that waits in Notification Center; a fresh reminder replaces the old one instead of stacking.</p>
         <p>They honor Focus modes, go quiet the moment you finish, and <span style="font-weight:600">Remind Me → Off</span> in the menu bar turns them off entirely.</p>
       </details>
       <details class="reveal">
@@ -591,14 +1188,16 @@
       </details>
     </section>
 
-    <section class="oss">
-      <div class="wrap reveal">
+    <!-- ============ oss ============ -->
+    <section class="copy oss wrap">
+      <div class="reveal">
         <h2>Free forever.<br><span class="insight">Read the source.</span></h2>
-        <p>About a thousand lines of Swift and SwiftUI — a non-activating panel, a state machine for logical days, and a lot of care about how 22 pixels of ring should feel.</p>
+        <p>About a thousand lines of Swift and SwiftUI — a panel pinned over the notch, a shape that matches the housing curve for curve, a state machine for logical days, and a lot of care about how 24 pixels of ring should feel.</p>
         <div class="cta">
           <a class="btn" href="https://github.com/jpwahle/daily-goal/releases/latest/download/DailyGoal.dmg">Download for&nbsp;macOS</a>
           <a class="btn-ghost" href="https://github.com/jpwahle/daily-goal">View on GitHub</a>
         </div>
+        <p class="fine" style="margin-top:18px; color:var(--ink-faint); font-size:13px">or build it yourself — <code>./build.sh --run</code></p>
       </div>
     </section>
   </main>
@@ -610,32 +1209,58 @@
   </footer>
 
   <script>
+  document.documentElement.classList.remove("no-js");
+  document.documentElement.classList.add("js");
+
+  /* ==================================================================
+     Part 1 — the live island at the page's top edge (the real demo).
+     ================================================================== */
   (function () {
     "use strict";
     var $ = function (id) { return document.getElementById(id); };
-    var pill = $("pill"), ring = $("ring"), goalText = $("goaltext"),
+    var island = $("island"), mini = $("isl-mini"),
+        miniText = $("miniText"), miniArc = $("miniArc"),
+        miniOpenG = $("miniOpen"), miniDoneG = $("miniDone"),
+        miniStreak = $("miniStreak"), miniStreakN = $("miniStreakN"),
+        ring = $("ring"), goalText = $("goaltext"),
         input = $("goalinput"), streakEl = $("streak"), streakN = $("streakN"),
         ringOpen = $("ringOpen"), ringDone = $("ringDone"),
+        dotsEl = $("dots"), hoursEl = $("hoursleft"),
         arc = ringOpen.querySelector(".arc"), track = ringOpen.querySelector(".track");
     var C = 56.55; // 2π·9
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var PLACEHOLDER = "What’s your one thing today?";
+    var MINI_PLACEHOLDER = "Set today’s goal";
 
-    // ----- state (persisted, so returning visitors keep their pill) -----
+    var store = (function () {
+      try {
+        var t = window.localStorage;
+        t.setItem("dgProbe", "1"); t.removeItem("dgProbe");
+        return t;
+      } catch (e) {
+        var mem = {};
+        return {
+          getItem: function (k) { return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null; },
+          setItem: function (k, v) { mem[k] = String(v); },
+          removeItem: function (k) { delete mem[k]; }
+        };
+      }
+    })();
     var S = {
-      get goal() { return localStorage.getItem("dgGoal") || ""; },
-      set goal(v) { localStorage.setItem("dgGoal", v); },
-      get done() { return localStorage.getItem("dgDone") === "1"; },
-      set done(v) { localStorage.setItem("dgDone", v ? "1" : "0"); },
-      get day() { return localStorage.getItem("dgDay") || ""; },
-      set day(v) { localStorage.setItem("dgDay", v); },
-      get streak() { return +(localStorage.getItem("dgStreak") || 0); },
-      set streak(v) { localStorage.setItem("dgStreak", v); },
-      get lastDone() { return localStorage.getItem("dgLastDone") || ""; },
-      set lastDone(v) { localStorage.setItem("dgLastDone", v); }
+      get goal() { return store.getItem("dgGoal") || ""; },
+      set goal(v) { store.setItem("dgGoal", v); },
+      get done() { return store.getItem("dgDone") === "1"; },
+      set done(v) { store.setItem("dgDone", v ? "1" : "0"); },
+      get day() { return store.getItem("dgDay") || ""; },
+      set day(v) { store.setItem("dgDay", v); },
+      get streak() { return +(store.getItem("dgStreak") || 0); },
+      set streak(v) { store.setItem("dgStreak", v); },
+      get lastDone() { return store.getItem("dgLastDone") || ""; },
+      set lastDone(v) { store.setItem("dgLastDone", v); },
+      get hist() { try { return JSON.parse(store.getItem("dgHist") || "[]"); } catch (e) { return []; } },
+      set hist(v) { store.setItem("dgHist", JSON.stringify(v.slice(-10))); }
     };
 
-    // logical day flips at 4 a.m., same as the real app
     function dayKey(offsetDays) {
       var d = new Date(Date.now() - 4 * 3600e3 - (offsetDays || 0) * 86400e3);
       return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" +
@@ -648,23 +1273,91 @@
       S.day = today; S.goal = ""; S.done = false;
     }
 
-    // ----- rendering -----
+    var isOpen = false;
+    function openWidth() {
+      var pad = 24, ring = 24, gap = 12;
+      var cap = Math.min(360, window.innerWidth * 0.9);
+      if (input.style.display !== "none") return cap;
+      var ctx = openWidth._ctx || (openWidth._ctx = document.createElement("canvas").getContext("2d"));
+      ctx.font = "700 15px " + getComputedStyle(island).fontFamily;
+      var w = pad * 2 + ring + gap;
+      if (!S.goal) {
+        w += ctx.measureText(PLACEHOLDER).width;
+      } else {
+        w += Math.min(ctx.measureText(S.goal).width, 220);
+        if (S.streak >= 2) w += gap + 40;
+      }
+      return Math.max(240, Math.min(Math.ceil(w), cap));
+    }
+    function sizeIsland() {
+      if (isOpen) {
+        island.style.width = openWidth() + "px";
+        island.style.height = "110px";
+      } else {
+        island.style.width = mini.offsetWidth + "px";
+        island.style.height = "36px";
+      }
+    }
+    function openIsland(autoEdit) {
+      if (isOpen) return;
+      isOpen = true;
+      island.classList.add("open");
+      sizeIsland();
+      if (autoEdit && !S.goal && input.style.display === "none") setTimeout(function () {
+        if (isOpen && !S.goal && island.matches(":hover")) startEdit();
+      }, 260);
+    }
+    function closeIsland() {
+      if (!isOpen) return;
+      if (input.style.display !== "none") return;
+      isOpen = false;
+      island.classList.remove("open");
+      island.classList.remove("nudge");
+      sizeIsland();
+    }
+
     function dayFraction() {
       var d = new Date(Date.now() - 4 * 3600e3);
       var start = new Date(d.getFullYear(), d.getMonth(), d.getDate());
       return Math.min(1, Math.max(0, (d - start) / 86400e3));
     }
+    function ringStroke(hoursLeft) {
+      return hoursLeft < 1 ? "oklch(60% 0.21 25)"
+           : hoursLeft < 3 ? "oklch(70% 0.16 65)" : "url(#grad)";
+    }
     function renderRing() {
       var empty = !S.goal;
+      var f = dayFraction(), hoursLeft = (1 - f) * 24;
       ringOpen.style.display = S.done ? "none" : "";
       ringDone.style.display = S.done ? "" : "none";
+      miniOpenG.style.display = S.done ? "none" : "";
+      miniDoneG.style.display = S.done ? "" : "none";
       if (S.done) return;
       track.classList.toggle("dashed", empty);
-      var f = dayFraction();
       arc.setAttribute("stroke-dashoffset", (C * (1 - f)).toFixed(2));
-      var hoursLeft = (1 - f) * 24;
-      arc.setAttribute("stroke", hoursLeft < 1 ? "oklch(60% 0.21 25)"
-                              : hoursLeft < 3 ? "oklch(70% 0.16 65)" : "url(#grad)");
+      arc.setAttribute("stroke", ringStroke(hoursLeft));
+      miniArc.setAttribute("stroke-dashoffset", (C * (1 - f)).toFixed(2));
+      miniArc.setAttribute("stroke", ringStroke(hoursLeft));
+    }
+    function renderDots() {
+      var html = "";
+      for (var k = 6; k >= 0; k--) {
+        var cls = "";
+        if (k === 0) cls = S.done ? "done" : (S.goal ? "pending" : "");
+        else if (S.hist.indexOf(dayKey(k)) !== -1) cls = "done";
+        html += "<i" + (cls ? ' class="' + cls + '"' : "") + "></i>";
+      }
+      dotsEl.innerHTML = html;
+    }
+    function renderFoot() {
+      if (!S.goal) { hoursEl.textContent = "days end at 4 a.m."; hoursEl.style.color = ""; return; }
+      if (S.done) { hoursEl.textContent = "resets at 4 a.m."; hoursEl.style.color = ""; return; }
+      var hoursLeft = (1 - dayFraction()) * 24;
+      hoursEl.textContent = hoursLeft < 1
+        ? Math.max(1, Math.round(hoursLeft * 60)) + "m left"
+        : Math.floor(hoursLeft) + "h left";
+      hoursEl.style.color = hoursLeft < 1 ? "oklch(65% 0.21 25)"
+                          : hoursLeft < 3 ? "oklch(72% 0.16 65)" : "";
     }
     function render() {
       var empty = !S.goal;
@@ -672,14 +1365,21 @@
       goalText.classList.toggle("done", S.done);
       goalText.childNodes[0].nodeValue = empty ? PLACEHOLDER : S.goal;
       goalText.title = empty ? "Click to set your goal" : "Click to edit";
+      miniText.classList.toggle("placeholder", empty);
+      miniText.classList.toggle("done", S.done);
+      miniText.textContent = empty ? MINI_PLACEHOLDER : S.goal;
       ring.title = empty ? "Set a goal first" : (S.done ? "Done — click to undo" : "Mark as done");
       ring.setAttribute("aria-label", ring.title);
       if (S.streak >= 2) { streakEl.classList.add("on"); streakN.textContent = S.streak; }
       else streakEl.classList.remove("on");
+      if (S.streak >= 2 && !empty) { miniStreak.classList.add("on"); miniStreakN.textContent = S.streak; }
+      else miniStreak.classList.remove("on");
       renderRing();
+      renderDots();
+      renderFoot();
+      sizeIsland();
     }
 
-    // ----- confetti -----
     var palette = ["oklch(70% 0.19 150)", "oklch(80% 0.14 170)", "oklch(85% 0.16 95)",
                    "oklch(75% 0.18 55)", "oklch(72% 0.19 0)", "oklch(65% 0.22 305)",
                    "oklch(65% 0.19 260)"];
@@ -701,26 +1401,29 @@
       }
     }
 
-    // ----- interactions -----
     ring.addEventListener("click", function () {
       if (!S.goal) { startEdit(); return; }
       if (S.done) {
         S.done = false;
         S.streak = Math.max(0, S.streak - 1);
         S.lastDone = S.streak > 0 ? dayKey(1) : "";
+        S.hist = S.hist.filter(function (d) { return d !== dayKey(0); });
       } else {
         S.streak = (S.lastDone === dayKey(1)) ? S.streak + 1 : 1;
         S.lastDone = dayKey(0);
         S.done = true;
+        S.hist = S.hist.concat([dayKey(0)]);
         confetti();
       }
       render();
     });
 
     function startEdit() {
+      openIsland();
       input.value = S.goal;
       goalText.style.display = "none";
       input.style.display = "";
+      sizeIsland();
       input.focus();
     }
     function endEdit(commit) {
@@ -737,44 +1440,379 @@
       if (e.key === "Enter") endEdit(true);
       else if (e.key === "Escape") endEdit(false);
     });
-    input.addEventListener("blur", function () { if (input.style.display !== "none") endEdit(true); });
-
-    // ----- idle dim, like the real thing -----
-    var idleTimer;
-    function wake() {
-      pill.classList.remove("dimmed");
-      clearTimeout(idleTimer);
-      if (S.goal && input.style.display === "none") {
-        idleTimer = setTimeout(function () { pill.classList.add("dimmed"); }, 8000);
+    input.addEventListener("blur", function () {
+      if (input.style.display !== "none") {
+        endEdit(true);
+        if (!island.matches(":hover")) closeIsland();
       }
-    }
-    ["pointermove", "scroll", "keydown", "touchstart"].forEach(function (ev) {
-      window.addEventListener(ev, wake, { passive: true });
     });
 
-    // ----- the reminder nudge, demoed live (like "Remind Me" in the app) -----
+    var leaveTimer;
+    island.addEventListener("pointerenter", function () {
+      clearTimeout(leaveTimer);
+      openIsland(true);
+    });
+    island.addEventListener("pointerleave", function () {
+      clearTimeout(leaveTimer);
+      leaveTimer = setTimeout(function () {
+        if (input.style.display !== "none" && !input.value.trim() && !S.goal) {
+          endEdit(false);
+          input.blur();
+        }
+        closeIsland();
+      }, 260);
+    });
+    island.addEventListener("click", function () { openIsland(true); });
+
     function nudge() {
-      if (reduceMotion || S.done || input.style.display !== "none") return;
-      pill.classList.remove("dimmed");
-      pill.classList.add("nudge");
-      setTimeout(function () { pill.classList.remove("nudge"); }, 1900);
+      if (S.done || input.style.display !== "none" || isOpen) return;
+      if (island.classList.contains("offstage")) return; // the film has the floor
+      openIsland();
+      island.classList.add("nudge");
+      setTimeout(function () {
+        island.classList.remove("nudge");
+        if (!island.matches(":hover")) closeIsland();
+      }, 2400);
     }
-    setTimeout(function () {
+    window.__dgNudge = function () {
+      var tries = 0;
+      (function attempt() {
+        if (!island.classList.contains("offstage")) {
+          if (isOpen) { closeIsland(); setTimeout(nudge, 500); }
+          else nudge();
+        } else if (++tries < 20) setTimeout(attempt, 250); // wait out the scroll back up
+      })();
+    };
+    if (!reduceMotion) setTimeout(function () {
       nudge();
       setInterval(nudge, 45000);
     }, 14000);
 
-    // ----- boot -----
     rollover();
     render();
-    wake();
-    setInterval(function () { rollover(); renderRing(); }, 30000);
+    setInterval(function () { rollover(); renderRing(); renderFoot(); }, 30000);
     document.addEventListener("visibilitychange", function () {
       if (!document.hidden) { rollover(); render(); }
     });
+    window.addEventListener("resize", sizeIsland);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeIsland);
+  })();
 
-    // scroll reveals — anything already on screen shows immediately, the
-    // rest reveals as it scrolls into view
+  /* ==================================================================
+     Part 2 — the film: scroll scrubs the story inside the MacBook.
+     Camera, cursor, ring fill, typing and clock are scrub-locked;
+     island state changes spring via CSS transitions, like the real app.
+     ================================================================== */
+  (function () {
+    "use strict";
+    var film = document.querySelector(".film");
+    if (!film) return;
+    var cam = document.getElementById("cam"),
+        screen = document.getElementById("screen"),
+        isl = document.getElementById("cin"),
+        cinText = document.getElementById("cinText"),
+        cinGoal = document.getElementById("cinGoal"),
+        cinMini = document.getElementById("cinMini"),
+        cinHours = document.getElementById("cinHours"),
+        cinToday = document.getElementById("cinToday"),
+        chipN = document.getElementById("cinChipN"),
+        miniStreakN = document.getElementById("cinMiniStreakN"),
+        pt = document.getElementById("pt"),
+        clock = document.getElementById("mclock"),
+        menu = document.getElementById("dgmenu"),
+        burstEl = document.getElementById("cinBurst"),
+        caps = [].slice.call(document.querySelectorAll(".cap")),
+        arcS = isl.querySelector(".arcS"),
+        arcL = isl.querySelector(".arcL"),
+        trackL = isl.querySelector(".trackL"),
+        trackLdash = isl.querySelector(".trackLdash"),
+        trackS = isl.querySelector(".trackS"),
+        caret = cinText.querySelector(".caret"),
+        strikeL = cinText.querySelector(".strikeL");
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    var GOAL = "Ship the demo build";
+    var PLACEHOLDER = "What’s your one thing today?";
+    var CS = 76.65, CL = 124.4; // ring circumferences (small, large)
+
+    // laptop logical geometry (2× app points)
+    var MAC_W = 2480, MAC_H = 1692;      // lid + base
+    var NOTCH_CX = 1240;                 // laptop x of notch center
+    var SCREEN_X = 40, SCREEN_Y = 40;    // screen origin inside laptop
+
+    // ---------- tiny timeline helpers ----------
+    function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+    function seg(p, a, b) { return clamp((p - a) / (b - a), 0, 1); }
+    function io(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    // track: piecewise keyframes [{t, v}], eased in-out per segment
+    function track(keys, p) {
+      if (p <= keys[0].t) return keys[0].v;
+      for (var i = 1; i < keys.length; i++) {
+        if (p <= keys[i].t) {
+          var t = io(seg(p, keys[i - 1].t, keys[i].t));
+          return lerp(keys[i - 1].v, keys[i].v, t);
+        }
+      }
+      return keys[keys.length - 1].v;
+    }
+
+    // ---------- camera ----------
+    // scales are resolved on resize; keyframes reference them by name
+    var S0 = 0.4, S1 = 0.9, S2 = 0.8;
+    function resolveScales() {
+      var vw = window.innerWidth, vh = window.innerHeight;
+      S0 = Math.min(0.88 * vw / MAC_W, 0.60 * vh / MAC_H);
+      // close-ups show less context on narrow screens so the island stays readable
+      S1 = Math.min(0.92 * vw, 1300) / clamp(vw * 1.39, 980, 2000);
+      S2 = Math.min(0.92 * vw, 1300) / clamp(vw * 1.55, 900, 1800);
+      if (reduceMotion) { S1 = S0; S2 = S0; }
+    }
+    // focus keyframes: [t, s-name, fx, fy, cy(view anchor 0..1)]
+    var CAMK = [
+      [0.000, "S0", 1240, 846, 0.42],
+      [0.095, "S0", 1240, 846, 0.42],
+      [0.150, "S1", 1240, 240, 0.30],
+      [0.300, "S1", 1240, 240, 0.30],
+      [0.365, "S0", 1240, 846, 0.42],
+      [0.480, "S0", 1240, 846, 0.42],
+      [0.545, "S1", 1240, 240, 0.30],
+      [0.800, "S1", 1240, 240, 0.30],
+      [0.880, "S2", 1620, 350, 0.36],
+      [1.000, "S2", 1620, 350, 0.36]
+    ];
+    function sVal(name) { return name === "S0" ? S0 : name === "S1" ? S1 : S2; }
+    function camera(p) {
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var a = CAMK[0], b = CAMK[CAMK.length - 1];
+      for (var i = 1; i < CAMK.length; i++) {
+        if (p <= CAMK[i][0]) { a = CAMK[i - 1]; b = CAMK[i]; break; }
+        a = CAMK[i]; b = CAMK[i];
+      }
+      var t = a === b ? 1 : io(seg(p, a[0], b[0]));
+      var s = lerp(sVal(a[1]), sVal(b[1]), t);
+      var fx = lerp(a[2], b[2], t);
+      var fy = lerp(a[3], b[3], t);
+      var cy = lerp(a[4], b[4], t);
+      var tx = vw / 2 - s * fx;
+      var ty = vh * cy - s * fy;
+      cam.style.transform = "translate3d(" + tx.toFixed(2) + "px," + ty.toFixed(2) + "px,0) scale(" + s.toFixed(4) + ")";
+    }
+
+    // ---------- cursor (screen coordinates) ----------
+    var CURX = [
+      { t: 0.105, v: 1720 }, { t: 0.158, v: 1284 }, { t: 0.200, v: 1150 },
+      { t: 0.270, v: 1150 }, { t: 0.310, v: 1760 },
+      { t: 0.470, v: 1930 }, { t: 0.548, v: 1266 }, { t: 0.612, v: 1120 },
+      { t: 0.664, v: 968 },  { t: 0.735, v: 968 },  { t: 0.800, v: 1840 },
+      { t: 0.858, v: 2210 }, { t: 0.900, v: 2015 }, { t: 0.930, v: 2015 }
+    ];
+    var CURY = [
+      { t: 0.105, v: 940 }, { t: 0.158, v: 84 }, { t: 0.200, v: 138 },
+      { t: 0.270, v: 138 }, { t: 0.310, v: 800 },
+      { t: 0.470, v: 900 }, { t: 0.548, v: 88 }, { t: 0.612, v: 132 },
+      { t: 0.664, v: 128 }, { t: 0.735, v: 128 }, { t: 0.800, v: 880 },
+      { t: 0.858, v: 700 }, { t: 0.900, v: 44 },  { t: 0.930, v: 44 }
+    ];
+    function cursorOpacity(p) {
+      if (p < 0.105 || p > 0.94) return 0;
+      if (p < 0.122) return seg(p, 0.105, 0.122);
+      if (p >= 0.30 && p < 0.49) return clamp(1 - seg(p, 0.30, 0.335) + seg(p, 0.465, 0.49), 0, 1);
+      if (p >= 0.775 && p < 0.875) return clamp(1 - seg(p, 0.775, 0.81) + seg(p, 0.845, 0.875), 0, 1);
+      return 1;
+    }
+
+    // ---------- state thresholds ----------
+    var STATES = [
+      [0.000, "empty-closed"],
+      [0.172, "empty-open"],
+      [0.190, "editing"],
+      [0.282, "card"],        // return pressed — committed
+      [0.310, "set-closed"],
+      [0.556, "card"],
+      [0.790, "done-closed"], // done + collapsed on the way out
+      [0.845, "done-closed"]
+    ];
+    function stateAt(p) {
+      var st = STATES[0][1];
+      for (var i = 0; i < STATES.length; i++) if (p >= STATES[i][0]) st = STATES[i][1];
+      return st;
+    }
+
+    // ---------- ring fill (synced to the menu-bar clock, 4 a.m. boundary) ----------
+    var FILL = [
+      { t: 0.00, v: 0.24 }, { t: 0.30, v: 0.24 },
+      { t: 0.47, v: 0.475 }, { t: 0.69, v: 0.50 }
+    ];
+
+    // done happens at:
+    var T_DONE = 0.700, T_PRESS = 0.682;
+
+    // ---------- confetti ----------
+    var burstReady = true;
+    (function buildConfetti() {
+      var colors = ["rgb(64,199,120)", "rgb(120,220,180)", "rgb(255,214,80)",
+                    "rgb(255,159,80)", "rgb(255,110,150)", "rgb(190,120,255)", "rgb(110,150,255)"];
+      for (var i = 0; i < 18; i++) {
+        var el = document.createElement("i");
+        el.className = "cin-confetto" + (Math.random() < 0.5 ? " round" : "");
+        var ang = Math.random() * Math.PI * 2, dist = 60 + Math.random() * 110;
+        el.style.setProperty("--tx", Math.cos(ang) * dist + "px");
+        el.style.setProperty("--ty", (Math.sin(ang) * dist + 30) + "px");
+        el.style.setProperty("--r", (Math.random() * 520 - 260) + "deg");
+        el.style.setProperty("--c", colors[(Math.random() * colors.length) | 0]);
+        el.style.animationDelay = (Math.random() * 0.08) + "s";
+        burstEl.appendChild(el);
+      }
+    })();
+
+    // ---------- clock ----------
+    function clockText(p) {
+      var mins = Math.round(track([{ t: 0.30, v: 581 }, { t: 0.47, v: 924 }], p)); // 09:41 → 15:24
+      var h = Math.floor(mins / 60), m = mins % 60;
+      return "Mon " + String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+    }
+
+    // ---------- caption windows ----------
+    var CAPW = [
+      [-0.10, 0.098], [0.108, 0.292], [0.315, 0.470],
+      [0.505, 0.640], [0.658, 0.780], [0.845, 1.200]
+    ];
+
+    // ---------- apply ----------
+    var lastState = "", lastChars = -1, lastClock = "", fired = false, lastIcon = "";
+    function apply(p) {
+      camera(p);
+
+      // island state (CSS transitions animate the change)
+      var st = stateAt(p);
+      if (st !== lastState) {
+        isl.dataset.state = st;
+        lastState = st;
+      }
+
+      // typing
+      var typed = Math.round(seg(p, 0.196, 0.272) * GOAL.length);
+      if (p < 0.19) typed = -1; // placeholder
+      if (p >= 0.272) typed = GOAL.length;
+      if (typed !== lastChars) {
+        lastChars = typed;
+        if (typed < 0) {
+          cinText.classList.add("placeholder");
+          cinGoal.textContent = PLACEHOLDER;
+        } else {
+          cinText.classList.remove("placeholder");
+          cinGoal.textContent = typed === 0 ? "​" : GOAL.slice(0, typed);
+        }
+        cinMini.classList.toggle("placeholder", p < 0.28);
+        cinMini.childNodes[0].nodeValue = p < 0.28 ? "Set today’s goal" : GOAL;
+      }
+
+      // dashed ring while no goal
+      var hasGoal = p >= 0.272;
+      trackL.style.opacity = hasGoal ? 1 : 0;
+      trackLdash.style.opacity = hasGoal ? 0 : 1;
+      trackS.style.strokeDasharray = hasGoal ? "none" : "3.6 4.2";
+      trackS.style.stroke = hasGoal ? "rgba(255,255,255,0.16)" : "rgba(255,255,255,0.30)";
+      arcS.style.opacity = hasGoal ? 1 : 0;
+      arcL.style.opacity = hasGoal ? 1 : 0;
+
+      // ring fill
+      var f = track(FILL, p);
+      arcS.setAttribute("stroke-dashoffset", (CS * (1 - f)).toFixed(2));
+      arcL.setAttribute("stroke-dashoffset", (CL * (1 - f)).toFixed(2));
+      var hrs = Math.floor((1 - f) * 24);
+      cinHours.textContent = p >= T_DONE ? "resets at 4 a.m."
+                           : p < 0.282 ? "days end at 4 a.m."
+                           : hrs + "h left";
+
+      // done
+      var done = p >= T_DONE;
+      isl.classList.toggle("done", done);
+      isl.classList.toggle("press", p >= T_PRESS && p < T_DONE + 0.012);
+      isl.classList.toggle("celebrate", done && p < 0.76);
+      cinToday.className = done ? "done" : "pending";
+      chipN.textContent = done ? "4" : "3";
+      miniStreakN.textContent = done ? "4" : "3";
+      if (done && burstReady && p < 0.78 && !reduceMotion) {
+        isl.classList.add("burst"); burstReady = false;
+      }
+      if (!done && !burstReady) {
+        isl.classList.remove("burst"); burstReady = true;
+      }
+
+      // full-screen app
+      screen.classList.toggle("win", p >= 0.375 && p < 0.86);
+      screen.classList.toggle("fullscreen", p >= 0.415 && p < 0.815);
+
+      // clock
+      var ct = clockText(p);
+      if (ct !== lastClock) { clock.textContent = ct; lastClock = ct; }
+
+      // menu-bar status icon
+      var icon = p < 0.282 ? "st-empty" : done ? "st-done" : "st-active";
+      if (icon !== lastIcon) {
+        ["st-empty", "st-active", "st-done"].forEach(function (id) {
+          document.getElementById(id).classList.toggle("on", id === icon);
+        });
+        lastIcon = icon;
+      }
+
+      // dropdown menu
+      menu.classList.toggle("on", p >= 0.912);
+
+      // cursor
+      var cop = reduceMotion ? 0 : cursorOpacity(p);
+      pt.style.opacity = cop.toFixed(3);
+      if (cop > 0) {
+        var cx = track(CURX, p), cyy = track(CURY, p);
+        pt.style.transform = "translate3d(" + cx.toFixed(1) + "px," + cyy.toFixed(1) + "px,0)";
+      }
+      pt.classList.toggle("press",
+        (p >= T_PRESS && p < T_PRESS + 0.010) || (p >= 0.902 && p < 0.912));
+
+      // captions
+      for (var i = 0; i < caps.length; i++) {
+        var w = CAPW[i];
+        var o = Math.min(seg(p, w[0], w[0] + 0.022), 1 - seg(p, w[1] - 0.022, w[1]));
+        caps[i].style.opacity = o.toFixed(3);
+        caps[i].style.transform = reduceMotion ? "none" : "translateY(" + ((1 - o) * 18).toFixed(1) + "px)";
+        caps[i].style.visibility = o <= 0 ? "hidden" : "visible";
+      }
+    }
+
+    // ---------- scroll driver ----------
+    var filmTop = 0, filmLen = 1, ticking = false;
+    var liveIsland = document.getElementById("island");
+    function measure() {
+      resolveScales();
+      var r = film.getBoundingClientRect();
+      filmTop = r.top + window.scrollY;
+      filmLen = film.offsetHeight - window.innerHeight;
+      onScroll();
+    }
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        var y = window.scrollY;
+        // the real island bows out while its stunt double performs
+        if (liveIsland) liveIsland.classList.toggle("offstage",
+          y > filmTop - 180 && y < filmTop + filmLen + 320);
+        if (y < filmTop - window.innerHeight || y > filmTop + filmLen + window.innerHeight) return;
+        apply(clamp((y - filmTop) / filmLen, 0, 1));
+      });
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", measure);
+    measure();
+    apply(0);
+  })();
+
+  /* ---------- section reveals & the nudge button ---------- */
+  (function () {
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if ("IntersectionObserver" in window && !reduceMotion) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
@@ -788,6 +1826,11 @@
     } else {
       document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
     }
+    var btn = document.getElementById("tryNudge");
+    if (btn) btn.addEventListener("click", function () {
+      if (window.__dgNudge) window.__dgNudge();
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    });
   })();
   </script>
 </body>
