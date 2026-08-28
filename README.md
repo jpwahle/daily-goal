@@ -88,6 +88,11 @@ While the island has keyboard focus: **Return** edits, **Space** toggles done,
   (`safeAreaInsets`, `auxiliaryTopLeftArea/Right`) so it's pixel-exact on
   every notched Mac. On plain displays it becomes a virtual island hanging
   from the top edge.
+- **Every screen gets an island.** With external displays connected, each
+  one hangs its own virtual island (the MacBook keeps the physical notch),
+  so the goal is wherever you're looking. Goal state is shared; editing
+  happens on the island you engage; each island yields to its own screen's
+  menu bar items.
 - **Closed means closed.** The collapsed island never takes your mouse — the
   panel ignores events entirely, so clicks pass through to the menu bar and
   windows behind. A short dwell on the notch (or a click) opens it; a cursor

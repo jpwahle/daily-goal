@@ -10,7 +10,7 @@ import Foundation
 /// island hangs from the top edge as a single centered capsule.
 struct NotchIslandView: View {
     @ObservedObject var store: GoalStore
-    @ObservedObject var notch: NotchController
+    @ObservedObject var notch: NotchIsland
 
     @State private var draft = ""
     @FocusState private var fieldFocused: Bool
@@ -18,6 +18,9 @@ struct NotchIslandView: View {
     @State private var collapsedShift: CGFloat = 0
 
     private var expanded: Bool { notch.state == .expanded }
+    /// The goal state is shared across screens, but only the island hosting
+    /// the editor shows the text field; the others keep their plain card.
+    private var editingHere: Bool { store.isEditing && notch.isEditingHost }
 
     /// Layout constants for the collapsed left wing. The wing must have a
     /// constant width: the island's off-center shift is derived from it.
@@ -98,17 +101,17 @@ struct NotchIslandView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .environment(\.colorScheme, .dark)
             .onChange(of: store.isEditing) { editing in
-                if editing {
+                if editing && notch.isEditingHost {
                     draft = store.goal
                     notch.makeKeyPanel()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) { fieldFocused = true }
-                } else {
+                } else if !editing {
                     fieldFocused = false
                 }
             }
             .onChange(of: fieldFocused) { focused in
-                // Clicking away while editing commits the draft.
-                if !focused && store.isEditing { commit() }
+                // Clicking away while editing here commits the draft.
+                if !focused && editingHere { commit() }
             }
             .onChange(of: store.celebrationTick) { _ in flashGlow() }
     }
@@ -171,7 +174,7 @@ struct NotchIslandView: View {
         .animation(.spring(response: 0.35, dampingFraction: 0.80), value: store.goal)
         .animation(.spring(response: 0.35, dampingFraction: 0.75), value: store.isCompleted)
         .animation(.spring(response: 0.40, dampingFraction: 0.80), value: store.streak)
-        .animation(.easeInOut(duration: 0.2), value: store.isEditing)
+        .animation(.easeInOut(duration: 0.2), value: editingHere)
         .animation(.easeInOut(duration: 0.45), value: notch.nudging)
     }
 
@@ -304,7 +307,7 @@ struct NotchIslandView: View {
 
     private var expandedWidth: CGFloat {
         // A stable width while typing, so the field doesn't chase every key.
-        if store.isEditing { return slabMode ? min(360, slabCap) : 360 }
+        if editingHere { return slabMode ? min(360, slabCap) : 360 }
         // Slab: clear the ears, hug the housing. Neck: room for a fillet
         // and a top corner each side, or the card's top edge vanishes.
         let floor = slabMode
@@ -328,7 +331,7 @@ struct NotchIslandView: View {
             HStack(spacing: Card.gap) {
                 CheckRing(store: store, diameter: Card.ring, interactive: true)
                 centerContent
-                if store.streak >= 2 && !store.isEditing {
+                if store.streak >= 2 && !editingHere {
                     StreakChip(count: store.streak)
                         .transition(.scale(scale: 0.4).combined(with: .opacity))
                 }
@@ -349,7 +352,7 @@ struct NotchIslandView: View {
     }
 
     @ViewBuilder private var centerContent: some View {
-        if store.isEditing {
+        if editingHere {
             TextField("One thing for today…", text: $draft)
                 .textFieldStyle(.plain)
                 .font(.system(size: 15, weight: .semibold, design: .rounded))
@@ -384,7 +387,7 @@ struct NotchIslandView: View {
     }
 
     @ViewBuilder private var footer: some View {
-        if store.isEditing {
+        if editingHere {
             Text("return to save · esc to cancel")
                 .font(.system(size: 10.5, weight: .medium, design: .rounded))
                 .foregroundStyle(.white.opacity(0.35))
