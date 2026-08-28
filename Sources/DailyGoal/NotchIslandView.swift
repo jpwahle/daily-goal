@@ -26,7 +26,72 @@ struct NotchIslandView: View {
         static let leadingPad: CGFloat = 12
         static let trailingPad: CGFloat = 7
         static var left: CGFloat { leadingPad + ring + trailingPad }
+        /// Bare black sliver a wing keeps when a menu bar item sits too
+        /// close for real content — the shape still reads as one housing.
+        static let lip: CGFloat = 8
     }
+
+    // MARK: - Yielding to menu bar items
+    //
+    // Every point of bar beyond `notch.barGaps` belongs to someone's status
+    // item (Hidden Bar and Bartender park items arbitrarily close), so each
+    // wing plans what fits into the free gap on its side and no more.
+
+    private var leftPlan: (showRing: Bool, width: CGFloat) {
+        let room = notch.barGaps.left - 6
+        if room >= Wing.left { return (true, Wing.left) }
+        return (false, max(0, min(Wing.lip, room)))
+    }
+
+    /// How the right wing spends its budget: goal text first, the streak
+    /// only if it still fits. `nil` when even a sliver of text wouldn't
+    /// fit and the wing collapses to a bare lip.
+    private var rightPlan: (text: CGFloat, streak: Bool)? {
+        let budget = notch.barGaps.right - 6 - 9 - 14 // margin + wing pads
+        guard budget >= 24 else { return nil }
+        let natural = min(wingTextWidth, 180)
+        let streakRoom: CGFloat = 42 // spacing + flame + count
+        if store.streak >= 2, !store.goal.isEmpty, budget >= min(natural, 60) + streakRoom {
+            return (min(natural, budget - streakRoom), true)
+        }
+        return (min(natural, budget), false)
+    }
+
+    /// The virtual island reserves nothing, so it hugs the tighter side —
+    /// and when an item slides underneath it hides entirely (the controller
+    /// stops hover-opening it too).
+    private var virtualPlan: (text: CGFloat, streak: Bool) {
+        let sideRoom = min(notch.barGaps.left, notch.barGaps.right)
+        let budget = notch.notchSize.width + 2 * max(0, sideRoom - 4) - 55 // ring + pads
+        let natural = min(wingTextWidth, 180)
+        if store.streak >= 2, !store.goal.isEmpty, budget >= min(natural, 60) + 42 {
+            return (min(natural, budget - 42), true)
+        }
+        return (max(24, min(natural, budget)), false)
+    }
+
+    /// The expanded neck keeps a small black lip beside the notch, but only
+    /// where the bar is actually free — with items parked tight it thins to
+    /// a hairline rather than covering them.
+    private var neckLip: CGFloat {
+        min(14, max(0, min(notch.barGaps.left, notch.barGaps.right) - 2))
+    }
+
+    /// Widest card the bar allows in its own band, items untouched.
+    private var slabCap: CGFloat {
+        let room = min(notch.barGaps.left, notch.barGaps.right)
+        return notch.notchSize.width + 2 * max(0, room - 8)
+    }
+
+    /// The card's preferred form is the original grown notch: one slab from
+    /// the screen edge, ears at its top corners. It merely never grows past
+    /// the measured free span. Only when the bar is too crowded for even a
+    /// snug slab does the card tuck itself below the bar on a narrow neck.
+    private var slabMode: Bool { slabCap >= notch.notchSize.width + 72 }
+
+    /// Content offset under the housing: snug in slab form, below the
+    /// hanging top edge in neck form.
+    private var cardTopPad: CGFloat { slabMode ? 8 : NotchShape.cardTopDrop + 10 }
 
     var body: some View {
         island
@@ -58,8 +123,11 @@ struct NotchIslandView: View {
         }
         .background {
             let shape = NotchShape(
-                earRadius: expanded ? 16 : 5,
-                cornerRadius: expanded ? 22 : 10
+                earRadius: expanded && slabMode ? 16 : 5,
+                cornerRadius: expanded ? 22 : 10,
+                flare: expanded && !slabMode ? 1 : 0,
+                neckWidth: notch.notchSize.width + 2 * neckLip,
+                neckHeight: notch.notchSize.height
             )
             ZStack {
                 // The real notch casts no shadow, so neither may the island's
@@ -94,6 +162,11 @@ struct NotchIslandView: View {
                 .onChange(of: geo.size) { notch.metrics.size = $0 }
         })
         .offset(x: expanded ? 0 : collapsedShift)
+        // A blocked virtual island stands exactly where an item now sits:
+        // vanish rather than cover it. (Physical notches never block.)
+        .opacity(notch.virtualBlocked && !expanded ? 0 : 1)
+        .animation(.spring(response: 0.35, dampingFraction: 0.80), value: notch.barGaps)
+        .animation(.easeInOut(duration: 0.2), value: notch.virtualBlocked)
         .animation(.spring(response: 0.38, dampingFraction: 0.82), value: expanded)
         .animation(.spring(response: 0.35, dampingFraction: 0.80), value: store.goal)
         .animation(.spring(response: 0.35, dampingFraction: 0.75), value: store.isCompleted)
@@ -108,19 +181,28 @@ struct NotchIslandView: View {
         Group {
             if notch.hasNotch {
                 HStack(spacing: 0) {
-                    CheckRing(store: store, diameter: Wing.ring, interactive: false)
-                        .padding(.leading, Wing.leadingPad)
-                        .padding(.trailing, Wing.trailingPad)
+                    if leftPlan.showRing {
+                        CheckRing(store: store, diameter: Wing.ring, interactive: false)
+                            .padding(.leading, Wing.leadingPad)
+                            .padding(.trailing, Wing.trailingPad)
+                    } else {
+                        Color.clear.frame(width: leftPlan.width, height: 1)
+                    }
                     // The camera housing: keep it untouched black.
                     Color.clear.frame(width: notch.notchSize.width, height: 1)
-                    wingLabel
-                        .padding(.leading, 9)
-                        .padding(.trailing, 14)
+                    if let plan = rightPlan {
+                        wingLabel(textWidth: plan.text, showStreak: plan.streak)
+                            .padding(.leading, 9)
+                            .padding(.trailing, 14)
+                    } else {
+                        Color.clear.frame(
+                            width: max(0, min(Wing.lip, notch.barGaps.right - 6)), height: 1)
+                    }
                 }
             } else {
                 HStack(spacing: 8) {
                     CheckRing(store: store, diameter: Wing.ring, interactive: false)
-                    wingLabel
+                    wingLabel(textWidth: virtualPlan.text, showStreak: virtualPlan.streak)
                 }
                 .padding(.horizontal, 16)
             }
@@ -138,13 +220,13 @@ struct NotchIslandView: View {
     /// exactly on the notch.
     private func reportCollapsedWidth(_ width: CGFloat) {
         let shift = notch.hasNotch
-            ? width / 2 - Wing.left - notch.notchSize.width / 2
+            ? width / 2 - leftPlan.width - notch.notchSize.width / 2
             : 0
         collapsedShift = shift
         notch.metrics.collapsedShift = shift
     }
 
-    @ViewBuilder private var wingLabel: some View {
+    @ViewBuilder private func wingLabel(textWidth: CGFloat, showStreak: Bool) -> some View {
         if store.goal.isEmpty {
             // Gentle breathing invite until a goal exists.
             TimelineView(.animation(minimumInterval: 0.08)) { context in
@@ -154,6 +236,7 @@ struct NotchIslandView: View {
                     .foregroundStyle(.white.opacity(0.42 + 0.16 * sin(t * 1.5)))
             }
             .lineLimit(1)
+            .frame(width: textWidth, alignment: .leading)
         } else {
             HStack(spacing: 6) {
                 Text(store.goal)
@@ -165,18 +248,20 @@ struct NotchIslandView: View {
                     // The wing hugs the goal but never grows past the cap.
                     // SwiftUI's maxWidth would pin it *at* the cap, so measure
                     // the text and set the width outright.
-                    .frame(width: min(wingTextWidth, 180), alignment: .leading)
-                if store.streak >= 2 {
+                    .frame(width: textWidth, alignment: .leading)
+                if showStreak {
                     miniStreak
                 }
             }
         }
     }
 
-    /// Width of the goal in the wing's font, so the collapsed island can hug
+    /// Width of the wing's line in its font, so the collapsed island can hug
     /// short goals instead of reserving the full cap.
     private var wingTextWidth: CGFloat {
-        measuredWidth(store.goal, size: 12, weight: .semibold)
+        store.goal.isEmpty
+            ? measuredWidth("Set today's goal", size: 12, weight: .medium)
+            : measuredWidth(store.goal, size: 12, weight: .semibold)
     }
 
     /// Single-line width of `text` in the island's rounded system font.
@@ -219,8 +304,12 @@ struct NotchIslandView: View {
 
     private var expandedWidth: CGFloat {
         // A stable width while typing, so the field doesn't chase every key.
-        if store.isEditing { return 360 }
-        let floor = notch.notchSize.width + 72 // clear the ears, hug the housing
+        if store.isEditing { return slabMode ? min(360, slabCap) : 360 }
+        // Slab: clear the ears, hug the housing. Neck: room for a fillet
+        // and a top corner each side, or the card's top edge vanishes.
+        let floor = slabMode
+            ? notch.notchSize.width + 72
+            : notch.notchSize.width + 2 * neckLip + 68
         var content = Card.ring + Card.gap
         if store.goal.isEmpty {
             content += measuredWidth("What's your one thing today?", size: 15, weight: .medium)
@@ -230,7 +319,8 @@ struct NotchIslandView: View {
                 content += Card.gap + 36 + CGFloat(String(store.streak).count) * 7
             }
         }
-        return min(Swift.max(content + Card.hpad * 2, floor), Card.max)
+        let desired = min(Swift.max(content + Card.hpad * 2, floor), Card.max)
+        return slabMode ? min(desired, slabCap) : desired
     }
 
     private var expandedCard: some View {
@@ -245,14 +335,16 @@ struct NotchIslandView: View {
             }
             footer
         }
-        .padding(.top, notch.notchSize.height + 8)
+        .padding(.top, notch.notchSize.height + cardTopPad)
         .padding(.horizontal, Card.hpad)
         .padding(.bottom, 16)
         .frame(width: expandedWidth)
         .overlay(alignment: .topLeading) {
             // Anchored at the check ring's center so confetti erupts from it.
             ConfettiBurst(tick: store.celebrationTick)
-                .offset(x: Card.hpad + Card.ring / 2, y: notch.notchSize.height + 8 + Card.ring / 2)
+                .offset(
+                    x: Card.hpad + Card.ring / 2,
+                    y: notch.notchSize.height + cardTopPad + Card.ring / 2)
         }
     }
 

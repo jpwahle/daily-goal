@@ -21,6 +21,12 @@ final class NotchController: ObservableObject {
     @Published private(set) var nudging = false
     @Published private(set) var hasNotch = true
     @Published private(set) var notchSize = CGSize(width: 190, height: 32)
+    /// Free menu bar beside the notch. Every point past these gaps belongs
+    /// to someone's status item, and the island keeps its hands off it.
+    @Published private(set) var barGaps = BarGaps()
+    /// No-notch screens only: a status item slid under the virtual island's
+    /// spot, so the collapsed island conceals itself and stops hover-opening.
+    @Published private(set) var virtualBlocked = false
 
     /// Geometry the SwiftUI view reports back so hit-testing matches what is
     /// actually on screen (preferences don't survive NSHostingView, so this
@@ -36,6 +42,7 @@ final class NotchController: ObservableObject {
     private(set) var panel: NotchPanel!
     private let store: GoalStore
     private var poll: Timer?
+    private var lastGapScan = Date.distantPast
     private var hoverSince: Date?   // pointer resting on the collapsed island
     private var awaySince: Date?    // pointer gone from the expanded island
     private var insideSince: Date?  // pointer resting inside the open island
@@ -110,6 +117,29 @@ final class NotchController: ObservableObject {
             width: Self.windowSize.width,
             height: Self.windowSize.height)
         panel.setFrame(frame, display: true)
+        rescanBarGaps()
+    }
+
+    // MARK: - Menu bar items
+
+    /// Items come and go at any time — a manager like Hidden Bar or
+    /// Bartender reveals a whole batch at once, always with the pointer up
+    /// at the bar. Scan briskly while the pointer is near the bar, lazily
+    /// otherwise, so the wings retract before a freshly revealed item could
+    /// even be aimed at.
+    private func rescanBarGapsIfDue(mouse: NSPoint) {
+        let nearBar = mouse.y > panel.frame.maxY - 60
+        let staleAfter: TimeInterval = nearBar ? 0.25 : 2.0
+        guard Date().timeIntervalSince(lastGapScan) >= staleAfter else { return }
+        rescanBarGaps()
+    }
+
+    private func rescanBarGaps() {
+        lastGapScan = Date()
+        guard let screen = NSScreen.islandScreen else { return }
+        let scan = MenuBarLayout.scan(around: notchRect(), on: screen, physicalNotch: hasNotch)
+        if scan.gaps != barGaps { barGaps = scan.gaps }
+        if scan.notchIntruded != virtualBlocked { virtualBlocked = scan.notchIntruded }
     }
 
     // MARK: - API (status bar menu, reminders, day rollover)
@@ -140,6 +170,7 @@ final class NotchController: ObservableObject {
 
     /// Reminder nudge: open up, glow violet, and retreat unless engaged.
     func nudge() {
+        guard !virtualBlocked else { return } // never open on top of an item
         show()
         expand()
         nudging = true
@@ -149,6 +180,7 @@ final class NotchController: ObservableObject {
 
     /// A fresh day: open with the empty-goal invite, then retreat quietly.
     func promptNewDay() {
+        guard !virtualBlocked else { return } // never open on top of an item
         show()
         expand()
         holdUntil = Date().addingTimeInterval(6)
@@ -201,16 +233,30 @@ final class NotchController: ObservableObject {
         let pressed = NSEvent.pressedMouseButtons & 1 == 1
         defer { wasPressed = pressed }
         let mouse = NSEvent.mouseLocation
+        rescanBarGapsIfDue(mouse: mouse)
         let island = islandRect()
 
         switch state {
         case .collapsed:
+            // A blocked virtual island is invisible; opening it on hover
+            // would drop black over the very item standing in its place.
+            guard !virtualBlocked else {
+                hoverSince = nil
+                return
+            }
             // The whole notch counts, padded a little, so aiming is forgiving.
             var hot = island.union(notchRect())
             hot.origin.x -= 10
             hot.size.width += 20
             hot.origin.y -= 6
             hot.size.height += 6
+            // But the forgiveness must never reach over a neighbouring menu
+            // bar item — a pointer there is aiming at the item, not at us.
+            let notch = notchRect()
+            let lo = max(hot.minX, notch.minX - max(0, barGaps.left - 2))
+            let hi = min(hot.maxX, notch.maxX + max(0, barGaps.right - 2))
+            hot.origin.x = lo
+            hot.size.width = max(hi - lo, 0)
             guard hot.contains(mouse) else {
                 hoverSince = nil
                 return
@@ -237,8 +283,11 @@ final class NotchController: ObservableObject {
                 awaySince = nil
                 // A pointer *resting* inside an empty island means "type
                 // here" — focus the field. Resting, not passing: hover-expand
-                // already fired once, so require a beat of stillness.
-                if store.goal.isEmpty && island.contains(mouse) {
+                // already fired once, so require a beat of stillness. Only
+                // below the bar: the card's bounding box corners up in the
+                // bar belong to the menu bar, not to us.
+                let belowBar = mouse.y < panel.frame.maxY - notchSize.height
+                if store.goal.isEmpty && island.contains(mouse) && belowBar {
                     let since = insideSince ?? Date()
                     insideSince = since
                     if Date().timeIntervalSince(since) >= 0.35 { beginEditing() }

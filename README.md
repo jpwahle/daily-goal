@@ -92,6 +92,14 @@ While the island has keyboard focus: **Return** edits, **Space** toggles done,
   panel ignores events entirely, so clicks pass through to the menu bar and
   windows behind. A short dwell on the notch (or a click) opens it; a cursor
   merely passing by doesn't.
+- **Menu bar items always win.** The island measures where status items sit
+  (their windows are readable without any permission) and yields: the wings
+  shrink — down to a bare sliver — rather than cover an item, hovering near
+  an item never pops the island open, and the expanded card only spreads
+  across the bar as far as the measured free span allows (on a truly packed
+  bar it tucks itself below the bar on a narrow neck instead). Works with
+  managers like Bartender or Hidden Bar too: when they reveal a batch of
+  items next to the notch, the island retracts within a quarter second.
 - **Days flip at 4 a.m.**, not midnight — finishing at 1 a.m. still counts
   for the evening it belongs to. On rollover the goal archives and the island
   opens with an invite for the next one (even if it was hidden).
