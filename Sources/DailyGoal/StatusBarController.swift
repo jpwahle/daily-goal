@@ -9,6 +9,10 @@ final class StatusBarController: NSObject, NSMenuDelegate {
     private unowned let app: AppDelegate
     private let item: NSStatusItem
     private var cancellable: AnyCancellable?
+    /// Items of the currently open menu that the schedule rows can restate.
+    private weak var headItem: NSMenuItem?
+    private weak var weekMenuItem: NSMenuItem?
+    private weak var hoursRow: ActiveHoursView?
 
     init(store: GoalStore, app: AppDelegate) {
         self.store = store
@@ -38,24 +42,28 @@ final class StatusBarController: NSObject, NSMenuDelegate {
             symbol = "target"
         }
         item.button?.image = NSImage(systemSymbolName: symbol, accessibilityDescription: "Daily Goal")
-        item.button?.toolTip = store.goal.isEmpty ? "Daily Goal — nothing set yet" : store.goal
+        item.button?.toolTip = store.goal.isEmpty
+            ? (store.isResting ? "Daily Goal — day off" : "Daily Goal — nothing set yet")
+            : store.goal
     }
 
     // MARK: - Menu
 
+    private func headTitle() -> String {
+        if store.goal.isEmpty {
+            return store.isResting ? "Day off — nothing due today" : "No goal yet — set one"
+        }
+        let text = store.goal.count > 44 ? String(store.goal.prefix(44)) + "…" : store.goal
+        return store.isCompleted ? "✓ \(text)" : text
+    }
+
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
 
-        let headTitle: String
-        if store.goal.isEmpty {
-            headTitle = "No goal yet — set one"
-        } else {
-            let text = store.goal.count > 44 ? String(store.goal.prefix(44)) + "…" : store.goal
-            headTitle = store.isCompleted ? "✓ \(text)" : text
-        }
-        let head = NSMenuItem(title: headTitle, action: #selector(editGoal), keyEquivalent: "")
+        let head = NSMenuItem(title: headTitle(), action: #selector(editGoal), keyEquivalent: "")
         head.target = self
         menu.addItem(head)
+        headItem = head
 
         if store.streak >= 2 {
             let streak = NSMenuItem(title: "🔥 \(store.streak)-day streak", action: nil, keyEquivalent: "")
@@ -82,6 +90,9 @@ final class StatusBarController: NSObject, NSMenuDelegate {
 
         menu.addItem(.separator())
         menu.addItem(remindItem())
+        for row in scheduleRows() { menu.addItem(row) }
+
+        menu.addItem(.separator())
 
         let visibility = NSMenuItem(
             title: app.islandVisible ? "Hide From Notch" : "Show In Notch",
@@ -121,10 +132,36 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         menu.addItem(quit)
     }
 
+    /// The schedule as two plain rows of the menu — the week as dots, the
+    /// hours as two clock fields. Both are live: clicking a dot leaves the
+    /// menu open, so the rest of it has to keep up.
+    private func scheduleRows() -> [NSMenuItem] {
+        let days = NSMenuItem()
+        days.view = DayDotsView(store: store) { [weak self] in self?.refreshLiveItems() }
+        let hours = NSMenuItem()
+        let hoursView = ActiveHoursView(store: store) { [weak self] in self?.refreshLiveItems() }
+        hours.view = hoursView
+        self.hoursRow = hoursView
+        return [days, hours]
+    }
+
+    /// A day toggled under the pointer changes what the rest of the menu says:
+    /// today may have just become a day off, and the week dots with it.
+    private func refreshLiveItems() {
+        headItem?.title = headTitle()
+        weekMenuItem?.attributedTitle = weekText()
+        hoursRow?.refresh()
+    }
+
     private func weekItem() -> NSMenuItem {
         let menuItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
         menuItem.isEnabled = false
+        menuItem.attributedTitle = weekText()
+        weekMenuItem = menuItem
+        return menuItem
+    }
 
+    private func weekText() -> NSAttributedString {
         let text = NSMutableAttributedString(
             string: "Last 7 days   ",
             attributes: [
@@ -139,13 +176,13 @@ final class StatusBarController: NSObject, NSMenuDelegate {
             case .missed: glyph = "●"; color = .tertiaryLabelColor
             case .pending: glyph = "○"; color = .systemBlue
             case .empty: glyph = "·"; color = .quaternaryLabelColor
+            case .off: glyph = "–"; color = .quaternaryLabelColor
             }
             text.append(NSAttributedString(
                 string: glyph + " ",
                 attributes: [.font: NSFont.systemFont(ofSize: 12), .foregroundColor: color]))
         }
-        menuItem.attributedTitle = text
-        return menuItem
+        return text
     }
 
     /// "Remind Me" submenu: how often the pill should demand attention while

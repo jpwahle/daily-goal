@@ -9,8 +9,10 @@ import UserNotifications
 ///  - user has been away for a few minutes → a local notification, so the
 ///    reminder is waiting in Notification Center when they come back.
 ///
-/// Nothing fires once today's goal is completed, or while the goal is being
-/// edited. Reminders about an *empty* day invite setting a goal instead.
+/// Nothing fires once today's goal is completed, while the goal is being
+/// edited, or outside the schedule — days off and the hours beyond an active
+/// day's range stay silent. Reminders about an *empty* day invite setting a
+/// goal instead.
 final class ReminderCenter: NSObject, UNUserNotificationCenterDelegate {
     static let choices: [(title: String, seconds: TimeInterval)] = [
         ("Off", 0),
@@ -66,6 +68,12 @@ final class ReminderCenter: NSObject, UNUserNotificationCenterDelegate {
 
     private func fire() {
         guard store.reminderInterval > 0, !store.isCompleted, !store.isEditing else { return }
+        // Off the schedule — a rest day, or before/after the day's hours —
+        // the goal isn't due, so nothing is owed a nudge either.
+        guard store.isGoalLive() else {
+            NSLog("reminder: outside the schedule — staying quiet")
+            return
+        }
         let idle = secondsSinceLastInput()
         if idle < awayAfter {
             NSLog("reminder: nudging island (idle %.0fs)", idle)

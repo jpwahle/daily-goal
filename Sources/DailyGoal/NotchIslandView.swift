@@ -230,7 +230,15 @@ struct NotchIslandView: View {
     }
 
     @ViewBuilder private func wingLabel(textWidth: CGFloat, showStreak: Bool) -> some View {
-        if store.goal.isEmpty {
+        if store.isResting {
+            // Nothing is due: state it once, and hold still. The breathing
+            // invite below is for days that actually want a goal.
+            Text("Day off")
+                .font(.system(size: 12, weight: .medium, design: .rounded))
+                .foregroundStyle(.white.opacity(0.34))
+                .lineLimit(1)
+                .frame(width: textWidth, alignment: .leading)
+        } else if store.goal.isEmpty {
             // Gentle breathing invite until a goal exists.
             TimelineView(.animation(minimumInterval: 0.08)) { context in
                 let t = context.date.timeIntervalSinceReferenceDate
@@ -262,7 +270,8 @@ struct NotchIslandView: View {
     /// Width of the wing's line in its font, so the collapsed island can hug
     /// short goals instead of reserving the full cap.
     private var wingTextWidth: CGFloat {
-        store.goal.isEmpty
+        if store.isResting { return measuredWidth("Day off", size: 12, weight: .medium) }
+        return store.goal.isEmpty
             ? measuredWidth("Set today's goal", size: 12, weight: .medium)
             : measuredWidth(store.goal, size: 12, weight: .semibold)
     }
@@ -315,12 +324,12 @@ struct NotchIslandView: View {
             : notch.notchSize.width + 2 * neckLip + 68
         var content = Card.ring + Card.gap
         if store.goal.isEmpty {
-            content += measuredWidth("What's your one thing today?", size: 15, weight: .medium)
+            content += measuredWidth(cardHeadline, size: 15, weight: .medium)
         } else {
             content += min(measuredWidth(store.goal, size: 15, weight: .semibold), Card.textCap)
-            if store.streak >= 2 {
-                content += Card.gap + 36 + CGFloat(String(store.streak).count) * 7
-            }
+        }
+        if store.streak >= 2 {
+            content += Card.gap + 36 + CGFloat(String(store.streak).count) * 7
         }
         let desired = min(Swift.max(content + Card.hpad * 2, floor), Card.max)
         return slabMode ? min(desired, slabCap) : desired
@@ -365,12 +374,13 @@ struct NotchIslandView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
         } else if store.goal.isEmpty {
-            Text("What's your one thing today?")
+            Text(cardHeadline)
                 .font(.system(size: 15, weight: .medium, design: .rounded))
-                .foregroundStyle(.white.opacity(0.55))
+                .foregroundStyle(.white.opacity(store.isResting ? 0.42 : 0.55))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
                 .onTapGesture { notch.beginEditing() }
+                .help(store.isResting ? "Click to set one anyway" : "Click to set today's goal")
         } else {
             Text(store.goal)
                 .font(.system(size: 15, weight: .semibold, design: .rounded))
@@ -404,9 +414,29 @@ struct NotchIslandView: View {
         }
     }
 
+    /// When the goal comes back — named, because on a Saturday "tomorrow"
+    /// would be a Sunday that asks for nothing either.
+    private func restCaption() -> String {
+        let today = store.logicalDayKey()
+        guard let next = store.nextActiveDay(after: today) else { return "no days set" }
+        return next == store.shiftDayKey(today, by: 1)
+            ? "back tomorrow"
+            : "back \(store.weekdayName(forDayKey: next))"
+    }
+
+    /// The card's headline while no goal is set.
+    private var cardHeadline: String {
+        store.isResting ? "Day off — nothing due" : "What's your one thing today?"
+    }
+
     private func caption(at date: Date) -> String {
-        if store.goal.isEmpty { return "days end at 4 a.m." }
+        if store.isResting { return restCaption() }
+        if store.goal.isEmpty {
+            return store.schedule.isAllDay ? "days end at 4 a.m." : store.schedule.hoursLabel
+        }
         if store.isCompleted { return "resets at 4 a.m." }
+        // The range closed but the day hasn't: still checkable until 4 a.m.
+        if store.isAfterHours(at: date) { return "after hours" }
         let left = store.secondsLeft(at: date)
         if left < 3600 { return "\(max(1, Int(left / 60)))m left" }
         return "\(Int(left / 3600))h left"
@@ -467,6 +497,11 @@ private struct WeekDots: View {
         case .empty:
             Circle().fill(.white.opacity(0.10))
                 .frame(width: 5, height: 5)
+        case .off:
+            // A day nothing was asked of: a dash reads as "not counted",
+            // where a dot would read as "nothing done".
+            Capsule().fill(.white.opacity(0.14))
+                .frame(width: 6, height: 1.5)
         }
     }
 }
@@ -521,18 +556,21 @@ struct CheckRing: View {
                     ZStack {
                         if store.goal.isEmpty {
                             Circle().strokeBorder(
-                                .white.opacity(0.30),
+                                .white.opacity(store.isResting ? 0.18 : 0.30),
                                 style: StrokeStyle(lineWidth: line * 0.8,
                                                    dash: [diameter * 0.12, diameter * 0.14]))
                         } else {
                             Circle().strokeBorder(.white.opacity(0.16), lineWidth: line)
                         }
-                        Circle()
-                            .trim(from: 0, to: progress)
-                            .stroke(ringStyle(secondsLeft: left),
-                                    style: StrokeStyle(lineWidth: line, lineCap: .round))
-                            .rotationEffect(.degrees(-90))
-                            .padding(line / 2) // align centered stroke with inset strokeBorder
+                        // A day off runs no clock, so the dial stays empty.
+                        if !store.isResting {
+                            Circle()
+                                .trim(from: 0, to: progress)
+                                .stroke(ringStyle(secondsLeft: left),
+                                        style: StrokeStyle(lineWidth: line, lineCap: .round))
+                                .rotationEffect(.degrees(-90))
+                                .padding(line / 2) // align centered stroke with inset strokeBorder
+                        }
                     }
                 }
             }
@@ -548,6 +586,7 @@ struct CheckRing: View {
     }
 
     private var helpText: String {
+        if store.isResting { return "Day off — nothing due today" }
         if store.goal.isEmpty { return "Set a goal first" }
         return store.isCompleted ? "Done — click to undo" : "Mark as done"
     }

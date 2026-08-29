@@ -73,8 +73,9 @@ behave like the real app.
 | Feel the day pass | The ring fills as the day elapses; turns **orange** under 3 h left, **red** under 1 h. The open card counts the hours |
 | Stay out of the way | Closed, the island ignores your mouse entirely — clicks land on whatever is behind it. It only becomes real when you come to the notch |
 | Get reminded | **Remind Me** in the menu bar: every 30 min up to every 3 h (default: hourly), or Off. At the Mac, the notch opens and glows violet for a moment; away, one macOS notification waits in Notification Center |
+| Take the weekend off | Two rows sit in the menu bar itself — no submenus. **Days** is the week as seven dots; click one to turn its goal on or off (Mon–Fri out of the box, and the menu stays open so you can set the week in one go). **Between** is the stretch of an active day the goal is live for — the ring fills across it and the card counts down to its end. It starts at 4:00 – 4:00, the app's own day edge to edge, so nothing changes until you narrow it. On a day off the island just reads *Day off · back Monday*: no invite, no nudges, and the streak steps straight over it |
 | Keep a streak | 🔥 chip appears from 2 consecutive completed days; undo-safe |
-| Menu bar | Icon shows state at a glance (dashed = unset, target = pending, ✓ = done); menu has edit, mark done, last-7-days dots, reminder frequency, hide/show, launch at login, check for updates, quit |
+| Menu bar | Icon shows state at a glance (dashed = unset, target = pending, ✓ = done); menu has edit, mark done, last-7-days dots, reminder frequency, the schedule rows, hide/show, launch at login, check for updates, quit |
 | Stay current | **Check for Updates…** asks GitHub for the latest release; a quiet automatic check (on by default; every 8 h and right after wake, one API call each, toggle off with **Check Automatically**) surfaces an **Install…** item in the menu when a newer version exists. One click downloads the release from GitHub, verifies its SHA-256 checksum and Developer ID signature, swaps the app in place, and relaunches |
 
 While the island has keyboard focus: **Return** edits, **Space** toggles done,
@@ -107,11 +108,26 @@ While the island has keyboard focus: **Return** edits, **Space** toggles done,
   items next to the notch, the island retracts within a quarter second.
 - **Days flip at 4 a.m.**, not midnight — finishing at 1 a.m. still counts
   for the evening it belongs to. On rollover the goal archives and the island
-  opens with an invite for the next one (even if it was hidden).
+  opens with an invite for the next one (even if it was hidden) — held back
+  until the day's active hours actually open, so a 4 a.m. rollover doesn't
+  spend its invite on an empty room.
+- **A weekend is not a missed day.** Days off are off: the island shows
+  *Day off* instead of the invite, the ring runs no clock, reminders stay
+  quiet, and the week dots mark the day with a dash rather than a miss — a
+  day nothing was asked of shouldn't look like one you failed. The streak
+  steps over them, so Friday → Monday keeps it alive, while skipping an
+  actual working day still ends it. Set a goal on a day off anyway and it
+  behaves like any other day, with the whole day to finish it in.
+- **Active hours narrow the day, not the deadline.** With a range set, the
+  ring fills across it and the card counts down to its end; past that it reads
+  *after hours*, and the goal stays checkable until the 4 a.m. rollover. The
+  range may run past midnight (a 10 p.m. → 2 a.m. evening is one day), and it
+  moves with the wall clock across daylight-saving shifts.
 - **Never steals focus.** The panel is non-activating; it only becomes key
   while you're actually typing in it, and gives focus straight back.
-- **The streak only survives honest completion.** Miss a day and it's gone;
-  un-checking restores the exact pre-completion state.
+- **The streak only survives honest completion.** Miss a working day and
+  it's gone; days off don't count against it. Un-checking restores the exact
+  pre-completion state.
 - **Reminders nag politely.** They skip while you're editing, stop the moment
   the goal is done, and restart their countdown whenever you touch the goal.
   Away from the keyboard for a few minutes, the nudge becomes a notification —
@@ -140,6 +156,8 @@ Sources/DailyGoal/
   NotchShape.swift        the notch outline: concave ears, round bottom corners
   NotchIslandView.swift   the island: wings, expanded card, editing, confetti
   GoalStore.swift         state machine: logical days, streaks, history
+  Schedule.swift          which days carry a goal, and the hours they run
+  ScheduleRows.swift      the schedule as two live rows inside the menu
   StatusBarController.swift  menu bar icon + menu
   ReminderCenter.swift    reminder timer: island glow at the Mac, notification when away
 Scripts/MakeIcon.swift    renders the .icns at build time

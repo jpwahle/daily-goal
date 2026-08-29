@@ -298,8 +298,11 @@ final class NotchIsland: ObservableObject {
                 // already fired once, so require a beat of stillness. Only
                 // below the bar: the card's bounding box corners up in the
                 // bar belong to the menu bar, not to us.
+                // Never on a day off, though: nothing is due, so opening a
+                // field under the pointer would be the nagging we removed.
                 let belowBar = mouse.y < panel.frame.maxY - notchSize.height
-                if store.goal.isEmpty && !store.isEditing && island.contains(mouse) && belowBar {
+                if store.goal.isEmpty && !store.isResting && !store.isEditing
+                    && island.contains(mouse) && belowBar {
                     let since = insideSince ?? Date()
                     insideSince = since
                     if Date().timeIntervalSince(since) >= 0.35 { beginEditing() }
